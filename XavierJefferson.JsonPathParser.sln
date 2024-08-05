@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XavierJefferson.JsonPathParser", "src\JsonPathParser\XavierJefferson.JsonPathParser.csproj", "{1677D1F5-67EF-4ED1-BBD4-99EC1D25D59C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XavierJefferson.JsonPathParser.UnitTests", "test\JsonPathParser.UnitTests\XavierJefferson.JsonPathParser.UnitTests.csproj", "{ED8F16E0-656A-4A9B-AD47-383BC98C4A71}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1677D1F5-67EF-4ED1-BBD4-99EC1D25D59C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1677D1F5-67EF-4ED1-BBD4-99EC1D25D59C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1677D1F5-67EF-4ED1-BBD4-99EC1D25D59C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1677D1F5-67EF-4ED1-BBD4-99EC1D25D59C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED8F16E0-656A-4A9B-AD47-383BC98C4A71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED8F16E0-656A-4A9B-AD47-383BC98C4A71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED8F16E0-656A-4A9B-AD47-383BC98C4A71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED8F16E0-656A-4A9B-AD47-383BC98C4A71}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {57E9562E-57C2-45B1-A66C-C5A23CEE7CBF}
+	EndGlobalSection
+EndGlobal

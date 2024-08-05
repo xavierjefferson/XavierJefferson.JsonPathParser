@@ -1,0 +1,1258 @@
+{
+  "activatedslaves": 5,
+  "builddate": "2015-01-09 02:25:21",
+  "buildtime": 1420770321,
+  "builduser": "root",
+  "completedframeworks": [
+    {
+      "active": true,
+      "checkpoint": true,
+      "completedtasks": [
+        {
+          "executorid": "",
+          "frameworkid": "20150225-172738-2049997834-5050-23289-0433",
+          "id": "mesos-jenkins-172c6f74-12bc-44fe-849a-ad902ddc2b64",
+          "name": "task mesos-jenkins-172c6f74-12bc-44fe-849a-ad902ddc2b64",
+          "resources": {
+            "cpus": 0.2,
+            "disk": 0,
+            "mem": 704
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKKILLED",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1427206149.38254
+            },
+            {
+              "state": "TASKKILLED",
+              "timestamp": 1427207981.47819
+            }
+          ]
+        }
+      ],
+      "failovertimeout": 0,
+      "hostname": "ip-10-124-48-147.ec2.internal",
+      "id": "20150225-172738-2049997834-5050-23289-0433",
+      "name": "Jenkins Scheduler",
+      "offeredresources": {
+        "cpus": -2.22044604925031e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "offers": [],
+      "registeredtime": 1427207787.01579,
+      "reregisteredtime": 1427207787.0158,
+      "resources": {
+        "cpus": -2.22044604925031e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "role": "*",
+      "tasks": [],
+      "unregisteredtime": 1427207981.47898,
+      "usedresources": {
+        "cpus": 0,
+        "disk": 0,
+        "mem": 0
+      },
+      "user": "jenkins",
+      "webuiurl": ""
+    },
+    {
+      "active": true,
+      "checkpoint": true,
+      "completedtasks": [
+        {
+          "executorid": "",
+          "frameworkid": "20150225-172748-1513192458-5050-6647-0000",
+          "id": "mesos-jenkins-cd18b433-e2ee-4a4e-875b-6ea82d90a53a",
+          "name": "task mesos-jenkins-cd18b433-e2ee-4a4e-875b-6ea82d90a53a",
+          "resources": {
+            "cpus": 0.2,
+            "disk": 0,
+            "mem": 704
+          },
+          "slaveid": "20150225-172748-1513192458-5050-6647-S0",
+          "state": "TASKKILLED",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1427209005.01389
+            },
+            {
+              "state": "TASKKILLED",
+              "timestamp": 1427209961.51519
+            }
+          ]
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150225-172748-1513192458-5050-6647-0000",
+          "id": "mesos-jenkins-66fca7c0-88f7-4a1a-9796-a6de2e337b0a",
+          "name": "task mesos-jenkins-66fca7c0-88f7-4a1a-9796-a6de2e337b0a",
+          "resources": {
+            "cpus": 0.2,
+            "disk": 0,
+            "mem": 704
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S25",
+          "state": "TASKKILLED",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1427209025.84128
+            },
+            {
+              "state": "TASKKILLED",
+              "timestamp": 1427211101.4792
+            }
+          ]
+        }
+      ],
+      "failovertimeout": 0,
+      "hostname": "ip-10-124-48-147.ec2.internal",
+      "id": "20150225-172748-1513192458-5050-6647-0000",
+      "name": "Jenkins Scheduler",
+      "offeredresources": {
+        "cpus": -8.88178419700125e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "offers": [],
+      "registeredtime": 1427208985.06716,
+      "resources": {
+        "cpus": -8.88178419700125e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "role": "*",
+      "tasks": [],
+      "unregisteredtime": 1427211101.48013,
+      "usedresources": {
+        "cpus": 0,
+        "disk": 0,
+        "mem": 0
+      },
+      "user": "jenkins",
+      "webuiurl": ""
+    },
+    {
+      "active": true,
+      "checkpoint": true,
+      "completedtasks": [
+        {
+          "executorid": "",
+          "frameworkid": "20150225-172748-1513192458-5050-6647-0001",
+          "id": "mesos-jenkins-258ad47c-85bf-4fe0-b7c4-4f0cc70f2998",
+          "name": "task mesos-jenkins-258ad47c-85bf-4fe0-b7c4-4f0cc70f2998",
+          "resources": {
+            "cpus": 0.2,
+            "disk": 0,
+            "mem": 704
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKKILLED",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1427211139.85003
+            },
+            {
+              "state": "TASKKILLED",
+              "timestamp": 1427212121.47896
+            }
+          ]
+        }
+      ],
+      "failovertimeout": 0,
+      "hostname": "ip-10-124-48-147.ec2.internal",
+      "id": "20150225-172748-1513192458-5050-6647-0001",
+      "name": "Jenkins Scheduler",
+      "offeredresources": {
+        "cpus": 2.22044604925031e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "offers": [],
+      "registeredtime": 1427211125.06385,
+      "resources": {
+        "cpus": 2.22044604925031e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "role": "*",
+      "tasks": [],
+      "unregisteredtime": 1427212121.4797,
+      "usedresources": {
+        "cpus": 0,
+        "disk": 0,
+        "mem": 0
+      },
+      "user": "jenkins",
+      "webuiurl": ""
+    },
+    {
+      "active": true,
+      "checkpoint": true,
+      "completedtasks": [
+        {
+          "executorid": "",
+          "frameworkid": "20150225-172748-1513192458-5050-6647-0002",
+          "id": "mesos-jenkins-f30e5e34-2ef6-4993-9260-73ee3520c0a5",
+          "name": "task mesos-jenkins-f30e5e34-2ef6-4993-9260-73ee3520c0a5",
+          "resources": {
+            "cpus": 0.2,
+            "disk": 0,
+            "mem": 704
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKKILLED",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1427213316.78467
+            },
+            {
+              "state": "TASKKILLED",
+              "timestamp": 1427214401.47958
+            }
+          ]
+        }
+      ],
+      "failovertimeout": 0,
+      "hostname": "ip-10-124-48-147.ec2.internal",
+      "id": "20150225-172748-1513192458-5050-6647-0002",
+      "name": "Jenkins Scheduler",
+      "offeredresources": {
+        "cpus": 0,
+        "disk": 0,
+        "mem": 0
+      },
+      "offers": [],
+      "registeredtime": 1427213305.0687,
+      "resources": {
+        "cpus": 0,
+        "disk": 0,
+        "mem": 0
+      },
+      "role": "*",
+      "tasks": [],
+      "unregisteredtime": 1427214401.48033,
+      "usedresources": {
+        "cpus": 0,
+        "disk": 0,
+        "mem": 0
+      },
+      "user": "jenkins",
+      "webuiurl": ""
+    },
+    {
+      "active": true,
+      "checkpoint": true,
+      "completedtasks": [
+        {
+          "executorid": "",
+          "frameworkid": "20150225-172748-1513192458-5050-6647-0003",
+          "id": "mesos-jenkins-1fc0bbd8-f0ff-48cd-a7f7-24a9436ba6bc",
+          "name": "task mesos-jenkins-1fc0bbd8-f0ff-48cd-a7f7-24a9436ba6bc",
+          "resources": {
+            "cpus": 0.2,
+            "disk": 0,
+            "mem": 704
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKKILLED",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1427215879.15661
+            },
+            {
+              "state": "TASKKILLED",
+              "timestamp": 1427217701.47961
+            }
+          ]
+        }
+      ],
+      "failovertimeout": 0,
+      "hostname": "ip-10-124-48-147.ec2.internal",
+      "id": "20150225-172748-1513192458-5050-6647-0003",
+      "name": "Jenkins Scheduler",
+      "offeredresources": {
+        "cpus": -8.88178419700125e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "offers": [],
+      "registeredtime": 1427215868.06173,
+      "resources": {
+        "cpus": -8.88178419700125e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "role": "*",
+      "tasks": [],
+      "unregisteredtime": 1427217701.48035,
+      "usedresources": {
+        "cpus": 0,
+        "disk": 0,
+        "mem": 0
+      },
+      "user": "jenkins",
+      "webuiurl": ""
+    },
+    {
+      "active": true,
+      "checkpoint": true,
+      "completedtasks": [
+        {
+          "executorid": "",
+          "frameworkid": "20150225-172748-1513192458-5050-6647-0004",
+          "id": "mesos-jenkins-62b44026-843d-4813-a6a8-e95215250bb1",
+          "name": "task mesos-jenkins-62b44026-843d-4813-a6a8-e95215250bb1",
+          "resources": {
+            "cpus": 0.2,
+            "disk": 0,
+            "mem": 704
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKKILLED",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1427222969.79605
+            },
+            {
+              "state": "TASKKILLED",
+              "timestamp": 1427223941.48583
+            }
+          ]
+        }
+      ],
+      "failovertimeout": 0,
+      "hostname": "ip-10-124-48-147.ec2.internal",
+      "id": "20150225-172748-1513192458-5050-6647-0004",
+      "name": "Jenkins Scheduler",
+      "offeredresources": {
+        "cpus": -8.88178419700125e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "offers": [],
+      "registeredtime": 1427222958.07464,
+      "resources": {
+        "cpus": -8.88178419700125e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "role": "*",
+      "tasks": [],
+      "unregisteredtime": 1427223941.48665,
+      "usedresources": {
+        "cpus": 0,
+        "disk": 0,
+        "mem": 0
+      },
+      "user": "jenkins",
+      "webuiurl": ""
+    },
+    {
+      "active": true,
+      "checkpoint": true,
+      "completedtasks": [
+        {
+          "executorid": "",
+          "frameworkid": "20150225-172748-1513192458-5050-6647-0005",
+          "id": "mesos-jenkins-807b9b8a-3283-4e78-94e1-9dc17df4df77",
+          "name": "task mesos-jenkins-807b9b8a-3283-4e78-94e1-9dc17df4df77",
+          "resources": {
+            "cpus": 0.2,
+            "disk": 0,
+            "mem": 704
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S25",
+          "state": "TASKKILLED",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1427309356.80847
+            },
+            {
+              "state": "TASKKILLED",
+              "timestamp": 1427310341.47914
+            }
+          ]
+        }
+      ],
+      "failovertimeout": 0,
+      "hostname": "ip-10-124-48-147.ec2.internal",
+      "id": "20150225-172748-1513192458-5050-6647-0005",
+      "name": "Jenkins Scheduler",
+      "offeredresources": {
+        "cpus": -2.22044604925031e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "offers": [],
+      "registeredtime": 1427309345.18029,
+      "resources": {
+        "cpus": -2.22044604925031e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "role": "*",
+      "tasks": [],
+      "unregisteredtime": 1427310341.47995,
+      "usedresources": {
+        "cpus": 0,
+        "disk": 0,
+        "mem": 0
+      },
+      "user": "jenkins",
+      "webuiurl": ""
+    }
+  ],
+  "deactivatedslaves": 0,
+  "electedtime": 1427207786.0144,
+  "failedtasks": 0,
+  "finishedtasks": 0,
+  "flags": {
+    "allocationinterval": "1secs",
+    "authenticate": "false",
+    "authenticateslaves": "false",
+    "authenticators": "crammd5",
+    "frameworksorter": "drf",
+    "help": "false",
+    "hostname": "10.124.49.90",
+    "initializedriverlogging": "true",
+    "logautoinitialize": "true",
+    "logdir": "/var/log/mesos",
+    "logbufsecs": "0",
+    "logginglevel": "INFO",
+    "port": "5050",
+    "quiet": "false",
+    "quorum": "2",
+    "recoveryslaveremovallimit": "100%",
+    "registry": "replicatedlog",
+    "registryfetchtimeout": "1mins",
+    "registrystoretimeout": "5secs",
+    "registrystrict": "false",
+    "rootsubmissions": "true",
+    "slavereregistertimeout": "10mins",
+    "usersorter": "drf",
+    "version": "false",
+    "webuidir": "/usr/share/mesos/webui",
+    "whitelist": "*",
+    "workdir": "/var/lib/mesos",
+    "zk": "zk://10.124.48.221:2181,10.124.49.12:2181,10.124.50.67:2181/mesos",
+    "zksessiontimeout": "10secs"
+  },
+  "frameworks": [
+    {
+      "active": true,
+      "checkpoint": false,
+      "completedtasks": [],
+      "failovertimeout": 1200,
+      "hostname": "ip-10-124-50-210.us-east-1.aws.cloud.in.here.com",
+      "id": "20150203-224144-2049997834-5050-8713-0000",
+      "name": "chronos-2.2.0mesos-0.20.0-SNAPSHOT",
+      "offeredresources": {
+        "cpus": -8.88178419700125e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "offers": [],
+      "registeredtime": 1427207787.01469,
+      "reregisteredtime": 1427207787.0147,
+      "resources": {
+        "cpus": -8.88178419700125e-16,
+        "disk": 0,
+        "mem": 0
+      },
+      "role": "*",
+      "tasks": [],
+      "unregisteredtime": 0,
+      "usedresources": {
+        "cpus": 0,
+        "disk": 0,
+        "mem": 0
+      },
+      "user": "root",
+      "webuiurl": ""
+    },
+    {
+      "active": true,
+      "checkpoint": true,
+      "completedtasks": [
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testdvhelloworld.95f49d05-c9bf-11e4-a1fc-56847afe9799",
+          "name": "helloworld.dv.test",
+          "resources": {
+            "cpus": 0.1,
+            "disk": 0,
+            "mem": 32,
+            "ports": "[31000-31000]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKKILLED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testdvhelloworld.a40abda6-ca02-11e4-a1fc-56847afe9799",
+          "name": "helloworld.dv.test",
+          "resources": {
+            "cpus": 0.1,
+            "disk": 0,
+            "mem": 32,
+            "ports": "[31000-31000]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKKILLED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testdvhelloworld.3946a287-ca67-11e4-a1fc-56847afe9799",
+          "name": "helloworld.dv.test",
+          "resources": {
+            "cpus": 0.1,
+            "disk": 0,
+            "mem": 32,
+            "ports": "[31000-31000]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKKILLED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testdvhelloworld.fec0c74c-ce11-11e4-a1fc-56847afe9799",
+          "name": "helloworld.dv.test",
+          "resources": {
+            "cpus": 0.1,
+            "disk": 0,
+            "mem": 32,
+            "ports": "[31000-31000]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKKILLED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.33d4007e-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31561-31561]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.359deb0f-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31939-31939]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.50773d6a-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31908-31908]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.638fd9ce-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31658-31658]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.81fd2852-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31160-31160]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.afedb77b-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31185-31185]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.0243c011-cf38-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31554-31554]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testdvhelloworld.4bdb1099-d1de-11e4-a1fc-56847afe9799",
+          "name": "helloworld.dv.test",
+          "resources": {
+            "cpus": 0.1,
+            "disk": 0,
+            "mem": 32,
+            "ports": "[31000-31000]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S19",
+          "state": "TASKKILLED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "sdpsharedjenkins-master.eb8f2863-c9a2-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.shared.sdp",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31458-31458]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testdvhelloworld.c7865efb-cd05-11e4-a1fc-56847afe9799",
+          "name": "helloworld.dv.test",
+          "resources": {
+            "cpus": 0.1,
+            "disk": 0,
+            "mem": 32,
+            "ports": "[31000-31000]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKKILLED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.37684ad0-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31223-31223]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.3c2e3752-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31703-31703]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.405b3f34-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31996-31996]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.44886e26-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31141-31141]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.54a4936b-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31109-31109]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.58d1e96c-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31110-31110]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.5d97fcfd-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31167-31167]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.6986f34f-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31158-31158]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.790a33f1-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31696-31696]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.8c2149b3-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31258-31258]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.9c3d47e4-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31308-31308]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.a06a01a6-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31252-31252]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.fa821fbd-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31111-31111]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.fbb39ade-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31658-31658]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.ffe0f0e0-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31022-31022]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.04a68f42-cf38-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31583-31583]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.4ce2cc09-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31449-31449]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S25",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.a792e469-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31299-31299]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S25",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.fe166a0f-cf37-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31383-31383]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S25",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testjenkins-master.0670c7f3-cf38-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.test",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31607-31607]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S25",
+          "state": "TASKFAILED",
+          "statuses": []
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testdevfrontend.3950b432-d234-11e4-bc5e-56847afe9799",
+          "name": "frontend.dev.test",
+          "resources": {
+            "cpus": 0.2,
+            "disk": 0,
+            "mem": 1024,
+            "ports": "[31980-31980, 31000-31002]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S21",
+          "state": "TASKKILLED",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1427208248.01184
+            },
+            {
+              "state": "TASKKILLED",
+              "timestamp": 1427208510.81702
+            }
+          ]
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testdvhelloworld.c3a7d253-d241-11e4-bc5e-56847afe9799",
+          "name": "helloworld.dv.test",
+          "resources": {
+            "cpus": 0.1,
+            "disk": 0,
+            "mem": 32,
+            "ports": "[31584-31584]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S21",
+          "state": "TASKKILLED",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1427214063.25571
+            },
+            {
+              "state": "TASKKILLED",
+              "timestamp": 1427214249.31952
+            }
+          ]
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testdvhelloworld.d7c6b3c4-d244-11e4-bc5e-56847afe9799",
+          "name": "helloworld.dv.test",
+          "resources": {
+            "cpus": 0.1,
+            "disk": 0,
+            "mem": 32,
+            "ports": "[31000-31000]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S27",
+          "state": "TASKKILLED",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1427215390.066
+            },
+            {
+              "state": "TASKKILLED",
+              "timestamp": 1427215571.78983
+            }
+          ]
+        },
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "testdevfrontend.a0f3f185-d2e6-11e4-bc5e-56847afe9799",
+          "name": "frontend.dev.test",
+          "resources": {
+            "cpus": 0.2,
+            "disk": 0,
+            "mem": 1024,
+            "ports": "[31980-31980, 31000-31002]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S25",
+          "state": "TASKKILLED",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1427285021.3087
+            },
+            {
+              "state": "TASKKILLED",
+              "timestamp": 1427285124.9842
+            }
+          ]
+        }
+      ],
+      "failovertimeout": 604800,
+      "hostname": "ip-10-124-49-90.ec2.internal",
+      "id": "20150127-110351-1513192458-5050-8587-0000",
+      "name": "marathon",
+      "offeredresources": {
+        "cpus": -2.44249065417534e-15,
+        "disk": 0,
+        "mem": 0
+      },
+      "offers": [],
+      "registeredtime": 1427207786.075,
+      "reregisteredtime": 1427289460.06666,
+      "resources": {
+        "cpus": 0.299999999999998,
+        "disk": 0,
+        "mem": 768,
+        "ports": "[31583-31583]"
+      },
+      "role": "*",
+      "tasks": [
+        {
+          "executorid": "",
+          "frameworkid": "20150127-110351-1513192458-5050-8587-0000",
+          "id": "sdpsharedjenkins-master.ed596114-c9a2-11e4-a1fc-56847afe9799",
+          "name": "jenkins-master.shared.sdp",
+          "resources": {
+            "cpus": 0.3,
+            "disk": 0,
+            "mem": 768,
+            "ports": "[31583-31583]"
+          },
+          "slaveid": "20150225-172738-2049997834-5050-23289-S21",
+          "state": "TASKRUNNING",
+          "statuses": [
+            {
+              "state": "TASKRUNNING",
+              "timestamp": 1426266239.30745
+            }
+          ]
+        }
+      ],
+      "unregisteredtime": 0,
+      "usedresources": {
+        "cpus": 0.3,
+        "disk": 0,
+        "mem": 768,
+        "ports": "[31583-31583]"
+      },
+      "user": "root",
+      "webuiurl": ""
+    }
+  ],
+  "gitsha": "2ae1ba91e64f92ec71d327e10e6ba9e8ad5477e8",
+  "gittag": "0.21.1",
+  "hostname": "10.124.49.90",
+  "id": "20150225-172748-1513192458-5050-6647",
+  "killedtasks": 12,
+  "leader": "master@10.124.49.90:5050",
+  "logdir": "/var/log/mesos",
+  "losttasks": 0,
+  "orphantasks": [],
+  "pid": "master@10.124.49.90:5050",
+  "slaves": [
+    {
+      "attributes": {
+        "az": "us-east-1b",
+        "instanceid": "i-496a92b3",
+        "instancetype": "c3.large"
+      },
+      "hostname": "10.124.49.190",
+      "id": "20150225-172748-1513192458-5050-6647-S0",
+      "pid": "slave(1)@10.124.49.190:5051",
+      "registeredtime": 1427207786.83581,
+      "resources": {
+        "cpus": 2,
+        "disk": 3966,
+        "mem": 2744,
+        "ports": "[31000-32000]"
+      }
+    },
+    {
+      "attributes": {
+        "az": "us-east-1c",
+        "instanceid": "i-b57fe25a",
+        "instancetype": "c3.large"
+      },
+      "hostname": "10.124.50.153",
+      "id": "20150225-172738-2049997834-5050-23289-S27",
+      "pid": "slave(1)@10.124.50.153:5051",
+      "registeredtime": 1427207786.63308,
+      "reregisteredtime": 1427207786.63309,
+      "resources": {
+        "cpus": 2,
+        "disk": 3966,
+        "mem": 2744,
+        "ports": "[31000-32000]"
+      }
+    },
+    {
+      "attributes": {
+        "az": "us-east-1c",
+        "instanceid": "i-2467dccb",
+        "instancetype": "c3.large"
+      },
+      "hostname": "10.124.50.12",
+      "id": "20150225-172748-1513192458-5050-6647-S2",
+      "pid": "slave(1)@10.124.50.12:5051",
+      "registeredtime": 1427399742.96888,
+      "resources": {
+        "cpus": 2,
+        "disk": 3966,
+        "mem": 2744,
+        "ports": "[31000-32000]"
+      }
+    },
+    {
+      "attributes": {
+        "az": "us-east-1a",
+        "instanceid": "i-b33a5842",
+        "instancetype": "c3.large"
+      },
+      "hostname": "10.124.48.198",
+      "id": "20150225-172738-2049997834-5050-23289-S25",
+      "pid": "slave(1)@10.124.48.198:5051",
+      "registeredtime": 1427207786.94212,
+      "reregisteredtime": 1427207786.94213,
+      "resources": {
+        "cpus": 2,
+        "disk": 3966,
+        "mem": 2744,
+        "ports": "[31000-32000]"
+      }
+    },
+    {
+      "attributes": {
+        "az": "us-east-1a",
+        "instanceid": "i-9bdcde6a",
+        "instancetype": "c3.large"
+      },
+      "hostname": "10.124.48.147",
+      "id": "20150225-172738-2049997834-5050-23289-S21",
+      "pid": "slave(1)@10.124.48.147:5051",
+      "registeredtime": 1427207786.33104,
+      "reregisteredtime": 1427207786.33115,
+      "resources": {
+        "cpus": 2,
+        "disk": 3966,
+        "mem": 2744,
+        "ports": "[31000-32000]"
+      }
+    }
+  ],
+  "stagedtasks": 11,
+  "starttime": 1424885268.34093,
+  "startedtasks": 0,
+  "unregisteredframeworks": [
+    "20150225-172738-2049997834-5050-23289-0433",
+    "20150225-172738-2049997834-5050-23289-0433",
+    "20150225-172738-2049997834-5050-23289-0433",
+    "20150225-172738-2049997834-5050-23289-0433"
+  ],
+  "version": "0.21.1"
+}

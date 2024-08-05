@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="NewFolder\**" />
+    <Compile Remove="test\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <EmbeddedResource Remove="test\**" />
+    <None Remove="NewFolder\**" />
+    <None Remove="test\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="TapestryJsonProviderTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\issue_191.json" />
+    <None Remove="Resources\issue_24.json" />
+    <None Remove="Resources\issue_76.json" />
+    <None Remove="Resources\issue_76_2.json" />
+    <None Remove="Resources\json-test-doc.json" />
+    <None Remove="Resources\json_array.json" />
+    <None Remove="Resources\json_array_multiple_delete.json" />
+    <None Remove="Resources\keyset.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\issue_191.json" />
+    <EmbeddedResource Include="Resources\issue_24.json" />
+    <EmbeddedResource Include="Resources\issue_76.json" />
+    <EmbeddedResource Include="Resources\issue_76_2.json" />
+    <EmbeddedResource Include="Resources\json-test-doc.json" />
+    <EmbeddedResource Include="Resources\json_array.json" />
+    <EmbeddedResource Include="Resources\json_array_multiple_delete.json" />
+    <EmbeddedResource Include="Resources\keyset.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="nhamcrest" Version="3.4.0" />
+    <PackageReference Include="nhamcrest.xunit" Version="3.4.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\JsonPathParser\XavierJefferson.JsonPathParser.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>
