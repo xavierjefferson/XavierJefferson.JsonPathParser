@@ -1,4 +1,3 @@
-using XavierJefferson.JsonPathParser.Extensions;
 using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser;
@@ -9,7 +8,7 @@ namespace XavierJefferson.JsonPathParser;
 public class ConfigurationBuilder
 {
     private readonly HashSet<Option> _options = new();
-    private List<EvaluationCallback> _evaluationCallbacks = new List<EvaluationCallback>();
+    private List<EvaluationCallback> _evaluationCallbacks = new();
     public IMappingProvider? MappingProvider { get; private set; }
 
     public IJsonProvider? JsonProvider { get; private set; }

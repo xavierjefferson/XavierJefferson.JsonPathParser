@@ -1,12 +1,8 @@
-﻿using XavierJefferson.JsonPathParser.Interfaces;
-
-namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
+﻿namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public class DateTimeOffsetNode : TypedValueNode<DateTimeOffset>
 {
     private readonly DateTimeOffset _dateTime;
-
-    public override DateTimeOffset Value => _dateTime;
 
     public DateTimeOffsetNode(DateTimeOffset dateTime)
     {
@@ -17,6 +13,8 @@ public class DateTimeOffsetNode : TypedValueNode<DateTimeOffset>
     {
         _dateTime = DateTimeOffset.Parse(date);
     }
+
+    public override DateTimeOffset Value => _dateTime;
 
     public override int GetHashCode()
     {

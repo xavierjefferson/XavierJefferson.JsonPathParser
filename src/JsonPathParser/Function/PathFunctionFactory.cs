@@ -59,9 +59,7 @@ public class PathFunctionFactory
     public static IPathFunction NewFunction(string? name)
     {
         if (string.IsNullOrWhiteSpace(name) || !Functions.ContainsKey(name))
-        {
             throw new InvalidPathException("Function of name: " + name + " cannot be created");
-        }
         var functionType = Functions[name];
         try
         {

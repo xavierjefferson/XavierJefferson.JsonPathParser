@@ -10,7 +10,7 @@ public class MultiPropTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void multi_prop_can_be_read_from_root(IProviderTypeTestCase testCase)
     {
-        var model = new JpDictionary
+        var model = new Dictionary<string, object?>
         {
             { "a", "a-val" },
             { "b", "b-val" },
@@ -19,12 +19,12 @@ public class MultiPropTest : TestUtils
 
         var conf = testCase.Configuration;
 
-        var n = JsonPath.Using(conf).Parse(model).Read<JpDictionary>("$['a', 'b']");
+        var n = JsonPath.Using(conf).Parse(model).Read<IDictionary<string, object?>>("$['a', 'b']");
         MyAssert.ContainsEntry(n, "a", "a-val");
         MyAssert.ContainsEntry(n, "b", "b-val");
 
         // current semantics: absent props are skipped
-        var o = JsonPath.Using(conf).Parse(model).Read<JpDictionary>("$['a', 'd']");
+        var o = JsonPath.Using(conf).Parse(model).Read<IDictionary<string, object?>>("$['a', 'd']");
         Assert.Single(o);
         MyAssert.ContainsEntry(o, "a", "a-val");
     }
@@ -33,7 +33,7 @@ public class MultiPropTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void multi_props_can_be_defaulted_to_null(IProviderTypeTestCase testCase)
     {
-        var model = new JpDictionary
+        var model = new Dictionary<string, object?>
         {
             { "a", "a-val" },
             { "b", "b-val" },
@@ -42,7 +42,7 @@ public class MultiPropTest : TestUtils
 
         var conf = testCase.Configuration.AddOptions(Option.DefaultPathLeafToNull);
 
-        var n = JsonPath.Using(conf).Parse(model).Read<JpDictionary>("$['a', 'd']");
+        var n = JsonPath.Using(conf).Parse(model).Read<IDictionary<string, object?>>("$['a', 'd']");
         MyAssert.ContainsEntry(n, "a", "a-val");
         MyAssert.ContainsEntry(n, "d", null);
     }
@@ -51,7 +51,7 @@ public class MultiPropTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void multi_props_can_be_required(IProviderTypeTestCase testCase)
     {
-        var model = new JpDictionary
+        var model = new Dictionary<string, object?>
         {
             { "a", "a-val" },
             { "b", "b-val" },
@@ -61,7 +61,7 @@ public class MultiPropTest : TestUtils
         var conf = testCase.Configuration.AddOptions(Option.RequireProperties);
 
         Assert.Throws<PathNotFoundException>(() =>
-            JsonPath.Using(conf).Parse(model).Read("$['a', 'x']", Constants.MapType));
+            JsonPath.Using(conf).Parse(model).Read("$['a', 'x']", TypeConstants.DictionaryType));
     }
 
     [Fact]
@@ -120,7 +120,7 @@ public class MultiPropTest : TestUtils
         var conf = testCase.Configuration.AddOptions(Option.RequireProperties);
         var json = "{\"a\": {\"v\": 5}, \"b\": {\"v\": 4}, \"c\": {\"v\": 1}}";
 
-        MyAssert.ContainsOnly(JsonPath.Using(conf).Parse(json).Read<JpObjectList>("$['a', 'c'].v"), 5d, 1d);
+        MyAssert.ContainsOnly(JsonPath.Using(conf).Parse(json).Read<List<object?>>("$['a', 'c'].v"), 5d, 1d);
         MyAssert.EvaluationThrows<PathNotFoundException>(json, "$['d', 'a', 'c', 'm'].v", conf);
     }
 }

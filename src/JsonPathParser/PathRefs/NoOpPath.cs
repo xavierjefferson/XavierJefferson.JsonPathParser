@@ -43,6 +43,5 @@ internal class NoOpPath : PathRef
 
     public override void Put(string key, object? newVal, Configuration configuration)
     {
-         
     }
 }

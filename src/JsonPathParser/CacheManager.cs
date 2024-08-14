@@ -4,7 +4,7 @@ namespace XavierJefferson.JsonPathParser;
 
 public class CacheManager
 {
-    private static readonly MemoryCache Mc = new MemoryCache(typeof(CacheManager).FullName);
+    private static readonly MemoryCache Mc = new(typeof(CacheManager).FullName);
     public static CacheManager Instance { get; } = new();
 
     public object? Get(string key)

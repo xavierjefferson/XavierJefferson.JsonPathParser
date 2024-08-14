@@ -1,17 +1,15 @@
-﻿using XavierJefferson.JsonPathParser.Interfaces;
-
-namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
+﻿namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public class BooleanNode : TypedValueNode<bool>
 {
     private readonly bool _value;
 
-    public override bool Value => _value;
-
     public BooleanNode(string boolValue)
     {
         _value = bool.Parse(boolValue);
     }
+
+    public override bool Value => _value;
 
 
     public override BooleanNode AsBooleanNode()
@@ -33,10 +31,7 @@ public class BooleanNode : TypedValueNode<bool>
     public override bool Equals(object? o)
     {
         if (this == o) return true;
-        if (o is BooleanNode that)
-        {
-            return _value.Equals(that._value);
-        }
+        if (o is BooleanNode that) return _value.Equals(that._value);
         return false;
     }
 }

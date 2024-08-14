@@ -137,7 +137,7 @@ public abstract class ValueNode
         if (o is ICollection<object?> z) return new ValueListNode(z);
         if (o is Type) return CreateClassNode((Type)o);
 
-        if (TryCreatePath(o, out var newPath)) return new PathNode(newPath, false, false);
+        if (TryCreatePath(o, out var newPath)) return new PathNode(newPath);
 
         if (IsJson(o)) return CreateJsonNode(o.ToString());
 

@@ -6,7 +6,7 @@ using XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser;
- 
+
 public class Criteria : IPredicate
 {
     private readonly SerializingList<Criteria> _criteriaChain;
@@ -89,7 +89,7 @@ public class Criteria : IPredicate
     /// <param name="o">
     ///     ///
     /// </param>
-    ///     <returns> the criteria</returns>
+    /// <returns> the criteria</returns>
     public Criteria Is(object? o)
     {
         _criteriaType = RelationalOperator.Eq;
@@ -103,7 +103,7 @@ public class Criteria : IPredicate
     /// <param name="o">
     ///     ///
     /// </param>
-    ///     <returns> the criteria</returns>
+    /// <returns> the criteria</returns>
     public Criteria Eq(object? o)
     {
         return Is(o);
@@ -115,7 +115,7 @@ public class Criteria : IPredicate
     /// <param name="o">
     ///     ///
     /// </param>
-    ///     <returns> the criteria</returns>
+    /// <returns> the criteria</returns>
     public Criteria Ne(object? o)
     {
         _criteriaType = RelationalOperator.Ne;
@@ -128,9 +128,8 @@ public class Criteria : IPredicate
     /// </summary>
     /// <param name="o">
     ///     ///
-
     /// </param>
-    ///     <returns> the criteria</returns>
+    /// <returns> the criteria</returns>
     public Criteria Lt(object? o)
     {
         _criteriaType = RelationalOperator.Lt;
@@ -142,9 +141,8 @@ public class Criteria : IPredicate
     ///     Creates a criterion using the <b>&lt;=</b> operator
     /// </summary>
     /// <param name="o">
-  
     /// </param>
-    ///     <returns> the criteria</returns>
+    /// <returns> the criteria</returns>
     public Criteria Lte(object? o)
     {
         _criteriaType = RelationalOperator.Lte;
@@ -155,9 +153,10 @@ public class Criteria : IPredicate
     /// <summary>
     ///     Creates a criterion using the <b>&gt;</b> operator
     /// </summary>
-    /// <param name="o"> 
-    /// </param>    
-    /// ///     <returns> the criteria</returns>
+    /// <param name="o">
+    /// </param>
+    /// ///
+    /// <returns> the criteria</returns>
     public Criteria Gt(object? o)
     {
         _criteriaType = RelationalOperator.Gt;
@@ -240,7 +239,7 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria Nin(params object?[] o)
     {
-        return Nin((ICollection<object?>)o.ToSerializingList());
+        return Nin(o.ToSerializingList());
     }
 
     /// <summary>
@@ -280,7 +279,7 @@ public class Criteria : IPredicate
     {
         if (c == null) throw new ArgumentNullException(nameof(c));
         _criteriaType = RelationalOperator.SubsetOf;
-        _right = new ValueListNode(c ?? new JpObjectList());
+        _right = new ValueListNode(c ?? new List<object?>());
         return this;
     }
 
@@ -330,16 +329,16 @@ public class Criteria : IPredicate
     {
         if (c == null) throw new ArgumentNullException(nameof(c));
         _criteriaType = RelationalOperator.NoneOf;
-        _right = new ValueListNode(c ?? new JpObjectList());
+        _right = new ValueListNode(c ?? new List<object?>());
         return this;
     }
 
-    ///<summary>
-    /// The <code>all</code> operator is similar to $in, but instead of matching any value
-    /// in the specified array all values in the array must be matched.
-    ///</summary>
-    ///<param name="o"></param>
-    ///<returns> the criteria</returns>
+    /// <summary>
+    ///     The <code>all</code> operator is similar to $in, but instead of matching any value
+    ///     in the specified array all values in the array must be matched.
+    /// </summary>
+    /// <param name="o"></param>
+    /// <returns> the criteria</returns>
     public Criteria All(params object?[] o)
     {
         return All(o.ToSerializingList());
@@ -445,7 +444,7 @@ public class Criteria : IPredicate
     /// <param name="p">
     ///     ///
     /// </param>
-    ///     <returns> the criteria</returns>
+    /// <returns> the criteria</returns>
     public Criteria Matches(IPredicate p)
     {
         _criteriaType = RelationalOperator.Matches;
@@ -471,11 +470,12 @@ public class Criteria : IPredicate
     }
 
     /// <summary>
-    ///     Creates a new criteria</summary>
-    ///     <param name="left">path to evaluate in criteria</param>
-    ///     <param name="operator">operator</param>
-    ///     <param name="right">expected value</param>
-    ///     <returns> a new Criteria</returns>
+    ///     Creates a new criteria
+    /// </summary>
+    /// <param name="left">path to evaluate in criteria</param>
+    /// <param name="operator">operator</param>
+    /// <param name="right">expected value</param>
+    /// <returns> a new Criteria</returns>
     [Obsolete]
     public static Criteria Create(string left, string @operator, string right)
     {

@@ -9,13 +9,14 @@ public class ObjectMultiPropertyPathRef : PathRef
 
     public ObjectMultiPropertyPathRef(object? parent, ICollection<string> properties) : base(parent)
     {
-        this._properties = properties;
+        _properties = properties;
     }
 
-    public override void Put(String key, Object newVal, Configuration configuration)
+    public override void Put(string key, object newVal, Configuration configuration)
     {
         throw new InvalidModificationException("Put can not be performed to multiple properties");
     }
+
     public override void Set(object? newVal, Configuration configuration)
     {
         foreach (var property in _properties) configuration.JsonProvider.SetProperty(Parent, property, newVal);

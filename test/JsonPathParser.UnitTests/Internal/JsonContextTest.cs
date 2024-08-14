@@ -12,8 +12,8 @@ public class JsonContextTest : TestUtils
 
         var jsonDoc = JsonPath.Parse(JsonTestData.JsonDocument);
 
-        var eq = jsonDoc.Read<JpObjectList>("$.store.book[?].category", feq);
-        var ne = jsonDoc.Read<JpObjectList>("$.store.book[?].category", fne);
+        var eq = jsonDoc.Read<List<object?>>("$.store.book[?].category", feq);
+        var ne = jsonDoc.Read<List<object?>>("$.store.book[?].category", fne);
 
         Assert.Contains("reference", eq);
         Assert.DoesNotContain("reference", ne);

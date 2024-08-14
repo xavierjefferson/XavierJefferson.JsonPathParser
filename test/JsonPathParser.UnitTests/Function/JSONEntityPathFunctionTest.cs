@@ -1,3 +1,5 @@
+using XavierJefferson.JsonPathParser.UnitTests.TestData;
+
 namespace XavierJefferson.JsonPathParser.UnitTests.Function;
 
 /**
@@ -44,29 +46,35 @@ public class JsonEntityPathFunctionTest : BaseFunctionTest
                                                "}";
 
 
-    private readonly Configuration _conf = ConfigurationData.NewtonsoftJsonConfiguration;
+     
 
-    [Fact]
-    public void TestLengthOfTextArray()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestLengthOfTextArray(IProviderTypeTestCase testCase)
     {
         // The length of JSONArray is an integer
-        VerifyFunction(_conf, "$['text'].length()", TextSeries, 6);
-        VerifyFunction(_conf, "$['text'].size()", TextSeries, 6);
+        VerifyFunction(testCase.Configuration, "$['text'].length()", TextSeries, 6);
+        VerifyFunction(testCase.Configuration, "$['text'].size()", TextSeries, 6);
     }
 
-    [Fact]
-    public void TestLengthOfNumberArray()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestLengthOfNumberArray(IProviderTypeTestCase testCase)
     {
         // The length of JSONArray is an integer
-        VerifyFunction(_conf, "$.numbers.length()", NumberSeries, 10);
-        VerifyFunction(_conf, "$.numbers.size()", NumberSeries, 10);
+        VerifyFunction(testCase.Configuration, "$.numbers.length()", NumberSeries, 10);
+        VerifyFunction(testCase.Configuration, "$.numbers.size()", NumberSeries, 10);
     }
 
 
-    [Fact]
-    public void TestLengthOfStructure()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestLengthOfStructure(IProviderTypeTestCase testCase)
     {
-        VerifyFunction(_conf, "$.batches.length()", BatchJson, 2);
+        VerifyFunction(testCase.Configuration, "$.batches.length()", BatchJson, 2);
     }
 
     /**
@@ -79,29 +87,33 @@ public class JsonEntityPathFunctionTest : BaseFunctionTest
      * 
      * Its completely contrived example, however, this test exercises functions within predicates.
      */
-    [Fact]
-    public void TestPredicateWithFunctionCallSingleMatch()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestPredicateWithFunctionCallSingleMatch(IProviderTypeTestCase testCase)
     {
         var path = "$.batches.results[?(@.values.length() >= $.batches.minBatchSize)].values.avg()";
 
         // Its an array because in some use-cases the min size might match more than one batch and thus we'll get
         // the average out for each collection
-        var values = new JpObjectList { 12.2d };
-        VerifyFunction(_conf, path, BatchJson, values);
+        var values = new List<object?> { 12.2d };
+        VerifyFunction(testCase.Configuration, path, BatchJson, values);
     }
 
-    [Fact]
-    public void TestPredicateWithFunctionCallTwoMatches()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestPredicateWithFunctionCallTwoMatches(IProviderTypeTestCase testCase)
     {
         var path = "$.batches.results[?(@.values.length() >= 3)].values.avg()";
 
         // Its an array because in some use-cases the min size might match more than one batch and thus we'll get
         // the average out for each collection
-        var values = new JpObjectList
+        var values = new List<object?>
         {
             12.2d,
             17d
         };
-        VerifyFunction(_conf, path, BatchJson, values);
+        VerifyFunction(testCase.Configuration, path, BatchJson, values);
     }
 }

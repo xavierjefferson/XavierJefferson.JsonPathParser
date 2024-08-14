@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
-using XavierJefferson.JsonPathParser.Helpers;
-using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
@@ -9,12 +7,12 @@ public class ValueListNode : TypedValueNode<ICollection<ValueNode>>, IEnumerable
 {
     private readonly SerializingList<ValueNode> _nodes = new();
 
-    public override ICollection<ValueNode> Value => new ReadOnlyCollection<ValueNode>(_nodes);
-
     public ValueListNode(ICollection<object?>? values)
     {
         foreach (var value in values) _nodes.Add(ToValueNode(value));
     }
+
+    public override ICollection<ValueNode> Value => new ReadOnlyCollection<ValueNode>(_nodes);
 
     public IEnumerator<ValueNode> GetEnumerator()
     {
@@ -35,14 +33,13 @@ public class ValueListNode : TypedValueNode<ICollection<ValueNode>>, IEnumerable
     {
         return _nodes.All(leftNode => right._nodes.Contains(leftNode));
     }
+
     [Obsolete]
     public ICollection<ValueNode> GetNodes()
     {
         return new ReadOnlyCollection<ValueNode>(_nodes);
     }
 
-
- 
 
     public override int GetHashCode()
     {

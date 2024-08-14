@@ -27,8 +27,8 @@ public class PatternFlag
 
     private PatternFlag(RegexOptions code, char flag)
     {
-        this._code = code;
-        this._flag = flag;
+        _code = code;
+        _flag = flag;
     }
 
     public static RegexOptions ParseFlags(string? flags)

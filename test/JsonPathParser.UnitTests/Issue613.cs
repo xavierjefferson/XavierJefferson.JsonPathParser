@@ -9,7 +9,7 @@ public class Issue613 : TestUtils
     private static readonly DateTimeOffset OfdtMiddle = new(2000, 2, 1, 1, 1, 1, 1, DateTimeOffset.Now.Offset);
     private static readonly DateTimeOffset OfdtBig = new(2001, 3, 1, 1, 1, 1, 1, TimeSpan.FromHours(14));
 
-    private static readonly JpDictionary MapMiddle = new()
+    private static readonly Dictionary<string, object?> MapMiddle = new()
     {
         { "time", OfdtMiddle }
     };

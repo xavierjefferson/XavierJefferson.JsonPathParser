@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Text;
 using Nito.AsyncEx.Synchronous;
 using XavierJefferson.JsonPathParser.Helpers;
@@ -22,7 +23,7 @@ public class ParseContextImpl : IParseContext
     public IDocumentContext Parse(object? json)
     {
         if (json == null) throw new ArgumentNullException(nameof(json));
-        if (json is JpDictionary || json is JpObjectList) return new JsonContext(json, _configuration);
+        if (json is IDictionary<string, object?> || json is IList) return new JsonContext(json, _configuration);
         object? obj;
         if (json is string jsonString)
             obj = _configuration.JsonProvider.Parse(jsonString);

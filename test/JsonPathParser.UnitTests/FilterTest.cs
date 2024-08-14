@@ -482,9 +482,9 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void int_all_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("int-arr").All(new JpObjectList { 0, 1 }))
+        Assert.True(Filter.Create(Criteria.Where("int-arr").All(new List<object?> { 0, 1 }))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("int-arr").All(new JpObjectList { 0, 7 }))
+        Assert.False(Filter.Create(Criteria.Where("int-arr").All(new List<object?> { 0, 7 }))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -492,9 +492,9 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void string_all_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("string-arr").All(new JpObjectList { "a", "b" }))
+        Assert.True(Filter.Create(Criteria.Where("string-arr").All(new List<object?> { "a", "b" }))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-arr").All(new JpObjectList { "a", "x" }))
+        Assert.False(Filter.Create(Criteria.Where("string-arr").All(new List<object?> { "a", "x" }))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -502,7 +502,7 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void not_array_all_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("string-key").All(new JpObjectList { "a", "b" }))
+        Assert.False(Filter.Create(Criteria.Where("string-key").All(new List<object?> { "a", "b" }))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -557,15 +557,15 @@ public class FilterTest : TestUtils
     public void array_subsetof_evals(IProviderTypeTestCase testCase)
     {
         // list is a superset
-        var list = Arrays.NewArrayList("a", "b", "c", "d", "e", "f", "g").Cast<object>().ToList();
+        var list = new ObjectList("a", "b", "c", "d", "e", "f", "g");
         Assert.True(Filter.Create(Criteria.Where("string-arr").SubsetOf(list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
         // list is exactly the same set (but in a different order)
-        list = Arrays.NewArrayList("e", "d", "b", "c", "a").Cast<object>().ToList();
+        list = new ObjectList("e", "d", "b", "c", "a");
         Assert.True(Filter.Create(Criteria.Where("string-arr").SubsetOf(list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
         // list is missing one element
-        list = Arrays.NewArrayList("a", "b", "c", "d").Cast<object>().ToList();
+        list = new ObjectList("a", "b", "c", "d");
         Assert.False(Filter.Create(Criteria.Where("string-arr").SubsetOf(list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
@@ -579,13 +579,13 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void array_anyof_evals(IProviderTypeTestCase testCase)
     {
-        var list = Arrays.NewArrayList("a", "z").Cast<object>().ToList();
+        var list = new ObjectList("a", "z");
         Assert.True(Filter.Create(Criteria.Where("string-arr").AnyOf(list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        list = Arrays.NewArrayList("z", "b", "a").Cast<object>().ToList();
+        list = new ObjectList("z", "b", "a");
         Assert.True(Filter.Create(Criteria.Where("string-arr").AnyOf(list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        list = Arrays.NewArrayList("x", "y", "z").Cast<object>().ToList();
+        list = new ObjectList("x", "y", "z");
         Assert.False(Filter.Create(Criteria.Where("string-arr").AnyOf(list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
@@ -599,13 +599,13 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void array_noneof_evals(IProviderTypeTestCase testCase)
     {
-        var list = Arrays.NewArrayList("a", "z").Cast<object>().ToList();
+        var list = new ObjectList("a", "z");
         Assert.False(Filter.Create(Criteria.Where("string-arr").NoneOf(list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        list = Arrays.NewArrayList("z", "b", "a").Cast<object>().ToList();
+        list = new ObjectList("z", "b", "a");
         Assert.False(Filter.Create(Criteria.Where("string-arr").NoneOf(list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        list = Arrays.NewArrayList("x", "y", "z").Cast<object>().ToList();
+        list = new ObjectList("x", "y", "z");
         Assert.True(Filter.Create(Criteria.Where("string-arr").NoneOf(list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
@@ -641,11 +641,11 @@ public class FilterTest : TestUtils
     [InlineData(false, "int-key", typeof(string))]
     [InlineData(true, "int-key", typeof(double))]
     [InlineData(false, "null-key", typeof(string))]
-    [InlineData(true, "int-arr", typeof(JpObjectList))]
+    [InlineData(true, "int-arr", typeof(List<object?>))]
     [Theory]
     public void type_evals(bool expectedValue, string where, Type type)
     {
-        var testCase = ProviderTypeTestCases.Cases.First();
+        var testCase = ProviderTypeTestCases.Cases.First().Value;
         var tmp = Filter.Create(Criteria.Where(where).Type(type))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase));
         Assert.Equal(expectedValue, tmp);
@@ -724,7 +724,7 @@ public class FilterTest : TestUtils
         mockPredicate.Setup(i => i.Apply(It.IsAny<IPredicateContext>())).Returns(
             (IPredicateContext ctx) =>
             {
-                var t = ctx.Item as JpDictionary;
+                var t = ctx.Item as IDictionary<string, object?>;
                 var i = Convert.ToInt32(t["int-key"]);
 
                 return i == 1;
@@ -743,7 +743,7 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void or_and_filters_evaluates(IProviderTypeTestCase testCase)
     {
-        var model = new JpDictionary { { "foo", true }, { "bar", false } };
+        var model = new Dictionary<string, object?> { { "foo", true }, { "bar", false } };
 
 
         var isFoo = Filter.Create(Criteria.Where("foo").Is(true));

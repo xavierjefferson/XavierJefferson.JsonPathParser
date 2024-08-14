@@ -75,7 +75,6 @@ public class EmptyLogger : ILog
 
     public void Trace(string format)
     {
-         
     }
 
     public void TraceFormat(string format, params object[] args)

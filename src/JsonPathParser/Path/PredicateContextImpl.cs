@@ -11,9 +11,6 @@ public class PredicateContextImpl : IPredicateContext
     public PredicateContextImpl(object? contextDocument, object? rootDocument, Configuration configuration,
         Dictionary<IPath, object?> documentPathCache)
     {
-        if (contextDocument is Dictionary<string, object?> x)
-            contextDocument = new JpDictionary(x);
-        else if (contextDocument is Dictionary<string, object?> y) contextDocument = new JpDictionary(y);
         Item = contextDocument;
         Root = rootDocument;
         Configuration = configuration;

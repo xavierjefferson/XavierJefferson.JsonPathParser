@@ -41,8 +41,8 @@ public class PathCompiler
 
     public PathCompiler(CharacterIndex path, Stack<IPredicate> filterStack)
     {
-        this._filterStack = filterStack;
-        this._path = path;
+        _filterStack = filterStack;
+        _path = path;
     }
 
     private IPath Compile()
@@ -335,12 +335,14 @@ public class PathCompiler
 
                 case CloseBrace:
                     if (0 == groupBrace)
-                        throw new InvalidPathException($"Unexpected close brace '}}' at character position: {_path.Position}");
+                        throw new InvalidPathException(
+                            $"Unexpected close brace '}}' at character position: {_path.Position}");
                     groupBrace--;
                     break;
                 case CloseSquareBracket:
                     if (0 == groupBracket)
-                        throw new InvalidPathException($"Unexpected close bracket ']' at character position: {_path.Position}");
+                        throw new InvalidPathException(
+                            $"Unexpected close bracket ']' at character position: {_path.Position}");
                     groupBracket--;
                     break;
 

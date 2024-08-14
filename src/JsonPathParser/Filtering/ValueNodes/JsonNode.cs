@@ -1,15 +1,12 @@
 ﻿using System.Collections;
 using XavierJefferson.JsonPathParser.Interfaces;
-using XavierJefferson.JsonPathParser.Provider;
 
 namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public class JsonNode : TypedValueNode<object?>
 {
-    private readonly object? _value;
     private readonly bool _parsed;
-
-    public override object? Value => _value;
+    private readonly object? _value;
 
     public JsonNode(string jsonString)
     {
@@ -23,6 +20,8 @@ public class JsonNode : TypedValueNode<object?>
         _parsed = true;
     }
 
+    public override object? Value => _value;
+
     public override int GetHashCode()
     {
         return _value.GetHashCode();
@@ -30,9 +29,9 @@ public class JsonNode : TypedValueNode<object?>
 
     public override Type Type(IPredicateContext ctx)
     {
-        if (IsArray(ctx)) return typeof(JpObjectList);
+        if (IsArray(ctx)) return TypeConstants.ListType;
 
-        if (IsMap(ctx)) return typeof(JpDictionary);
+        if (IsMap(ctx)) return TypeConstants.DictionaryType;
 
         var parsed = Parse(ctx);
         if (parsed is double) return typeof(double);
@@ -106,7 +105,7 @@ public class JsonNode : TypedValueNode<object?>
         {
             var c = jsonNode.Parse(ctx);
             if (c == null) return false;
-            if (c is JpObjectList a && _value is JpObjectList b)
+            if (c is IList a && _value is IList b)
             {
                 if (a.Count != b.Count) return false;
                 for (var i = 0; i < a.Count; i++)

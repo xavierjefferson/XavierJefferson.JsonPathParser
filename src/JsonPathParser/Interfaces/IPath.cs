@@ -12,7 +12,8 @@ public interface IPath
     /// <param name="configuration">configuration to use</param>
     /// <param name="forUpdate">is this a read or a Write operation</param>
     /// <returns> EvaluationContext containing results of evaluation</returns>
-    IEvaluationContext Evaluate(object? document, object? rootDocument, Configuration configuration, bool forUpdate = false);
+    IEvaluationContext Evaluate(object? document, object? rootDocument, Configuration configuration,
+        bool forUpdate = false);
 
     /// <summary>
     /// </summary>

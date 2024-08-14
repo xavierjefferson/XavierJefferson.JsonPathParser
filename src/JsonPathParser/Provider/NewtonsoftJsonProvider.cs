@@ -11,7 +11,7 @@ public class NewtonsoftJsonProvider : ConvertingJsonProviderBase
 
     private static JsonSerializerSettings GetSettings()
     {
-        var settings = new JsonSerializerSettings { Formatting = Formatting.None  };
+        var settings = new JsonSerializerSettings { Formatting = Formatting.None };
         return settings;
     }
 
@@ -40,19 +40,14 @@ public class NewtonsoftJsonProvider : ConvertingJsonProviderBase
 
         if (value is JObject jObject)
         {
-            var resultDictionary = new JpDictionary();
+            var resultDictionary = new Dictionary<string, object?>();
             foreach (var jProperty in jObject.Properties())
                 if (jObject.TryGetValue(jProperty.Name, out var jToken0))
                     resultDictionary[jProperty.Name] = Cleanup(jToken0);
             return resultDictionary;
         }
 
-        if (value is JArray jArray)
-        {
-            var resultArray = new JpObjectList();
-            foreach (var jArrayItem in jArray) resultArray.Add(Cleanup(jArrayItem));
-            return resultArray;
-        }
+        if (value is JArray jArray) return jArray.Select(Cleanup).ToList();
 
         if (value is JToken jToken)
             switch (jToken.Type)

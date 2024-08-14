@@ -16,6 +16,7 @@ public interface IReadContext : IJsonContainer
     /// <param name="filters">filters</param>
     /// <param name="
     /// 
+    /// 
     /// <T>
     ///     ">///
     ///     <returns> result</returns></param>
@@ -28,6 +29,7 @@ public interface IReadContext : IJsonContainer
     /// <param name="type">expected return type (will try to map)</param>
     /// <param name="filters">filters</param>
     /// <param name="
+    /// 
     /// 
     /// <T>
     ///     ">///
@@ -42,6 +44,7 @@ public interface IReadContext : IJsonContainer
     /// <param name="path">path to apply</param>
     /// <param name="
     /// 
+    /// 
     /// <T>
     ///     ">///
     ///     <returns> result</returns></param>
@@ -53,6 +56,7 @@ public interface IReadContext : IJsonContainer
     /// <param name="path">path to apply</param>
     /// <param name="type">expected return type (will try to map)</param>
     /// <param name="
+    /// 
     /// 
     /// <T>
     ///     ">///
@@ -71,6 +75,7 @@ public interface IReadContext : IJsonContainer
     /// <param name="typeRef">expected return type (will try to map)</param>
     /// <param name="
     /// 
+    /// 
     /// <T>
     ///     ">///
     ///     <returns> result</returns></param>
@@ -87,6 +92,7 @@ public interface IReadContext : IJsonContainer
     /// <param name="path">path to apply</param>
     /// <param name="typeRef">expected return type (will try to map)</param>
     /// <param name="
+    /// 
     /// 
     /// <T>
     ///     ">///

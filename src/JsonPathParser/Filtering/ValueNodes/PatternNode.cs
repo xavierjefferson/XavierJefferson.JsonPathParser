@@ -10,8 +10,6 @@ public class PatternNode : TypedValueNode<Regex>
     private readonly string _flags;
     private readonly string _pattern;
 
-    public override Regex Value => _compiledPattern;
-
     public PatternNode(string charSequence)
     {
         var begin = charSequence.IndexOf('/');
@@ -29,6 +27,8 @@ public class PatternNode : TypedValueNode<Regex>
         _compiledPattern = pattern;
         _flags = PatternFlag.ParseFlags(pattern.Options);
     }
+
+    public override Regex Value => _compiledPattern;
 
 
     public override Type Type(IPredicateContext ctx)

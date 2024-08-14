@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using XavierJefferson.JsonPathParser.Exceptions;
@@ -12,26 +13,50 @@ public class SystemTextJsonProvider : ConvertingJsonProviderBase
         return JsonSerializer.Serialize(obj);
     }
 
-    private object? Cleanup(object? x)
+    private object? Cleanup(object? value)
     {
-        if (x == null) return null;
+        if (value == null) return null;
 
-        if (x is JsonObject jx)
+        if (value is JsonObject jsonObject)
         {
-            var d1 = new JpDictionary();
-
-            foreach (var nn in jx) d1[nn.Key] = Cleanup(nn.Value);
-            return d1;
+            var tmp = jsonObject.ToDictionary(i => i.Key, i => Cleanup(i.Value));
+            return tmp;
         }
 
-        if (x is JsonArray jz)
+        if (value is JsonElement jsonElement)
         {
-            var r = new JpObjectList();
-            foreach (var nn in jz) r.Add(Cleanup(nn));
-            return r;
-        }
+            switch (jsonElement.ValueKind)
+            {
+                case JsonValueKind.Array:
+                    return new List<object?>(jsonElement.EnumerateArray().Select(i => Cleanup(i))).ToList();
+                    break;
+                case JsonValueKind.False:
+                    return false;
+                    break;
+                case JsonValueKind.Null:
+                    return null;
+                    break;
+                case JsonValueKind.Object:
+                    return jsonElement.EnumerateObject().ToDictionary(i => i.Name, i => Cleanup(i.Value));
+                    break;
+                case JsonValueKind.Number:
+                    return jsonElement.GetDouble();
+                    break;
+                case JsonValueKind.String:
+                    return jsonElement.GetString();
+                    break;
+                case JsonValueKind.True:
+                    return true;
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            
 
-        if (x is JsonNode jToken)
+        }
+        if (value is JsonArray jsonArray) return jsonArray.Select(Cleanup).ToList();
+
+        if (value is JsonNode jToken)
             switch (jToken.GetValueKind())
             {
                 case JsonValueKind.String:
@@ -52,8 +77,8 @@ public class SystemTextJsonProvider : ConvertingJsonProviderBase
                     throw new NotImplementedException();
             }
 
-        if (x.GetType().IsPrimitive || x is string || x is DateTime)
-            return x;
+        if (value.GetType().IsPrimitive || value is string || value is DateTime)
+            return value;
         throw new NotImplementedException();
     }
 
@@ -61,8 +86,11 @@ public class SystemTextJsonProvider : ConvertingJsonProviderBase
     {
         try
         {
-            string? json1 = StringExtensions.Beautify(json);
-            return Cleanup(JsonNode.Parse(json1, new JsonNodeOptions { PropertyNameCaseInsensitive = true })); ;
+            var json1 = StringExtensions.Beautify(json);
+            return Cleanup(JsonSerializer.Deserialize<object>(json1,
+                new JsonSerializerOptions() { AllowTrailingCommas = true, PropertyNameCaseInsensitive = true }));
+            //return Cleanup(JsonNode.Parse(json1, new JsonNodeOptions {   PropertyNameCaseInsensitive = true }));
+            ;
         }
         catch (Exception e)
         {

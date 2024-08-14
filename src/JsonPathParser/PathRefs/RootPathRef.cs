@@ -7,16 +7,13 @@ public class RootPathRef : PathRef
     public RootPathRef(object? parent) : base(parent)
     {
     }
-    public override void Put(String key, Object newVal, Configuration configuration)
+
+    public override void Put(string key, object newVal, Configuration configuration)
     {
         if (configuration.JsonProvider.IsMap(Parent))
-        {
             configuration.JsonProvider.SetProperty(Parent, key, newVal);
-        }
         else
-        {
             throw new InvalidModificationException("Invalid put operation. $ is not a map");
-        }
     }
 
     protected override object? GetAccessor()

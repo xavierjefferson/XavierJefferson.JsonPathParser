@@ -17,7 +17,7 @@ public class CompiledPath : IPath
 
     public CompiledPath(RootPathToken root, bool isRootPath)
     {
-        this._root = InvertScannerFunctionRelationship(root);
+        _root = InvertScannerFunctionRelationship(root);
         _isRootPath = isRootPath;
     }
 

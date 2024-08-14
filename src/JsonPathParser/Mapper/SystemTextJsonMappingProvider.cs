@@ -7,21 +7,17 @@ public class SystemTextJsonMappingProvider : MappingProviderBase
 {
     protected override object? Deserialize(string s, Type t)
     {
-        return JsonSerializer.Deserialize(s, t, new JsonSerializerOptions { AllowTrailingCommas = true, PropertyNameCaseInsensitive = true });
+        return JsonSerializer.Deserialize(s, t,
+            new JsonSerializerOptions { AllowTrailingCommas = true, PropertyNameCaseInsensitive = true });
     }
 
     protected override object? MapToObject(object? source)
     {
-        if (source is JsonArray array)
-        {
-            JpObjectList mapped;
-            mapped = new JpObjectList(array.Select(MapToObject));
-            return mapped;
-        }
+        if (source is JsonArray array) return array.Select(MapToObject).ToList();
 
         if (source is JsonObject jObjectSource)
         {
-            var mapped = new JpDictionary();
+            var mapped = new Dictionary<string, object?>();
             foreach (var m in jObjectSource) mapped.Add(m.Key, MapToObject(m.Value));
             return mapped;
         }

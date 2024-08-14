@@ -48,7 +48,7 @@ public class DeepScanTest : TestUtils
     [InlineData("{\"foo\": {\"bar\": []}}", "$.foo.bar.[5]")]
     public void definite_upstream_illegal_array_access_throws(string input, string path)
     {
-        var testCase = ProviderTypeTestCases.Cases.First();
+        var testCase = ProviderTypeTestCases.RootData.First().Value;
         MyAssert.EvaluationThrows<PathNotFoundException>(input, path, testCase);
     }
 
@@ -73,7 +73,7 @@ public class DeepScanTest : TestUtils
     public void when_deep_scanning_illegal_predicate_is_ignored(string path)
     {
         const string json = "{\"x\": {\"foo\": {\"bar\": 4}}, \"y\": {\"foo\": 1}}";
-        var result = JsonPath.Parse(json).Read<JpObjectList>(path);
+        var result = JsonPath.Parse(json).Read<List<object?>>(path);
         MyAssert.ContainsOnly(result, 4d);
     }
 
@@ -84,12 +84,12 @@ public class DeepScanTest : TestUtils
         var conf = testCase.Configuration.AddOptions(Option.RequireProperties);
 
         var result = JsonPath.Parse("[{\"x\": {\"foo\": {\"x\": 4}, \"x\": null}, \"y\": {\"x\": 1}}, {\"x\": []}]")
-            .Read<JpObjectList>(
+            .Read<List<object?>>(
                 "$..x");
         Assert.Equal(5, result.Count());
 
 
-        var result1 = JsonPath.Using(conf).Parse("{\"foo\": {\"bar\": 4}}").Read<JpObjectList>("$..foo.bar");
+        var result1 = JsonPath.Using(conf).Parse("{\"foo\": {\"bar\": 4}}").Read<List<object?>>("$..foo.bar");
         MyAssert.ContainsExactly(result1, 4d);
 
         MyAssert.EvaluationThrows<PathNotFoundException>("{\"foo\": {\"baz\": 4}}", "$..foo.bar", conf);
@@ -115,10 +115,10 @@ public class DeepScanTest : TestUtils
         // This is current deep scan semantics: only objects containing all properties specified in multiprops token are
         // considered.
         Assert.Equal(1, result1.AsList().Count());
-        var result = result1.AsList()[0] as JpDictionary;
+        var result = result1.AsList()[0] as IDictionary<string, object?>;
         Assert.NotNull(result);
         Assert.Equal(2, result.Count());
-        Assert.Equal(new JpDictionary { { "a", "a-val" }, { "c", "c-val" } }, result);
+        Assert.Equal(new Dictionary<string, object?> { { "a", "a-val" }, { "c", "c-val" } }, result);
 
 
         //Assert.True((JpDictionary)result).hasSize(2).ContainsEntry("a", "a-val").ContainsEntry("c", "c-val");
@@ -127,95 +127,99 @@ public class DeepScanTest : TestUtils
         var conf = testCase.Configuration.AddOptions(Option.DefaultPathLeafToNull);
         var result2 = JsonPath.Using(conf)
             .Parse("[{\"a\": \"a-val\", \"b\": \"b-val\", \"c\": \"c-val\"}, [1, 5], {\"a\": \"a-val\"}]")
-            .Read<JpObjectList>(
+            .Read<List<object?>>(
                 "$..['a', 'c']");
         // todo: deep equality test, but not tied to any json provider
         Assert.Equal(2, result2.Count());
         foreach (var node in result2)
         {
-            var dict = node as JpDictionary;
+            var dict = node as IDictionary<string, object?>;
             Assert.NotNull(dict);
             MyAssert.ContainsKey(dict, "a");
             Assert.Equal("a-val", dict["a"]);
         }
     }
 
-    [Fact]
-    public void require_single_property_ok()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void require_single_property_ok(IProviderTypeTestCase providerTypeTestCase)
     {
-        var json = new List<JpDictionary>
+        var json = new List<IDictionary<string, object?>>
         {
             GetSingletonMap("a", "a0"),
             GetSingletonMap("a", "a1")
         };
 
-        var configuration = ConfigurationData.NewtonsoftJsonConfiguration.AddOptions(Option.RequireProperties);
+        var configuration = providerTypeTestCase.Configuration.AddOptions(Option.RequireProperties);
 
         var result = JsonPath.Using(configuration).Parse(json).Read("$..a");
 
         MyAssert.ContainsExactly(result.AsList(), "a0", "a1");
     }
 
-    [Fact]
-    public void require_single_property()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void require_single_property(IProviderTypeTestCase providerTypeTestCase)
     {
-        var json = new JpObjectList
+        var json = new List<object?>
         {
             GetSingletonMap("a", "a0"),
             GetSingletonMap("b", "b2")
         };
 
-        var configuration = ConfigurationData.NewtonsoftJsonConfiguration.AddOptions(Option.RequireProperties);
+        var configuration = providerTypeTestCase.Configuration.AddOptions(Option.RequireProperties);
 
         var result = JsonPath.Using(configuration).Parse(json).Read("$..a");
 
         MyAssert.ContainsExactly(result.AsList(), "a0");
     }
 
-    [Fact]
-    public void require_multi_property_all_match()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void require_multi_property_all_match(IProviderTypeTestCase providerTypeTestCase)
     {
-        var ab = new JpDictionary
+        var ab = new Dictionary<string, object?>
         {
             { "a", "aa" },
             { "b", "bb" }
         };
 
-        var json = new JpObjectList
+        var json = new List<object?>
         {
             ab,
             ab
         };
 
-        var configuration = ConfigurationData.NewtonsoftJsonConfiguration.AddOptions(Option.RequireProperties);
+        var configuration = providerTypeTestCase.Configuration.AddOptions(Option.RequireProperties);
 
         var result = JsonPath.Using(configuration).Parse(json).Read("$..['a', 'b']").AsListOfMap();
 
         MyAssert.ContainsExactly(result, ab, ab);
     }
 
-    [Fact]
-    public void require_multi_property_some_match()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void require_multi_property_some_match(IProviderTypeTestCase providerTypeTestCase)
     {
-        var ab = new JpDictionary
+        var ab = new Dictionary<string, object?>
         {
             { "a", "aa" },
             { "b", "bb" }
         };
 
-        var ad = new JpDictionary
+        var ad = new Dictionary<string, object?>
         {
             { "a", "aa" },
             { "d", "dd" }
         };
 
-        var json = new JpObjectList
+        var json = new List<object?>
         {
             ab,
             ad
         };
 
-        var configuration = ConfigurationData.NewtonsoftJsonConfiguration.AddOptions(Option.RequireProperties);
+        var configuration = providerTypeTestCase.Configuration.AddOptions(Option.RequireProperties);
 
         var result = JsonPath.Using(configuration).Parse(json).Read("$..['a', 'b']").AsListOfMap();
 
@@ -225,130 +229,132 @@ public class DeepScanTest : TestUtils
     [Fact]
     public void scan_for_single_property()
     {
-        var a = new JpDictionary
+        var a = new Dictionary<string, object?>
         {
             { "a", "aa" }
         };
-        var b = new JpDictionary
+        var b = new Dictionary<string, object?>
         {
             { "b", "bb" }
         };
-        var ab = new JpDictionary
+        var ab = new Dictionary<string, object?>
         {
             { "a", a },
             { "b", b }
         };
-        var bAb = new JpDictionary
+        var bAb = new Dictionary<string, object?>
         {
             { "b", b },
             { "ab", ab }
         };
-        var json = new JpObjectList
+        var json = new List<object?>
         {
             a,
             b,
             bAb
         };
-        MyAssert.ContainsExactly(JsonPath.Parse(json).Read<JpObjectList>("$..['a']"), "aa", a, "aa");
+        MyAssert.ContainsExactly(JsonPath.Parse(json).Read<List<object?>>("$..['a']"), "aa", a, "aa");
     }
 
     [Fact]
     public void scan_for_property_path()
     {
-        var a = new JpDictionary
+        var a = new Dictionary<string, object?>
         {
             { "a", "aa" }
         };
-        var x = new JpDictionary
+        var x = new Dictionary<string, object?>
         {
             { "x", "xx" }
         };
-        var y = new JpDictionary
+        var y = new Dictionary<string, object?>
         {
             { "a", x }
         };
-        var z = new JpDictionary
+        var z = new Dictionary<string, object?>
         {
             { "z", y }
         };
-        var json = new JpObjectList
+        var json = new List<object?>
         {
             a,
             x,
             y,
             z
         };
-        MyAssert.ContainsExactly(JsonPath.Parse(json).Read<JpObjectList>("$..['a'].x"), "xx", "xx");
+        MyAssert.ContainsExactly(JsonPath.Parse(json).Read<List<object?>>("$..['a'].x"), "xx", "xx");
     }
 
-    [Fact]
-    public void scan_for_property_path_missing_required_property()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void scan_for_property_path_missing_required_property(IProviderTypeTestCase providerTypeTestCase)
     {
-        var a = new JpDictionary
+        var a = new Dictionary<string, object?>
         {
             { "a", "aa" }
         };
-        var x = new JpDictionary
+        var x = new Dictionary<string, object?>
         {
             { "x", "xx" }
         };
-        var y = new JpDictionary
+        var y = new Dictionary<string, object?>
         {
             { "a", x }
         };
-        var z = new JpDictionary
+        var z = new Dictionary<string, object?>
         {
             { "z", y }
         };
-        var json = new JpObjectList
+        var json = new List<object?>
         {
             a,
             x,
             y,
             z
         };
-        Assert.True(JsonPath.Using(ConfigurationData.NewtonsoftJsonConfiguration.AddOptions(Option.RequireProperties))
+        Assert.True(JsonPath.Using(providerTypeTestCase.Configuration.AddOptions(Option.RequireProperties))
             .Parse(json)
-            .Read<JpObjectList>("$..['a'].x").ContainsExactly("xx", "xx"));
+            .Read<List<object?>>("$..['a'].x").ContainsExactly("xx", "xx"));
     }
 
 
-    [Fact]
-    public void scans_can_be_filtered()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void scans_can_be_filtered(IProviderTypeTestCase providerTypeTestCase)
     {
         var brown = GetSingletonMap("val", "brown");
         var white = GetSingletonMap("val", "white");
 
-        var cow = new JpDictionary
+        var cow = new Dictionary<string, object?>
         {
             { "mammal", true },
             { "color", brown }
         };
-        var dog = new JpDictionary
+        var dog = new Dictionary<string, object?>
         {
             { "mammal", true },
             { "color", white }
         };
-        var frog = new JpDictionary
+        var frog = new Dictionary<string, object?>
         {
             { "mammal", false }
         };
-        var animals = new JpObjectList
+        var animals = new List<object?>
         {
             cow,
             dog,
             frog
         };
         var jpObjectList = JsonPath
-            .Using(ConfigurationData.NewtonsoftJsonConfiguration.AddOptions(Option.RequireProperties)).Parse(animals)
-            .Read<JpObjectList>("$..[?(@.mammal == true)].color");
+            .Using(providerTypeTestCase.Configuration.AddOptions(Option.RequireProperties)).Parse(animals)
+            .Read<List<object?>>("$..[?(@.mammal == true)].color");
         MyAssert.ContainsExactly(jpObjectList, brown, white);
     }
 
     [Fact]
     public void scan_with_a_function_filter()
     {
-        var result = JsonPath.Parse(JsonTestData.JsonDocument).Read<JpObjectList>("$..*[?(@.length() > 5)]");
+        var result = JsonPath.Parse(JsonTestData.JsonDocument).Read<List<object?>>("$..*[?(@.length() > 5)]");
         Assert.Single(result);
     }
 
@@ -367,10 +373,10 @@ public class DeepScanTest : TestUtils
     private void ExecuteScanPath(params Option[] options)
     {
         var json = "{'index': 'index', 'data': {'array': [{ 'object1': { 'name': 'robert'} }]}}";
-        var expected = new JpDictionary
+        var expected = new Dictionary<string, object?>
         {
             {
-                "object1", new JpDictionary
+                "object1", new Dictionary<string, object?>
                 {
                     { "name", "robert" }
                 }

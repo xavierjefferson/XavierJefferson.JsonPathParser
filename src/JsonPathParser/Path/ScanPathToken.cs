@@ -118,7 +118,7 @@ public class ScanPathToken : PathToken
 
         public FilterPathTokenPredicate(PathToken target, EvaluationContextImpl ctx)
         {
-            this._ctx = ctx;
+            _ctx = ctx;
             _predicatePathToken = (PredicatePathToken)target;
         }
 
@@ -143,7 +143,7 @@ public class ScanPathToken : PathToken
 
         public ArrayPathTokenPredicate(EvaluationContextImpl ctx)
         {
-            this._ctx = ctx;
+            _ctx = ctx;
         }
 
 
@@ -160,7 +160,7 @@ public class ScanPathToken : PathToken
 
         public PropertyPathTokenPredicate(PathToken target, EvaluationContextImpl ctx)
         {
-            this._ctx = ctx;
+            _ctx = ctx;
             _propertyPathToken = (PropertyPathToken)target;
         }
 

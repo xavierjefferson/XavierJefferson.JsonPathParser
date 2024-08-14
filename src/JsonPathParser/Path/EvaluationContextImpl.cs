@@ -1,8 +1,6 @@
 using System.Collections.ObjectModel;
 using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
-using XavierJefferson.JsonPathParser.Extensions;
-using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.PathRefs;
 

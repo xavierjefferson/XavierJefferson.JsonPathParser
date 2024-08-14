@@ -22,10 +22,6 @@ public class CharacterIndex
 
     private readonly string _charSequence;
 
-    public int _endPosition { get; private set; }
-
-    public int Position { get; private set; }
-
     public CharacterIndex(string charSequence)
     {
         _charSequence = charSequence;
@@ -33,12 +29,13 @@ public class CharacterIndex
         _endPosition = charSequence.Length - 1;
     }
 
+    public int _endPosition { get; private set; }
+
+    public int Position { get; private set; }
+
     public char this[int index] => _charSequence[index];
 
-    public int Length
-    {
-        get { return _endPosition + 1; }
-    }
+    public int Length => _endPosition + 1;
 
     public char CharAt(int idx)
     {
@@ -88,7 +85,6 @@ public class CharacterIndex
         return _endPosition;
     }
 
-     
 
     public int IndexOfClosingSquareBracket(int startPosition)
     {

@@ -118,7 +118,7 @@ public class JsonPathTest : TestUtils
     [Fact]
     public void array_start_expands()
     {
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(ArrayExpand, "$[?(@['parent'] == 'ONE')].child.name"),
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(ArrayExpand, "$[?(@['parent'] == 'ONE')].child.name"),
             "NAME_ONE");
     }
 
@@ -172,7 +172,7 @@ public class JsonPathTest : TestUtils
     {
         var path = JsonPath.Compile("$.store.book[1]");
 
-        var map = path.Read(Document) as JpDictionary;
+        var map = path.Read(Document) as IDictionary<string, object?>;
 
         Assert.Equal("Evelyn Waugh", map["author"]);
     }
@@ -189,22 +189,22 @@ public class JsonPathTest : TestUtils
     [Fact]
     public void read_store_book_author()
     {
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$.store.book[0,1].author"), "Nigel Rees",
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[0,1].author"), "Nigel Rees",
             "Evelyn Waugh");
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$.store.book[*].author"), "Nigel Rees",
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[*].author"), "Nigel Rees",
             "Evelyn Waugh", "Herman Melville", "J. R. R. Tolkien");
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$.['store'].['book'][*].['author']"), "Nigel Rees",
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.['store'].['book'][*].['author']"), "Nigel Rees",
             "Evelyn Waugh", "Herman Melville", "J. R. R. Tolkien");
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$['store']['book'][*]['author']"), "Nigel Rees",
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$['store']['book'][*]['author']"), "Nigel Rees",
             "Evelyn Waugh", "Herman Melville", "J. R. R. Tolkien");
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$['store'].book[*]['author']"), "Nigel Rees",
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$['store'].book[*]['author']"), "Nigel Rees",
             "Evelyn Waugh", "Herman Melville", "J. R. R. Tolkien");
     }
 
     [Fact]
     public void all_authors()
     {
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$..author"), "Nigel Rees", "Evelyn Waugh",
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$..author"), "Nigel Rees", "Evelyn Waugh",
             "Herman Melville", "J. R. R. Tolkien");
     }
 
@@ -229,62 +229,62 @@ public class JsonPathTest : TestUtils
     [Fact]
     public void all_prices_in_store()
     {
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$.store..['display-price']"), 8.95D, 12.99D, 8.99D,
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store..['display-price']"), 8.95D, 12.99D, 8.99D,
             19.95D);
     }
 
     [Fact]
     public void access_array_by_index_from_tail()
     {
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$..book[1:].author"), "Evelyn Waugh",
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$..book[1:].author"), "Evelyn Waugh",
             "Herman Melville", "J. R. R. Tolkien");
     }
 
     [Fact]
     public void read_store_book_index_0_and_1()
     {
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$.store.book[0,1].author"), "Nigel Rees",
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[0,1].author"), "Nigel Rees",
             "Evelyn Waugh");
-        Assert.True(JsonPath.Read<JpObjectList>(Document, "$.store.book[0,1].author").Count() == 2);
+        Assert.True(JsonPath.Read<List<object?>>(Document, "$.store.book[0,1].author").Count() == 2);
     }
 
     [Fact]
     public void read_store_book_pull_first_2()
     {
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$.store.book[:2].author"), "Nigel Rees",
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[:2].author"), "Nigel Rees",
             "Evelyn Waugh");
-        Assert.True(JsonPath.Read<JpObjectList>(Document, "$.store.book[:2].author").Count() == 2);
+        Assert.True(JsonPath.Read<List<object?>>(Document, "$.store.book[:2].author").Count() == 2);
     }
 
 
     [Fact]
     public void read_store_book_filter_by_isbn()
     {
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$.store.book[?(@.isbn)].isbn"), "0-553-21311-3",
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[?(@.isbn)].isbn"), "0-553-21311-3",
             "0-395-19395-8");
-        Assert.True(JsonPath.Read<JpObjectList>(Document, "$.store.book[?(@.isbn)].isbn").Count() == 2);
-        Assert.True(JsonPath.Read<JpObjectList>(Document, "$.store.book[?(@['isbn'])].isbn").Count() == 2);
+        Assert.True(JsonPath.Read<List<object?>>(Document, "$.store.book[?(@.isbn)].isbn").Count() == 2);
+        Assert.True(JsonPath.Read<List<object?>>(Document, "$.store.book[?(@['isbn'])].isbn").Count() == 2);
     }
 
     [Fact]
     public void all_books_cheaper_than_10()
     {
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$..book[?(@['display-price'] < 10)].title"),
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$..book[?(@['display-price'] < 10)].title"),
             "Sayings of the Century", "Moby Dick");
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$..book[?(@.display-price < 10)].title"),
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$..book[?(@.display-price < 10)].title"),
             "Sayings of the Century", "Moby Dick");
     }
 
     [Fact]
     public void all_books()
     {
-        Assert.Equal(1, JsonPath.Read<JpObjectList>(Document, "$..book").Count());
+        Assert.Equal(1, JsonPath.Read<List<object?>>(Document, "$..book").Count());
     }
 
     [Fact]
     public void dot_in_predicate_works()
     {
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(ProductJson, "$.product[?(@.version=='4.0')].codename"),
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(ProductJson, "$.product[?(@.version=='4.0')].codename"),
             "Montreal");
     }
 
@@ -292,15 +292,15 @@ public class JsonPathTest : TestUtils
     public void dots_in_predicate_works()
     {
         MyAssert.ContainsAll(
-            JsonPath.Read<JpObjectList>(ProductJson, "$.product[?(@.['attr.with.dot']=='A')].codename"), "Seattle");
+            JsonPath.Read<List<object?>>(ProductJson, "$.product[?(@.['attr.with.dot']=='A')].codename"), "Seattle");
     }
 
     [Fact]
     public void all_books_with_category_reference()
     {
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$..book[?(@.category=='reference')].title"),
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$..book[?(@.category=='reference')].title"),
             "Sayings of the Century");
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(Document, "$.store.book[?(@.category=='reference')].title"),
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[?(@.category=='reference')].title"),
             "Sayings of the Century");
     }
 
@@ -319,8 +319,8 @@ public class JsonPathTest : TestUtils
     [Fact]
     public void exists_filter_with_nested_path()
     {
-        Assert.Single(JsonPath.Read<JpObjectList>(Document, "$..[?(@.bicycle.color)]"));
-        Assert.Empty(JsonPath.Read<JpObjectList>(Document, "$..[?(@.bicycle.numberOfGears)]"));
+        Assert.Single(JsonPath.Read<List<object?>>(Document, "$..[?(@.bicycle.color)]"));
+        Assert.Empty(JsonPath.Read<List<object?>>(Document, "$..[?(@.bicycle.numberOfGears)]"));
     }
 
     [Fact]

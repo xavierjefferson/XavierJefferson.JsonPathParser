@@ -48,13 +48,13 @@ public class ReturnTypeTest : TestUtils
 
         Xunit.Assert.Equal(4, reader.configuration().JsonProvider.length(result));
         */
-        Assert.Equal(4, Reader.Read("$.store.book", Constants.ListType).AsList().Count());
+        Assert.Equal(4, Reader.Read("$.store.book", TypeConstants.ListType).AsList().Count());
     }
 
     [Fact]
     public void assert_maps_can_be_read()
     {
-        var n = Reader.Read<JpDictionary>("$.store.book[0]");
+        var n = Reader.Read<IDictionary<string, object?>>("$.store.book[0]");
 
 
         MyAssert.ContainsEntry(n, "category", "reference");

@@ -19,7 +19,7 @@ public class Issue234
     [Fact]
     public void TestIssue234()
     {
-        var context = new JpDictionary();
+        var context = new Dictionary<string, object?>();
         context["key"] = "first";
         const string pathAsString = "concat(\"/\", $.key)";
         var value = JsonPath.Read(context, pathAsString);

@@ -36,9 +36,9 @@ public class OptionsTest : TestUtils
     public void a_definite_path_can_be_returned_as_list()
     {
         var conf = Configuration.CreateBuilder().WithOptions(Option.AlwaysReturnList).Build();
-        Assert.IsType<JpObjectList>(JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read("$.foo"));
+        Assert.IsType<List<object?>>(JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read("$.foo"));
 
-        Assert.IsType<JpObjectList>(JsonPath.Using(conf).Parse("{\"foo\": null}").Read("$.foo"));
+        Assert.IsType<List<object?>>(JsonPath.Using(conf).Parse("{\"foo\": null}").Read("$.foo"));
         var aa = JsonPath.Using(conf).Parse("{\"foo\": [1, 4, 8]}").Read("$.foo").AsList();
         MyAssert.ContainsExactly(aa[0].AsList(), 1d, 4d, 8d);
     }
@@ -79,7 +79,7 @@ public class OptionsTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void multi_properties_are_merged_by_default(IProviderTypeTestCase testCase)
     {
-        var model = new JpDictionary
+        var model = new Dictionary<string, object?>
         {
             //{ "a", "a"},
             { "a", "a" },
@@ -90,7 +90,7 @@ public class OptionsTest : TestUtils
 
         var conf = testCase.Configuration;
 
-        var result = JsonPath.Using(conf).Parse(model).Read<JpDictionary>("$.['a', 'b']");
+        var result = JsonPath.Using(conf).Parse(model).Read<IDictionary<string, object?>>("$.['a', 'b']");
 
         //Assert.True(result).isInstanceOf(Json123.Constants.ListType);
         //Assert.True(result).containsOnly("a", "b");
@@ -102,18 +102,18 @@ public class OptionsTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void when_property_is_required_exception_is_thrown(IProviderTypeTestCase testCase)
     {
-        var model = Arrays.AsList(GetSingletonMap("a", "a-val"), GetSingletonMap("b", "b-val"));
+        var model = new ObjectList(GetSingletonMap("a", "a-val"), GetSingletonMap("b", "b-val"));
 
         var conf = testCase.Configuration;
 
-        MyAssert.ContainsExactly(JsonPath.Using(conf).Parse(model).Read<JpObjectList>("$[*].a"), "a-val");
+        MyAssert.ContainsExactly(JsonPath.Using(conf).Parse(model).Read<List<object?>>("$[*].a"), "a-val");
 
 
         conf = conf.AddOptions(Option.RequireProperties);
 
         Assert.Throws<PathNotFoundException>(() =>
         {
-            JsonPath.Using(conf).Parse(model).Read("$[*].a", Constants.ListType);
+            JsonPath.Using(conf).Parse(model).Read("$[*].a", TypeConstants.ListType);
         });
     }
 
@@ -121,7 +121,7 @@ public class OptionsTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void when_property_is_required_exception_is_thrown_2(IProviderTypeTestCase testCase)
     {
-        var model = new JpDictionary
+        var model = new Dictionary<string, object?>
         {
             { "a", GetSingletonMap("a-key", "a-val") },
             { "b", GetSingletonMap("b-key", "b-val") }
@@ -130,13 +130,13 @@ public class OptionsTest : TestUtils
 
         var conf = testCase.Configuration;
 
-        MyAssert.ContainsExactly(JsonPath.Using(conf).Parse(model).Read<JpObjectList>("$.*.a-key"), "a-val");
+        MyAssert.ContainsExactly(JsonPath.Using(conf).Parse(model).Read<List<object?>>("$.*.a-key"), "a-val");
 
 
         conf = conf.AddOptions(Option.RequireProperties);
         Assert.Throws<PathNotFoundException>(() =>
         {
-            JsonPath.Using(conf).Parse(model).Read("$.*.a-key", Constants.ListType);
+            JsonPath.Using(conf).Parse(model).Read("$.*.a-key", TypeConstants.ListType);
         });
     }
 
@@ -159,17 +159,17 @@ public class OptionsTest : TestUtils
             .Read("$[*].foo2[0]").AsList().ContainsOnly(5d));
     }
 
-    [Fact]
-    public void isbn_is_defaulted_when_option_is_provided()
+    [Theory][ClassData(typeof(ProviderTypeTestCases))]
+    public void isbn_is_defaulted_when_option_is_provided(IProviderTypeTestCase testCase)
     {
-        var result1 = JsonPath.Using(ConfigurationData.NewtonsoftJsonConfiguration).Parse(JsonTestData.JsonDocument)
-            .Read<JpObjectList>("$.store.book.*.isbn");
+        var result1 = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
+            .Read<List<object?>>("$.store.book.*.isbn");
 
         MyAssert.ContainsExactly(result1, "0-553-21311-3", "0-395-19395-8");
 
         var result2 = JsonPath
-            .Using(ConfigurationData.NewtonsoftJsonConfiguration.AddOptions(Option.DefaultPathLeafToNull))
-            .Parse(JsonTestData.JsonDocument).Read<JpObjectList>("$.store.book.*.isbn");
+            .Using(testCase.Configuration.AddOptions(Option.DefaultPathLeafToNull))
+            .Parse(JsonTestData.JsonDocument).Read<List<object?>>("$.store.book.*.isbn");
 
         MyAssert.ContainsExactly(result2, null, null, "0-553-21311-3", "0-395-19395-8");
     }

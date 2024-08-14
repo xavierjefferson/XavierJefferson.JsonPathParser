@@ -1,3 +1,5 @@
+using XavierJefferson.JsonPathParser.UnitTests.TestData;
+
 namespace XavierJefferson.JsonPathParser.UnitTests.Function;
 
 /**
@@ -11,45 +13,61 @@ namespace XavierJefferson.JsonPathParser.UnitTests.Function;
  */
 public class SequentialPathFunctionTest : BaseFunctionTest
 {
-    private readonly Configuration _conf = ConfigurationData.NewtonsoftJsonConfiguration;
+    
 
-    [Fact]
-    public void TestFirstOfNumbers()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestFirstOfNumbers(IProviderTypeTestCase testCase)
     {
-        VerifyFunction(_conf, "$.numbers.first()", NumberSeries, 1d);
+        VerifyFunction(testCase.Configuration, "$.numbers.first()", NumberSeries, 1d);
     }
 
-    [Fact]
-    public void TestLastOfNumbers()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestLastOfNumbers(IProviderTypeTestCase testCase)
     {
-        VerifyFunction(_conf, "$.numbers.last()", NumberSeries, 10d);
+        VerifyFunction(testCase.Configuration, "$.numbers.last()", NumberSeries, 10d);
     }
 
-    [Fact]
-    public void TestIndexOfNumbers()
+
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestIndexOfNumbers(IProviderTypeTestCase testCase)
     {
-        VerifyFunction(_conf, "$.numbers.index(0)", NumberSeries, 1d);
-        VerifyFunction(_conf, "$.numbers.index(-1)", NumberSeries, 10d);
-        VerifyFunction(_conf, "$.numbers.index(1)", NumberSeries, 2d);
+        VerifyFunction(testCase.Configuration, "$.numbers.index(0)", NumberSeries, 1d);
+        VerifyFunction(testCase.Configuration, "$.numbers.index(-1)", NumberSeries, 10d);
+        VerifyFunction(testCase.Configuration, "$.numbers.index(1)", NumberSeries, 2d);
     }
 
-    [Fact]
-    public void TestFirstOfText()
+
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestFirstOfText(IProviderTypeTestCase testCase)
     {
-        VerifyFunction(_conf, "$.text.first()", TextSeries, "a");
+        VerifyFunction(testCase.Configuration, "$.text.first()", TextSeries, "a");
     }
 
-    [Fact]
-    public void TestLastOfText()
+
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestLastOfText(IProviderTypeTestCase testCase)
     {
-        VerifyFunction(_conf, "$.text.last()", TextSeries, "f");
+        VerifyFunction(testCase.Configuration, "$.text.last()", TextSeries, "f");
     }
 
-    [Fact]
-    public void TestIndexOfText()
+
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestIndexOfTex(IProviderTypeTestCase testCase)
     {
-        VerifyFunction(_conf, "$.text.index(0)", TextSeries, "a");
-        VerifyFunction(_conf, "$.text.index(-1)", TextSeries, "f");
-        VerifyFunction(_conf, "$.text.index(1)", TextSeries, "b");
+        VerifyFunction(testCase.Configuration, "$.text.index(0)", TextSeries, "a");
+        VerifyFunction(testCase.Configuration, "$.text.index(-1)", TextSeries, "f");
+        VerifyFunction(testCase.Configuration, "$.text.index(1)", TextSeries, "b");
     }
 }

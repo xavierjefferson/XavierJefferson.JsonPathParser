@@ -55,7 +55,7 @@ public class InlineFilterTest : TestUtils
     public void root_context_can_be_referred_in_predicate(IProviderTypeTestCase testCase)
     {
         var prices = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
-            .Read("store.book[?(@.display-price <= $.max-price)].display-price", Constants.ListType).AsList();
+            .Read("store.book[?(@.display-price <= $.max-price)].display-price", TypeConstants.ListType).AsList();
 
         MyAssert.ContainsAll(prices, 8.95D, 8.99D);
     }
@@ -70,23 +70,23 @@ public class InlineFilterTest : TestUtils
     public void multiple_context_object_can_be_refered(IProviderTypeTestCase testCase)
     {
         var all = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
-            .Read("store.book[ ?(@.category == @.category) ]", Constants.ListType).AsList();
+            .Read("store.book[ ?(@.category == @.category) ]", TypeConstants.ListType).AsList();
         Assert.Equal(BookCount, all.Count());
 
         var all2 = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
-            .Read("store.book[ ?(@.category == @['category']) ]", Constants.ListType).AsList();
+            .Read("store.book[ ?(@.category == @['category']) ]", TypeConstants.ListType).AsList();
         Assert.Equal(BookCount, all2.Count());
 
         var all3 = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
-            .Read("store.book[ ?(@ == @) ]", Constants.ListType).AsList();
+            .Read("store.book[ ?(@ == @) ]", TypeConstants.ListType).AsList();
         Assert.Equal(BookCount, all3.Count());
 
         var none = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
-            .Read("store.book[ ?(@.category != @.category) ]", Constants.ListType).AsList();
+            .Read("store.book[ ?(@.category != @.category) ]", TypeConstants.ListType).AsList();
         Assert.Equal(0, none.Count());
 
         var none2 = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
-            .Read("store.book[ ?(@.category != @) ]", Constants.ListType).AsList();
+            .Read("store.book[ ?(@.category != @) ]", TypeConstants.ListType).AsList();
         Assert.Equal(4, none2.Count());
     }
 
@@ -95,26 +95,26 @@ public class InlineFilterTest : TestUtils
     public void simple_inline_or_statement_evaluates(IProviderTypeTestCase testCase)
     {
         var a = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
-            .Read("store.book[ ?(@.author == 'Nigel Rees' || @.author == 'Evelyn Waugh') ].author", Constants.ListType)
+            .Read("store.book[ ?(@.author == 'Nigel Rees' || @.author == 'Evelyn Waugh') ].author", TypeConstants.ListType)
             .AsList();
         MyAssert.ContainsExactly(a, "Nigel Rees", "Evelyn Waugh");
 
         var b = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read(
                 "store.book[ ?((@.author == 'Nigel Rees' || @.author == 'Evelyn Waugh') && @.display-price < 15) ].author",
-                Constants.ListType).AsList();
+                TypeConstants.ListType).AsList();
         MyAssert.ContainsExactly(b, "Nigel Rees", "Evelyn Waugh");
 
         var c = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read(
                 "store.book[ ?((@.author == 'Nigel Rees' || @.author == 'Evelyn Waugh') && @.category == 'reference') ].author",
-                Constants.ListType).AsList();
+                TypeConstants.ListType).AsList();
         MyAssert.ContainsExactly(c, "Nigel Rees");
 
         var d = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read(
                 "store.book[ ?((@.author == 'Nigel Rees') || (@.author == 'Evelyn Waugh' && @.category != 'fiction')) ].author",
-                Constants.ListType).AsList();
+                TypeConstants.ListType).AsList();
         MyAssert.ContainsExactly(d, "Nigel Rees");
     }
 
@@ -201,7 +201,7 @@ public class InlineFilterTest : TestUtils
     [Fact]
     public void negate_exists_check_primitive()
     {
-        var ints = new JpObjectList
+        var ints = new List<object?>
         {
             0d,
             1d,

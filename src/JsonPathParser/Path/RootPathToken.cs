@@ -84,7 +84,7 @@ public class RootPathToken : PathToken
 
         public L1(RootPathToken rpt)
         {
-            this._rpt = rpt;
+            _rpt = rpt;
         }
 
         public IPathTokenAppender AppendPathToken(PathToken next)

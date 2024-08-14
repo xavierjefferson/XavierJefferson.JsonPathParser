@@ -19,7 +19,7 @@ public abstract class AbstractSequenceAggregation : IPathFunction, IInvocable
             var objects = ctx.Configuration.JsonProvider.AsEnumerable(model);
             var objectList = objects.Cast<object>().ToSerializingList();
 
-            var targetIndex = this.TargetIndex(ctx, parameters);
+            var targetIndex = TargetIndex(ctx, parameters);
             if (targetIndex >= 0) return objectList[targetIndex];
 
             var realIndex = objectList.Count() + targetIndex;

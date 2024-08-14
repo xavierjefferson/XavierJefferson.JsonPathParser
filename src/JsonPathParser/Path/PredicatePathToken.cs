@@ -18,7 +18,7 @@ public class PredicatePathToken : PathToken
 
     public PredicatePathToken(ICollection<IPredicate> predicates)
     {
-        this._predicates = predicates;
+        _predicates = predicates;
     }
 
 

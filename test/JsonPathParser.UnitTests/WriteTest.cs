@@ -7,7 +7,7 @@ namespace XavierJefferson.JsonPathParser.UnitTests;
 //test
 public class WriteTest : TestUtils
 {
-    private static readonly JpDictionary EmptyMap = new();
+    private static readonly Dictionary<string, object?> EmptyMap = new();
 
     private readonly MapDelegate _toStringMapFunction = (currentValue, configuration) =>
     {
@@ -152,7 +152,7 @@ public class WriteTest : TestUtils
     [Fact]
     public void multi_prop_update()
     {
-        var expected = new JpDictionary
+        var expected = new Dictionary<string, object?>
         {
             { "author", "a" },
             { "category", "a" }
@@ -168,7 +168,7 @@ public class WriteTest : TestUtils
     [Fact]
     public void multi_prop_update_not_all_defined()
     {
-        var expected = new JpDictionary
+        var expected = new Dictionary<string, object?>
         {
             { "author", "a" },
             { "isbn", "a" }
@@ -198,7 +198,7 @@ public class WriteTest : TestUtils
     [Fact]
     public void item_can_be_added_to_root_array()
     {
-        var model = new JpObjectList();
+        var model = new List<object?>();
         model.Add(1);
         model.Add(2);
 
@@ -210,7 +210,7 @@ public class WriteTest : TestUtils
     [Fact]
     public void key_val_can_be_added_to_root_object()
     {
-        var model = new JpDictionary();
+        var model = new Dictionary<string, object?>();
         model["a"] = "a-val";
 
         var newVal = JsonPath.Parse(model).Put("$", "new-key", "new-val").Read<string>("$.new-key");
@@ -236,7 +236,7 @@ public class WriteTest : TestUtils
     [Fact]
     public void root_object_can_not_be_updated()
     {
-        var model = new JpDictionary();
+        var model = new Dictionary<string, object?>();
         model["a"] = "a-val";
 
         Assert.Throws<InvalidModificationException>(() => JsonPath.Parse(model).Set("$[?(@.a == 'a-val')]", 1));
@@ -307,13 +307,15 @@ public class WriteTest : TestUtils
         Assert.True(stringResult.EndsWith("converted"));
     }
 
-    [Fact]
-    public void object_can_be_mapped()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void object_can_be_mapped(IProviderTypeTestCase testCase)
     {
-        var documentContext = JsonPath.Using(ConfigurationData.NewtonsoftJsonConfiguration)
+        var documentContext = JsonPath.Using(testCase.Configuration)
             .Parse(JsonTestData.JsonDocument);
         var list = documentContext.Read("$..book");
-        Assert.True(list is JpObjectList);
+        Assert.True(list is List<object?>);
         var result = documentContext.Map("$..book", _toStringMapFunction).Read("$..book").AsList()
             .Select(i => i.ToString()).First();
         Assert.True(result.EndsWith("converted"));

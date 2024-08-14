@@ -1,5 +1,3 @@
-using System;
-using System.Configuration;
 using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.Logging;
@@ -36,34 +34,8 @@ public class JsonContext : IDocumentContext
         Assertions.NotEmpty(path, "path can not be null or empty");
         var tmp = Read(PathFromCache(path, filters));
         return tmp;
-        //return Unwind();
     }
 
-    //object? Unwind(object? input)
-    //{
-    //    if (input == null) return null;
-    //    if (input.TryConvertDouble(out double test))
-    //    {
-    //        return test;
-    //    }
-    //    if (input is IDictionary<string, object?> x0)
-    //    {
-    //        foreach (var m in x0.Keys)
-    //        {
-    //            x0[m] = Unwind(x0[m]);
-    //        }
-    //    }
-    //    if (input is JpObjectList x1)
-    //    {
-    //        for (var i = 0; i < x1.Count; i++)
-    //        {
-    //            x1[i] = Unwind(x1[i]);
-    //        }
-    //    }
-
-    //    return input;
-
-    //}
 
     public object? Read(string path, Type type, params IPredicate[] filters)
     {
@@ -184,22 +156,21 @@ public class JsonContext : IDocumentContext
     {
         return RenameKey(PathFromCache(path, filters), oldKeyName, newKeyName);
     }
-    public IDocumentContext Put(String path, String key, Object value, params IPredicate[] filters)
+
+    public IDocumentContext Put(string path, string key, object value, params IPredicate[] filters)
     {
         return Put(PathFromCache(path, filters), key, value);
     }
-    public IDocumentContext Put(JsonPath path, String key, Object value)
+
+    public IDocumentContext Put(JsonPath path, string key, object value)
     {
         var modified = path.Put<IList<string>>(Json, key, value, Configuration.AddOptions(Option.AsPathList));
         if (Logger.IsDebugEnabled())
-        {
-            foreach (String p in modified)
-            {
+            foreach (var p in modified)
                 Logger.DebugFormat($"Put path {p} key {key} value {value}");
-            }
-        }
         return this;
     }
+
     public IDocumentContext RenameKey(JsonPath path, string oldKeyName, string newKeyName)
     {
         var modified =
@@ -237,7 +208,7 @@ public class JsonContext : IDocumentContext
         var cache = CacheManager.Instance;
         var cacheKey = filters == null || filters.Length == 0
             ? path
-            : String.Concat(new[] { path }.Union(filters.Select(i => i.ToString())));
+            : string.Concat(new[] { path }.Union(filters.Select(i => i.ToString())));
         var jsonPath = cache.Get(cacheKey) as JsonPath;
         if (jsonPath == null)
         {

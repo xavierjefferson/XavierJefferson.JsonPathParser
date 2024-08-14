@@ -15,12 +15,15 @@ public interface IEvaluationContext
     /// <returns> the document</returns>
     object? RootDocument { get; }
 
+    ICollection<PathRef> UpdateOperations { get; }
+
     /// <summary>
     ///     This method does not adhere to configuration settings. It will return a single object (not wrapped in a List) even
     ///     if the
     ///     configuration contains the {@link com.jayway.jsonpath.Option#ALWAYS_RETURN_LIST}
     /// </summary>
     /// <param name="
+    /// 
     /// 
     /// <T>
     ///     ">expected return type</param>
@@ -33,6 +36,7 @@ public interface IEvaluationContext
     /// <param name="unwrap">tells th underlying json provider if primitives should be unwrapped</param>
     /// <param name="
     /// 
+    /// 
     /// <T>
     ///     ">expected return type</param>
     ///     <returns> evaluation result</returns>
@@ -41,6 +45,7 @@ public interface IEvaluationContext
     /// <summary>
     ///     Returns the list of formalized paths that represent the result of the evaluation
     ///     <param name="
+    ///     
     ///     
     ///     <T>
     ///         ">///
@@ -53,5 +58,4 @@ public interface IEvaluationContext
     /// </summary>
     /// <returns> list of path representations</returns>
     SerializingList<string> GetPathList();
-    ICollection<PathRef> UpdateOperations { get; }
 }

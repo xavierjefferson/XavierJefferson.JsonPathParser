@@ -27,11 +27,11 @@ public class Issue680
     [Fact]
     public void testIssue680concat_2()
     {
-        var context = new JpDictionary();
+        var context = new Dictionary<string, object?>();
         context["key"] = "first";
         var value = JsonPath.Read(context, "concat(\"/\", $.key)");
         Assert.Equal("/first", value);
-        var context2 = new JpDictionary();
+        var context2 = new Dictionary<string, object?>();
         context2["key"] = "second";
         value = JsonPath.Read(context2, "concat(\"/\", $.key)");
         Assert.Equal("/second", value);

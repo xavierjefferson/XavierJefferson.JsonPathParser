@@ -9,11 +9,6 @@ namespace XavierJefferson.JsonPathParser.UnitTests;
 
 public class IssuesTest : TestUtils
 {
-    private static IJsonProvider Jp(IProviderTypeTestCase testCase)
-    {
-        return testCase.Configuration.JsonProvider;
-    }
-
     [Fact]
     public void issue_143()
     {
@@ -128,8 +123,8 @@ public class IssuesTest : TestUtils
         var o1 = JsonPath.Read(json, "$.arrayOfObjectsAndArrays..k ");
         var o2 = JsonPath.Read(json, "$.arrayOfObjects..k ");
 
-        Assert.Equal("[[\"json\"],[\"path\"],[\"is\"],[\"cool\"]]", Jp(testCase).ToJson(o1));
-        Assert.Equal("[\"json\",\"path\",\"is\",\"cool\"]", Jp(testCase).ToJson(o2));
+        Assert.Equal("[[\"json\"],[\"path\"],[\"is\"],[\"cool\"]]", testCase.Configuration.JsonProvider.ToJson(o1));
+        Assert.Equal("[\"json\",\"path\",\"is\",\"cool\"]", testCase.Configuration.JsonProvider.ToJson(o2));
     }
 
     [Fact]
@@ -683,7 +678,7 @@ public class IssuesTest : TestUtils
         var context = JsonPath.Using(conf).Parse(json);
         context.Delete("$.books[?(@.category == 'reference')]");
 
-        var categories = context.Read("$..category", Constants.ListType).AsList();
+        var categories = context.Read("$..category", TypeConstants.ListType).AsList();
 
         MyAssert.ContainsOnly(categories, "fiction");
     }
@@ -718,11 +713,11 @@ public class IssuesTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void issue_129(IProviderTypeTestCase testCase)
     {
-        var match = new JpDictionary();
+        var match = new Dictionary<string, object?>();
         match["a"] = 1;
         match["b"] = 2;
 
-        var noMatch = new JpDictionary();
+        var noMatch = new Dictionary<string, object?>();
         noMatch["a"] = -1;
         noMatch["b"] = -2;
 
@@ -738,7 +733,7 @@ public class IssuesTest : TestUtils
         Assert.False(parsed.Apply(CreatePredicateContext(noMatch, testCase)));
     }
 
-    private IPredicateContext CreatePredicateContext(JpDictionary map, IProviderTypeTestCase testCase)
+    private IPredicateContext CreatePredicateContext(IDictionary<string, object?> map, IProviderTypeTestCase testCase)
     {
         return new FakePredicateContext(map, testCase);
     }
@@ -866,8 +861,10 @@ public class IssuesTest : TestUtils
     //    });
     //}
 
-    [Fact]
-    public void issue_170()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void issue_170(IProviderTypeTestCase testCase)
     {
         var json = "{\n" +
                    "  \"array\": [\n" +
@@ -878,11 +875,11 @@ public class IssuesTest : TestUtils
                    "}";
 
 
-        var context = JsonPath.Using(ConfigurationData.NewtonsoftJsonConfiguration).Parse(json);
+        var context = JsonPath.Using(testCase.Configuration).Parse(json);
         context = context.Set("$.array[0]", null);
         context = context.Set("$.array[2]", null);
 
-        var list = context.Read("$.array", Constants.ListType).AsList();
+        var list = context.Read("$.array", TypeConstants.ListType).AsList();
 
         MyAssert.ContainsExactly(list, null, 1d, null);
     }
@@ -1022,10 +1019,10 @@ public class IssuesTest : TestUtils
 
     public class FakePredicateContext : IPredicateContext
     {
-        private readonly JpDictionary _map;
+        private readonly IDictionary<string, object?> _map;
         private readonly IProviderTypeTestCase _testCase;
 
-        public FakePredicateContext(JpDictionary map, IProviderTypeTestCase testCase)
+        public FakePredicateContext(IDictionary<string, object?> map, IProviderTypeTestCase testCase)
         {
             _map = map;
             _testCase = testCase;

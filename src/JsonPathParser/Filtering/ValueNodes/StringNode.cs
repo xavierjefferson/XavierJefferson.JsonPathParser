@@ -1,18 +1,15 @@
 ﻿using XavierJefferson.JsonPathParser.Helpers;
-using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public class StringNode : TypedValueNode<string>
 {
-    private readonly string? _value;
     private readonly bool _useSingleQuote = true;
-
-    public override string Value => _value;
+    private readonly string? _value;
 
     public StringNode(string? value, bool escape)
     {
-        if (escape && value!=null && value.Length > 1)
+        if (escape && value != null && value.Length > 1)
         {
             var open = value.First();
             var close = value.Last();
@@ -33,6 +30,8 @@ public class StringNode : TypedValueNode<string>
             _value = value;
         }
     }
+
+    public override string Value => _value;
 
     public override int GetHashCode()
     {
@@ -78,21 +77,14 @@ public class StringNode : TypedValueNode<string>
     {
         if (this == o) return true;
         if (o is ValueNode valueNode)
-        {
             if (valueNode is StringNode || valueNode is NumberNode)
             {
                 var that = valueNode.AsStringNode();
 
                 if (that._value == null && _value == null)
-                {
                     return true;
-                }
-                else
-                {
-                    return _value.Equals(that.Value);
-                }
+                return _value.Equals(that.Value);
             }
-        }
 
         return false;
     }

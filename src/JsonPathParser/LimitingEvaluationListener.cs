@@ -3,7 +3,7 @@ using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser;
 
-public class LimitingEvaluationListener 
+public class LimitingEvaluationListener
 {
     private readonly int _limit;
 

@@ -1,5 +1,4 @@
 using XavierJefferson.JsonPathParser.Exceptions;
-using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser.PathRefs;
@@ -10,19 +9,20 @@ public abstract class PathRef : IComparable<PathRef>
 
     protected object? Parent;
 
-    public virtual int? Index { get; }
-
     protected PathRef(object? parent)
     {
-        this.Parent = parent;
+        Parent = parent;
     }
+
+    public virtual int? Index { get; }
 
 
     public virtual int CompareTo(PathRef? o)
     {
         return GetAccessor().ToString().CompareTo(o.GetAccessor().ToString()) * -1;
     }
-    public abstract void Put(String key, Object newVal, Configuration configuration);
+
+    public abstract void Put(string key, object newVal, Configuration configuration);
 
     protected abstract object? GetAccessor();
 

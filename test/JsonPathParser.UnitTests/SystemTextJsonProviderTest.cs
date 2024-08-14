@@ -30,142 +30,152 @@ public class SystemTextJsonProviderTest : TestUtils
         "}" +
         "]";
 
-    [Fact]
-    public void json_can_be_parsed()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void json_can_be_parsed(IProviderTypeTestCase testCase)
     {
-        var node = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(JsonTestData.JsonDocument)
-            .Read<JpDictionary>("$");
+        var node = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
+            .Read<IDictionary<string, object?>>("$");
         Assert.Equal("string-value", node["string-property"]);
     }
 
-    [Fact]
-    public void strings_are_unwrapped()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void strings_are_unwrapped(IProviderTypeTestCase testCase)
     {
-        var node = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(JsonTestData.JsonDocument)
+        var node = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read("$.string-property");
-        var unwrapped = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(JsonTestData.JsonDocument)
+        var unwrapped = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read<string>("$.string-property");
 
         Assert.Equal("string-value", unwrapped);
         Assert.Equal(node, unwrapped);
     }
 
-    [Fact]
-    public void ints_are_unwrapped()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void ints_are_unwrapped(IProviderTypeTestCase testCase)
     {
-        var node = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(JsonTestData.JsonDocument)
+        var node = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read("$.int-max-property");
-        var unwrapped = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(JsonTestData.JsonDocument)
+        var unwrapped = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read<int>("$.int-max-property");
 
         Assert.Equal(int.MaxValue, unwrapped);
         Assert.Equal(Convert.ToInt32(node), unwrapped);
     }
 
-    [Fact]
-    public void longs_are_unwrapped()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void longs_are_unwrapped(IProviderTypeTestCase testCase)
     {
-        var node = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(JsonTestData.JsonDocument)
+        var node = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read("$.long-max-property");
-        var val = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(JsonTestData.JsonDocument)
+        var val = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read<double>("$.long-max-property");
 
         Assert.Equal(long.MaxValue, val);
         Assert.Equal(node, val);
     }
 
-    [Fact]
-    public void doubles_are_unwrapped()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void doubles_are_unwrapped(IProviderTypeTestCase testCase)
     {
         var json = "{'double-property' : 56.78}";
 
-        var node = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(json).Read("$.double-property");
-        var val = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(json)
+        var node = JsonPath.Using(testCase.Configuration).Parse(json).Read("$.double-property");
+        var val = JsonPath.Using(testCase.Configuration).Parse(json)
             .Read<double>("$.double-property");
 
         Assert.Equal(56.78d, val);
         Assert.Equal(node, val);
     }
 
-    //[Fact]
+    //[Theory][ClassData(typeof(ProviderTypeTestCases))]
     //public void bigdecimals_are_unwrapped()
     //{
     //    decimal bd = BigDecimal.valueOf(long.MaxValue).Add(BigDecimal.valueOf(10.5));
     //    string json = "{bd-property = " + bd.ToString() + "}";
 
-    //    var node = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(json).Read("$.bd-property");
-    //    BigDecimal val = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(json).Read("$.bd-property", typeof(BigDecimal));
+    //    var node = JsonPath.Using(testCase.Configuration).Parse(json).Read("$.bd-property");
+    //    BigDecimal val = JsonPath.Using(testCase.Configuration).Parse(json).Read("$.bd-property", typeof(BigDecimal));
 
     //    Assert.Equal(bd, val);
     //    Assert.Equal(node.getAsBigDecimal(), val);
     //}
 
-    //[Fact]
+    //[Theory][ClassData(typeof(ProviderTypeTestCases))]
     //public void small_bigdecimals_are_unwrapped()
     //{
     //    decimal bd = 10.5m;
     //    string json = "{bd-property = " + bd.ToString() + "}";
 
-    //    var node = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(json).Read("$.bd-property");
-    //    var val = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(json).Read("$.bd-property", typeof(BigDecimal));
+    //    var node = JsonPath.Using(testCase.Configuration).Parse(json).Read("$.bd-property");
+    //    var val = JsonPath.Using(testCase.Configuration).Parse(json).Read("$.bd-property", typeof(BigDecimal));
 
     //    Assert.Equal(bd, val);
     //    Assert.Equal(node.getAsBigDecimal(), val);
     //}
 
-    //[Fact]
+    //[Theory][ClassData(typeof(ProviderTypeTestCases))]
     //public void bigintegers_are_unwrapped()
     //{
     //      BigInteger bi = BigInteger.valueOf(long.MaxValue).Add(BigInteger.TEN);
     //    string json = "{bi-property = " + bi.ToString() + "}";
 
-    //    var node = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(json).Read("$.bi-property");
-    //    BigInteger val = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(json).Read("$.bi-property", typeof(BigInteger));
+    //    var node = JsonPath.Using(testCase.Configuration).Parse(json).Read("$.bi-property");
+    //    BigInteger val = JsonPath.Using(testCase.Configuration).Parse(json).Read("$.bi-property", typeof(BigInteger));
 
     //    Assert.Equal(bi, val);
     //    Assert.Equal(node.getAsBigInteger(), val);
     //}
 
-    [Fact]
-    public void small_bigintegers_are_unwrapped()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void small_bigintegers_are_unwrapped(IProviderTypeTestCase testCase)
     {
         var json = "{'bi-property' : " + long.MaxValue + "}";
 
-        var node = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(json).Read("$.bi-property");
-        var val = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(json)
+        var node = JsonPath.Using(testCase.Configuration).Parse(json).Read("$.bi-property");
+        var val = JsonPath.Using(testCase.Configuration).Parse(json)
             .Read<double>("$.bi-property");
 
         Assert.Equal(long.MaxValue, val);
         Assert.Equal(node, val);
     }
 
-    [Fact]
-    public void int_to_long_mapping()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void int_to_long_mapping(IProviderTypeTestCase testCase)
     {
         Assert.Equal(1L,
-            JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse("{\"val\": 1}")
+            JsonPath.Using(testCase.Configuration).Parse("{\"val\": 1}")
                 .Read("val", typeof(long)));
     }
 
-    [Fact]
-    public void an_Integer_can_be_converted_to_a_Double()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void an_Integer_can_be_converted_to_a_Double(IProviderTypeTestCase testCase)
     {
         Assert.Equal(1D,
-            JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse("{\"val\": 1}")
+            JsonPath.Using(testCase.Configuration).Parse("{\"val\": 1}")
                 .Read("val", typeof(double)));
     }
 
-    [Fact]
-    public void list_of_numbers()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void list_of_numbers(IProviderTypeTestCase testCase)
     {
-        var objs = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(JsonTestData.JsonDocument)
+        var objs = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read("$.store.book[*].display-price").AsList();
 
         MyAssert.ContainsExactly(objs, 8.95D, 12.99D, 8.99D, 22.99D);
     }
 
-    [Fact]
-    public void an_object_can_be_mapped_to_pojo()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void an_object_can_be_mapped_to_pojo(IProviderTypeTestCase testCase)
     {
         var json = "{\n" +
                    "   \"foo\" : \"foo\",\n" +
@@ -174,7 +184,7 @@ public class SystemTextJsonProviderTest : TestUtils
                    "}";
 
 
-        var testClazz = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration)
+        var testClazz = JsonPath.Using(testCase.Configuration)
             .Parse(json).Read<TestClazz>("$");
 
         Assert.Equal("foo", testClazz.Foo);
@@ -182,35 +192,33 @@ public class SystemTextJsonProviderTest : TestUtils
         Assert.True(testClazz.Baz);
     }
 
-    [Fact]
-    public void test_type_ref()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void test_type_ref(IProviderTypeTestCase testCase)
     {
-        var list = JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(Json)
+        var list = JsonPath.Using(testCase.Configuration).Parse(Json)
             .Read<List<FooBarBaz<Gen>>>("$");
         Assert.NotNull(list);
         Assert.Equal("yepp", list[0].Gen.Eric);
     }
 
-    [Fact]
-    public void test_type_ref_fail()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void test_type_ref_fail(IProviderTypeTestCase testCase)
     {
         var typeRef = typeof(IList<FooBarBaz<int>>);
 
 
         Assert.Throws<MappingException>(() =>
-            JsonPath.Using(ConfigurationData.SystemTextJsonConfiguration).Parse(Json).Read("$", typeRef));
+            JsonPath.Using(testCase.Configuration).Parse(Json).Read("$", typeRef));
     }
 
-    [Fact]
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
     // https://github.com/json-path/JsonPath/issues/351
-    public void no_error_when_mapping_null()
+    public void no_error_when_mapping_null(IProviderTypeTestCase testCase)
     {
-        var configuration = Configuration
-            .CreateBuilder()
-            .WithMappingProvider(new SystemTextJsonMappingProvider())
-            .WithJsonProvider(new SystemTextJsonProvider())
-            .WithOptions(Option.DefaultPathLeafToNull, Option.SuppressExceptions)
-            .Build();
+        var configuration = testCase.Configuration.SetOptions(Option.DefaultPathLeafToNull, Option.SuppressExceptions);
 
         var json = "{\"M\":[]}";
 

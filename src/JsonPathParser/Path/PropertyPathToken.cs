@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Text;
 using XavierJefferson.JsonPathParser.Exceptions;
-using XavierJefferson.JsonPathParser.Extensions;
 using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.PathRefs;
 
@@ -17,8 +16,8 @@ public class PropertyPathToken : PathToken
     public PropertyPathToken(SerializingList<string> properties, char stringDelimiter)
     {
         if (!properties.Any()) throw new InvalidPathException("Empty properties");
-        this._properties = properties;
-        this._stringDelimiter = stringDelimiter.ToString();
+        _properties = properties;
+        _stringDelimiter = stringDelimiter.ToString();
     }
 
     public SerializingList<string> GetProperties()

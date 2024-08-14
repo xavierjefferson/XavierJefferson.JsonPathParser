@@ -108,7 +108,7 @@ public class FilterParseTest
     [Fact]
     public void a_all_filter_can_be_serialized()
     {
-        var filter = Filter.Create(Criteria.Where("a").All(new JpObjectList { "a", "b" })).ToString();
+        var filter = Filter.Create(Criteria.Where("a").All(new List<object?> { "a", "b" })).ToString();
         var parsed = Filter.Parse("[?(@['a'] ALL ['a','b'])]").ToString();
 
         Assert.Equal(parsed, filter);

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Extensions;
-using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.Logging;
 using XavierJefferson.JsonPathParser.Path;
@@ -16,8 +15,6 @@ public class PathNode : TypedValueNode<IPath>
     private readonly IPath _path;
     private readonly bool _shouldExist;
 
-    public override IPath Value => _path;
-
     public PathNode(string charSequence, bool existsCheck, bool shouldExist) : this(
         PathCompiler.Compile(charSequence), existsCheck, shouldExist)
     {
@@ -25,11 +22,13 @@ public class PathNode : TypedValueNode<IPath>
 
     public PathNode(IPath path, bool existsCheck = false, bool shouldExist = false)
     {
-        this._path = path;
-        this._existsCheck = existsCheck;
-        this._shouldExist = shouldExist;
+        _path = path;
+        _existsCheck = existsCheck;
+        _shouldExist = shouldExist;
         Logger.Trace($"PathNode {path} existsCheck: {existsCheck}");
     }
+
+    public override IPath Value => _path;
 
     public override int GetHashCode()
     {

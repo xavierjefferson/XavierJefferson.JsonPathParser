@@ -94,7 +94,7 @@ public class OldFilterTest : TestUtils
     [InlineData(false, "foo_null", 20D)]
     public void gt_filters_evaluates(bool isTrue, string where, object toCompare)
     {
-        var testCase = ProviderTypeTestCases.Cases.First();
+        var testCase = ProviderTypeTestCases.Cases.First().Value;
         var check = new Dictionary<string, object?>();
         check["foo"] = 12.5D;
         check["foo_null"] = null;
@@ -210,7 +210,7 @@ public class OldFilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void size_filters_evaluates(IProviderTypeTestCase testCase)
     {
-        var check = new JpDictionary();
+        var check = new Dictionary<string, object?>();
         check.Add("items", AsList(1, 2, 3));
         check.Add("items_empty", AsList());
 

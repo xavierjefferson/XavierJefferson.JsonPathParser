@@ -11,7 +11,7 @@ public class EvaluationListenerTest : TestUtils
     public void an_evaluation_listener_can_abort_after_one_result_using_fluent_api()
     {
         var title = JsonPath.Parse(JsonTestData.JsonDocument).WithListeners(_ => EvaluationContinuationEnum.Abort)
-            .Read("$..title", Constants.ListType).AsList();
+            .Read("$..title", TypeConstants.ListType).AsList();
         MyAssert.ContainsExactly(title, "Sayings of the Century");
     }
 
@@ -20,7 +20,7 @@ public class EvaluationListenerTest : TestUtils
     {
         var configuration = Configuration.CreateBuilder().WithEvaluationCallbacks(i => EvaluationContinuationEnum.Abort).Build();
 
-        var title = JsonPath.Using(configuration).Parse(JsonTestData.JsonDocument).Read("$..title", Constants.ListType)
+        var title = JsonPath.Using(configuration).Parse(JsonTestData.JsonDocument).Read("$..title", TypeConstants.ListType)
             .AsList();
         MyAssert.ContainsExactly(title, "Sayings of the Century");
     }
@@ -37,7 +37,7 @@ public class EvaluationListenerTest : TestUtils
         };
 
         var title = JsonPath.Parse(JsonTestData.JsonDocument).WithListeners(firstResultListener)
-            .Read("$..title", Constants.ListType).AsList();
+            .Read("$..title", TypeConstants.ListType).AsList();
         MyAssert.ContainsExactly(title, "Sayings of the Century", "Sword of Honour", "Moby Dick",
             "The Lord of the Rings");
         MyAssert.ContainsExactly(idxs, 0, 1, 2, 3);
@@ -47,10 +47,10 @@ public class EvaluationListenerTest : TestUtils
     [Fact]
     public void evaluation_results_can_be_limited()
     {
-        var res = JsonPath.Parse(JsonTestData.JsonDocument).Limit(1).Read("$..title", Constants.ListType).AsList();
+        var res = JsonPath.Parse(JsonTestData.JsonDocument).Limit(1).Read("$..title", TypeConstants.ListType).AsList();
         MyAssert.ContainsExactly(res, "Sayings of the Century");
 
-        res = JsonPath.Parse(JsonTestData.JsonDocument).Limit(2).Read("$..title", Constants.ListType).AsList();
+        res = JsonPath.Parse(JsonTestData.JsonDocument).Limit(2).Read("$..title", TypeConstants.ListType).AsList();
         MyAssert.ContainsExactly(res, "Sayings of the Century", "Sword of Honour");
     }
 
@@ -70,7 +70,7 @@ public class EvaluationListenerTest : TestUtils
                 idxs2.Add(found.Index);
                 return EvaluationContinuationEnum.Continue;
             })
-            .Read("$..title", Constants.ListType).AsList();
+            .Read("$..title", TypeConstants.ListType).AsList();
         MyAssert.ContainsExactly(title, "Sayings of the Century", "Sword of Honour", "Moby Dick",
             "The Lord of the Rings");
         MyAssert.ContainsExactly(idxs1, 0, 1, 2, 3);

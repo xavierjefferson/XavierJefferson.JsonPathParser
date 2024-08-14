@@ -8,7 +8,7 @@ public class ArrayIndexToken : ArrayPathToken
 
     internal ArrayIndexToken(ArrayIndexOperation arrayIndexOperation)
     {
-        this._arrayIndexOperation = arrayIndexOperation;
+        _arrayIndexOperation = arrayIndexOperation;
     }
 
 

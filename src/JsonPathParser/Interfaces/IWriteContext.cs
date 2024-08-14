@@ -1,5 +1,3 @@
-using System;
-
 namespace XavierJefferson.JsonPathParser.Interfaces;
 
 public interface IWriteContext : IJsonContainer
@@ -130,19 +128,19 @@ public interface IWriteContext : IJsonContainer
     /// <returns> a document content.</returns>
     IDocumentContext RenameKey(JsonPath path, string oldKeyName, string newKeyName);
 
-    ///<summary>Add or update the key with a the given value at the given path</summary>
-    ///<param name="filters">filters</param>
-    ///<param name="key"  > key to add</param>
-    ///<param name="path"> path to object </param>
-    ///<param name="value">value of key</param>
-    ///<returns>a document context</returns>
-    IDocumentContext Put(String path, String key, Object value, params IPredicate[] filters);
+    /// <summary>Add or update the key with a the given value at the given path</summary>
+    /// <param name="filters">filters</param>
+    /// <param name="key"> key to add</param>
+    /// <param name="path"> path to object </param>
+    /// <param name="value">value of key</param>
+    /// <returns>a document context</returns>
+    IDocumentContext Put(string path, string key, object value, params IPredicate[] filters);
 
-  
+
     ///<returns> a document context</returns>
     ///<summary> Add or update the key with a the given value at the given path</summary>
     ///<param name="value"> value of key</param>
     ///<param name="path"> path to array</param>
     ///<param name="key">  key to add</param>
-    IDocumentContext Put(JsonPath path, String key, Object value);
+    IDocumentContext Put(JsonPath path, string key, object value);
 }

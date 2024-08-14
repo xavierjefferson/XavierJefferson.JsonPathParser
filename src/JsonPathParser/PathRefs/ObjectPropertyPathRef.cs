@@ -8,28 +8,22 @@ public class ObjectPropertyPathRef : PathRef
 
     public ObjectPropertyPathRef(object? parent, string property) : base(parent)
     {
-        this._property = property;
+        _property = property;
     }
 
     public override void Set(object? newVal, Configuration configuration)
     {
         configuration.JsonProvider.SetProperty(Parent, _property, newVal);
     }
-    public override void Put(String key, Object value, Configuration configuration)
+
+    public override void Put(string key, object value, Configuration configuration)
     {
-        Object target = configuration.JsonProvider.GetMapValue(Parent, _property);
-        if (IsTargetInvalid(target))
-        {
-            return;
-        }
+        var target = configuration.JsonProvider.GetMapValue(Parent, _property);
+        if (IsTargetInvalid(target)) return;
         if (configuration.JsonProvider.IsMap(target))
-        {
             configuration.JsonProvider.SetProperty(target, key, value);
-        }
         else
-        {
             throw new InvalidModificationException("Can only add properties to a map");
-        }
     }
 
     public override void Convert(MapDelegate mapFunction, Configuration configuration)

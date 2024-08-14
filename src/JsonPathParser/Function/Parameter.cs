@@ -16,7 +16,7 @@ public class Parameter
 
     public Parameter(string json)
     {
-        this._json = json;
+        _json = json;
         ParameterType = ParamType.Json;
     }
 
@@ -43,7 +43,7 @@ public class Parameter
 
     public void SetJson(string json)
     {
-        this._json = json;
+        _json = json;
     }
 
     /// <summary>
@@ -53,6 +53,7 @@ public class Parameter
     /// <param name="ctx">*      Context.</param>
     /// <param name="parameters">*      ICollection of parameters.</param>
     /// <param name="
+    /// 
     /// 
     /// <T>
     ///     ">*      Type T returned as a List of T.</param>
@@ -79,23 +80,20 @@ public class Parameter
     /// <param name="value">*      The value to evaluate.</param>
     public static void Consume<T>(IEvaluationContext ctx, ICollection<T> collection, object? value)
     {
-        JpObjectList toAdd;
+        List<object?> toAdd;
         var expectedType = typeof(T);
         var canAddNull = false;
         if (ctx.Configuration.JsonProvider.IsArray(value))
-            toAdd = new JpObjectList(ctx.Configuration.JsonProvider.AsEnumerable(value).Cast<object>()
-                .Where(i => i != null));
+            toAdd = ctx.Configuration.JsonProvider.AsEnumerable(value).Cast<object?>()
+                .Where(i => i != null).ToList();
         else
-            toAdd = new JpObjectList { value };
+            toAdd = new List<object?> { value };
 
         foreach (var o in toAdd.Where(i => i != null))
-        {
-            double number;
-            if (o != null && expectedType == typeof(double) && o.TryConvertDouble(out number))
+            if (o is T instance)
+                collection.Add(instance);
+            else if (o != null && expectedType == typeof(double) && o.TryConvertDouble(out var number))
                 collection.Add((T)(object)number);
-            else if (o != null && expectedType.IsAssignableFrom(o.GetType()))
-                collection.Add((T)o);
             else if (o != null && expectedType == typeof(string)) collection.Add((T)(object)o.ToString());
-        }
     }
 }

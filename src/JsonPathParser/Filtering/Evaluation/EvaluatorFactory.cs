@@ -4,7 +4,7 @@ namespace XavierJefferson.JsonPathParser.Filtering.Evaluation;
 
 public class EvaluatorFactory
 {
-    static readonly Dictionary<RelationalOperator, IEvaluator> Evaluators = new();
+    private static readonly Dictionary<RelationalOperator, IEvaluator> Evaluators = new();
 
     static EvaluatorFactory()
     {
@@ -35,6 +35,4 @@ public class EvaluatorFactory
     {
         return Evaluators[@operator];
     }
-
-
 }

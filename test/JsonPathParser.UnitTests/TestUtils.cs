@@ -6,9 +6,9 @@ namespace XavierJefferson.JsonPathParser.UnitTests;
 
 public class TestUtils
 {
-    public static JpObjectList AsList(params object?[] items)
+    public static List<object?> AsList(params object?[] items)
     {
-        return new JpObjectList(items);
+        return new List<object?>(items);
     }
 
 
@@ -19,9 +19,9 @@ public class TestUtils
         return typeof(TestUtils).Assembly.GetManifestResourceStream(a);
     }
 
-    public JpDictionary GetSingletonMap(string key, object? value)
+    public IDictionary<string, object?> GetSingletonMap(string key, object? value)
     {
-        return new JpDictionary { { key, value } };
+        return new Dictionary<string, object?> { { key, value } };
     }
 
     public IPredicateContext CreatePredicateContext(object check, IProviderTypeTestCase testCase)

@@ -1,3 +1,5 @@
+using XavierJefferson.JsonPathParser.UnitTests.TestData;
+
 namespace XavierJefferson.JsonPathParser.UnitTests.Function;
 
 /**
@@ -6,15 +8,16 @@ namespace XavierJefferson.JsonPathParser.UnitTests.Function;
  */
 public class KeySetFunctionTest : BaseFunctionTest
 {
-    private readonly Configuration _conf = ConfigurationData.NewtonsoftJsonConfiguration;
 
-    [Fact]
-    public void TestKeySet()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestKeySet(IProviderTypeTestCase testCase)
     {
         using (var s = new StreamReader(GetResourceAsStream("keyset.json")))
         {
             var json = s.ReadToEnd();
-            VerifyFunction(_conf, "$.data.keys()", json, new JpObjectList { "a", "b" });
+            VerifyFunction(testCase.Configuration, "$.data.keys()", json, new List<string> { "a", "b" });
         }
     }
 }

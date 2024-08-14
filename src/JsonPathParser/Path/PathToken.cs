@@ -9,10 +9,10 @@ namespace XavierJefferson.JsonPathParser.Path;
 
 public abstract class PathToken
 {
+    private bool? _definite;
     private PathToken? _next;
 
     private PathToken? _prev;
-    private bool? _definite;
     private int _upstreamArrayIndex = -1;
     private bool? _upstreamDefinite;
 
@@ -110,7 +110,7 @@ public abstract class PathToken
                     if (ctx.Options.Contains(Option.DefaultPathLeafToNull))
                         propertyVal = null;
                     else if (ctx.Options.Contains(Option.RequireProperties))
-                        throw new PathNotFoundException("Missing property in path " + evalPath);
+                        throw new PathNotFoundException($"Missing property in path {evalPath}");
                     else
                         continue;
                 }

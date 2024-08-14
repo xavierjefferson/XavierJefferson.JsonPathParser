@@ -33,7 +33,7 @@ public class ArrayIndexOperation
         var sb = new StringBuilder();
 
         sb.Append("[");
-        sb.Append(string.Join(",",  _indexes.Select(i => i.ToString())));
+        sb.Append(string.Join(",", _indexes.Select(i => i.ToString())));
         sb.Append("]");
 
         return sb.ToString();

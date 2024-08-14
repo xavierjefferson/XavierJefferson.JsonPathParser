@@ -10,16 +10,16 @@ namespace XavierJefferson.JsonPathParser.Function.LateBinding;
 ///     */
 public class PathLateBindingValue : ILateBindingValue
 {
-    private readonly object? _result;
     private readonly Configuration _configuration;
     private readonly IPath _path;
+    private readonly object? _result;
     private readonly string _rootDocument;
 
     public PathLateBindingValue(IPath path, object? rootDocument, Configuration configuration)
     {
-        this._path = path;
-        this._rootDocument = rootDocument?.ToString();
-        this._configuration = configuration;
+        _path = path;
+        _rootDocument = rootDocument?.ToString();
+        _configuration = configuration;
         _result = path.Evaluate(rootDocument, rootDocument, configuration).GetValue();
     }
 

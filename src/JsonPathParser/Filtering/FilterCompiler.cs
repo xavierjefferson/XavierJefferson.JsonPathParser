@@ -74,7 +74,8 @@ public class FilterCompiler
             var result = ReadLogicalOr();
             _filter.SkipBlanks();
             if (_filter.InBounds())
-                throw new InvalidPathException($"Expected end of filter expression instead of: {_filter.Subsequence(_filter.Position, _filter.Length)}");
+                throw new InvalidPathException(
+                    $"Expected end of filter expression instead of: {_filter.Subsequence(_filter.Position, _filter.Length)}");
 
             return result;
         }
@@ -395,7 +396,8 @@ public class FilterCompiler
                 _filter.CurrentChar() == CloseParenthesis && CurrentCharIsClosingFunctionBracket(begin);
             var closingLogicalBracket = _filter.CurrentChar() == CloseParenthesis && !closingFunctionBracket;
 
-            if (!_filter.InBounds() || IsRelationalOperatorChar(_filter.CurrentChar()) || _filter.CurrentChar() == Space ||
+            if (!_filter.InBounds() || IsRelationalOperatorChar(_filter.CurrentChar()) ||
+                _filter.CurrentChar() == Space ||
                 closingLogicalBracket)
                 break;
             _filter.IncrementPosition(1);
@@ -445,7 +447,7 @@ public class FilterCompiler
 
         public CompiledFilter(IPredicate predicate)
         {
-            this._predicate = predicate;
+            _predicate = predicate;
         }
 
 

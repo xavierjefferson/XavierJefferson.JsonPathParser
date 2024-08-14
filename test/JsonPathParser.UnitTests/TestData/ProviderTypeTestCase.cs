@@ -1,4 +1,6 @@
-﻿using XavierJefferson.JsonPathParser.UnitTests.Enums;
+﻿using XavierJefferson.JsonPathParser.Mapper;
+using XavierJefferson.JsonPathParser.Provider;
+using XavierJefferson.JsonPathParser.UnitTests.Enums;
 using Xunit.Abstractions;
 
 namespace XavierJefferson.JsonPathParser.UnitTests.TestData;
@@ -26,18 +28,7 @@ public class ProviderTypeTestCase : IProviderTypeTestCase
     public void Deserialize(IXunitSerializationInfo info)
     {
         ProviderTypeValue = info.GetValue<ProviderTypeEnum>(nameof(ProviderTypeValue));
-        switch (ProviderTypeValue)
-        {
-            case ProviderTypeEnum.NewtonsoftJson:
-                Configuration = ConfigurationData.NewtonsoftJsonConfiguration;
-                break;
-            case ProviderTypeEnum.SystemTextJson:
-                Configuration = ConfigurationData.SystemTextJsonConfiguration;
-                break;
-            default:
-                Configuration = null;
-                break;
-        }
+        Configuration= ProviderTypeTestCases.RootData[ProviderTypeValue];
     }
 
     /// <inheritdoc />

@@ -1,3 +1,5 @@
+using XavierJefferson.JsonPathParser.UnitTests.TestData;
+
 namespace XavierJefferson.JsonPathParser.UnitTests;
 
 public class ProviderInTest
@@ -12,41 +14,26 @@ public class ProviderInTest
     private static readonly string SingleQuotesEqualsFilter = string.Format(EqualsFilter, SingleQuotes);
     private static readonly string SingleQuotesInFilter = string.Format(InFilter, SingleQuotes);
 
+ 
 
-    [Fact]
-    public void TestJsonPathQuotesGson()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestJsonPathQuotes(IProviderTypeTestCase testCase)
     {
-        var gson = ConfigurationData.SystemTextJsonConfiguration;
-        var ctx = JsonPath.Using(gson).Parse((object)Json);
-
-        var doubleQuoteEqualsResult = ctx.Read(DoubleQuotesEqualsFilter) as JpObjectList;
-        Assert.Equal("bar", doubleQuoteEqualsResult[0].ToString());
-
-        var singleQuoteEqualsResult = ctx.Read(SingleQuotesEqualsFilter) as JpObjectList;
-        Assert.Equal(doubleQuoteEqualsResult, singleQuoteEqualsResult);
-
-        var doubleQuoteInResult = ctx.Read(DoubleQuotesInFilter) as JpObjectList;
-        Assert.Equal(doubleQuoteInResult, doubleQuoteEqualsResult);
-        var singleQuoteInResult = ctx.Read(SingleQuotesInFilter) as JpObjectList;
-        Assert.Equal(doubleQuoteInResult, singleQuoteInResult);
-    }
-
-    [Fact]
-    public void TestJsonPathQuotesJsonOrg()
-    {
-        var configuration = ConfigurationData.NewtonsoftJsonConfiguration;
+        var configuration = testCase.Configuration;
         var ctx = JsonPath.Using(configuration).Parse((object)Json);
 
-        var doubleQuoteEqualsResult = ctx.Read(DoubleQuotesEqualsFilter) as JpObjectList;
+        var doubleQuoteEqualsResult = ctx.Read(DoubleQuotesEqualsFilter) as List<object?>;
         Assert.Equal("bar", doubleQuoteEqualsResult[0]);
 
-        var singleQuoteEqualsResult = ctx.Read(SingleQuotesEqualsFilter) as JpObjectList;
+        var singleQuoteEqualsResult = ctx.Read(SingleQuotesEqualsFilter) as List<object?>;
         Assert.Equal(doubleQuoteEqualsResult[0], singleQuoteEqualsResult[0]);
 
-        var doubleQuoteInResult = ctx.Read(DoubleQuotesInFilter) as JpObjectList;
+        var doubleQuoteInResult = ctx.Read(DoubleQuotesInFilter) as List<object?>;
         Assert.Equal(doubleQuoteInResult[0], doubleQuoteEqualsResult[0]);
 
-        var singleQuoteInResult = ctx.Read(SingleQuotesInFilter) as JpObjectList;
+        var singleQuoteInResult = ctx.Read(SingleQuotesInFilter) as List<object?>;
         Assert.Equal(doubleQuoteInResult[0], singleQuoteInResult[0]);
     }
 }

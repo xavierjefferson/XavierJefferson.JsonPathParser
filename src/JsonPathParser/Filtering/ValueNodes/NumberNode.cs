@@ -1,6 +1,4 @@
-﻿using XavierJefferson.JsonPathParser.Interfaces;
-
-namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
+﻿namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public class NumberNode : TypedValueNode<double>
 {
@@ -8,21 +6,21 @@ public class NumberNode : TypedValueNode<double>
 
     private readonly double _value;
 
-    public override double Value => _value;
-
     private NumberNode()
     {
     }
 
     public NumberNode(double number)
     {
-        this._value = number;
+        _value = number;
     }
 
     public NumberNode(string num)
     {
         _value = double.Parse(num);
     }
+
+    public override double Value => _value;
 
     public override int GetHashCode()
     {
@@ -33,10 +31,11 @@ public class NumberNode : TypedValueNode<double>
     {
         return new StringNode(_value.ToString(), false);
     }
+
     [Obsolete]
     public double GetNumber()
     {
-        return _value ;
+        return _value;
     }
 
 

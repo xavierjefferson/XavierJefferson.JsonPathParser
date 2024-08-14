@@ -43,11 +43,12 @@ public class RelationalOperator
         SubsetOf, AnyOf, NoneOf
     };
 
-    private static readonly Dictionary<string, RelationalOperator?> OperatorDictionaryByName = typeof(RelationalOperator)
-        .GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
-        .Where(i => i.FieldType == typeof(RelationalOperator))
-        .Select(i => new { i.Name, Value = i.GetValue(null) as RelationalOperator })
-        .ToDictionary(i => i.Name, i => i.Value, StringComparer.InvariantCultureIgnoreCase);
+    private static readonly Dictionary<string, RelationalOperator?> OperatorDictionaryByName =
+        typeof(RelationalOperator)
+            .GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+            .Where(i => i.FieldType == typeof(RelationalOperator))
+            .Select(i => new { i.Name, Value = i.GetValue(null) as RelationalOperator })
+            .ToDictionary(i => i.Name, i => i.Value, StringComparer.InvariantCultureIgnoreCase);
 
     private static readonly Dictionary<string, RelationalOperator> OperatorDictionary = Values.ToDictionary(
         i => i._operatorString, i => i,
@@ -55,15 +56,16 @@ public class RelationalOperator
 
     private readonly string _operatorString;
 
+    private RelationalOperator(string operatorString)
+    {
+        _operatorString = operatorString;
+    }
+
     public static RelationalOperator FromName(string name)
     {
         if (!OperatorDictionaryByName.ContainsKey(name))
             throw new InvalidPathException("Filter operator with name " + name + " is not supported!");
         return OperatorDictionaryByName[name];
-    }
-    private RelationalOperator(string operatorString)
-    {
-        _operatorString = operatorString;
     }
 
     public static RelationalOperator FromString(string operatorString)

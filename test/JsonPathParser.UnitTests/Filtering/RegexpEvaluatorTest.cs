@@ -12,7 +12,7 @@ public class RegexEvaluatorTest : TestUtils
     [ClassData(typeof(RegexTestCases))]
     public void should_evaluate_regular_expression(RegexTestCase testCase)
     {
-        var testCase0 = ProviderTypeTestCases.Cases.First();
+        var testCase0 = ProviderTypeTestCases.Cases.First().Value;
         //given
         var evaluator = EvaluatorFactory.CreateEvaluator(RelationalOperator.Regex);
         ValueNode patternNode = ValueNode.CreatePatternNode(testCase.Pattern);
@@ -27,6 +27,6 @@ public class RegexEvaluatorTest : TestUtils
 
     private IPredicateContext CreatePredicateContext(IProviderTypeTestCase testCase)
     {
-        return base.CreatePredicateContext(new JpDictionary(), testCase);
+        return base.CreatePredicateContext(new Dictionary<string, object?>(), testCase);
     }
 }

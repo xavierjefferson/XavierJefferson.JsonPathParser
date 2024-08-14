@@ -1,18 +1,29 @@
-﻿using System.Collections.ObjectModel;
+﻿using XavierJefferson.JsonPathParser.Mapper;
+using XavierJefferson.JsonPathParser.Provider;
 using XavierJefferson.JsonPathParser.UnitTests.Enums;
 
 namespace XavierJefferson.JsonPathParser.UnitTests.TestData;
 
 internal class ProviderTypeTestCases : TheoryData<ProviderTypeTestCase>
 {
-    public static ReadOnlyCollection<ProviderTypeTestCase> Cases = new(new List<ProviderTypeTestCase>
+    public static Dictionary<ProviderTypeEnum, Configuration> RootData = new()
     {
-        new(ProviderTypeEnum.NewtonsoftJson, ConfigurationData.NewtonsoftJsonConfiguration),
-        new(ProviderTypeEnum.SystemTextJson, ConfigurationData.SystemTextJsonConfiguration)
-    });
+        {
+            ProviderTypeEnum.NewtonsoftJson, Configuration.DefaultConfiguration()
+        },
+        {
+            ProviderTypeEnum.SystemTextJson, Configuration.DefaultConfiguration()
+                .SetJsonProvider<SystemTextJsonProvider>().SetMappingProvider<SystemTextJsonMappingProvider>()
+        }
+    };
 
+    public static Dictionary<ProviderTypeEnum, ProviderTypeTestCase> Cases =
+        RootData.ToDictionary(i => i.Key, i => new ProviderTypeTestCase(i.Key, i.Value));
     public ProviderTypeTestCases()
     {
-        foreach (var testCase in Cases) Add(testCase);
+        foreach (var type in Cases)
+        {
+            this.Add(type.Value);
+        }
     }
 }

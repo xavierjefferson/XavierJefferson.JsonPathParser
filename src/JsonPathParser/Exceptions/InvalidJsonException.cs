@@ -32,7 +32,7 @@ public class InvalidJsonException : JsonPathException
     /// </summary>
     public InvalidJsonException(Exception cause, string json) : base(cause)
     {
-        this._json = json;
+        _json = json;
     }
 
     /// <summary>

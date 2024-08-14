@@ -13,7 +13,7 @@ public class ArraySliceToken : ArrayPathToken
 
     internal ArraySliceToken(ArraySliceOperation operation)
     {
-        this._operation = operation;
+        _operation = operation;
     }
 
 
@@ -44,7 +44,8 @@ public class ArraySliceToken : ArrayPathToken
             from = length + from;
         from = Math.Max(0, from.Value);
 
-        Logger.Debug($"Slice from index on array with length: {length}. From index: {from} to: {length - 1}. Input: {ToString()}");
+        Logger.Debug(
+            $"Slice from index on array with length: {length}. From index: {from} to: {length - 1}. Input: {ToString()}");
 
         if (length == 0 || from >= length) return;
         for (var i = from.Value; i < length; i++) HandleArrayIndex(i, currentPath, model, ctx);

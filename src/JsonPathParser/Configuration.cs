@@ -1,6 +1,4 @@
 using System.Collections.ObjectModel;
-using XavierJefferson.JsonPathParser.Extensions;
-using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser;
@@ -11,12 +9,6 @@ namespace XavierJefferson.JsonPathParser;
 public class Configuration
 {
     private static IDefaults? _defaults;
-
-    /// <summary>
-    ///     Returns the evaluation callbacks registered in this configuration
-    /// </summary>
-    ///     <returns> the evaluation callbacks</returns>
-    public ReadOnlyCollection<EvaluationCallback>? EvaluationCallbacks { get; }
 
 
     private readonly HashSet<Option>? _options;
@@ -33,21 +25,27 @@ public class Configuration
     }
 
     /// <summary>
-    ///     Returns <see cref="IJsonProvider"/> used by this configuration
+    ///     Returns the evaluation callbacks registered in this configuration
     /// </summary>
-    ///     <returns> jsonProvider used</returns>
+    /// <returns> the evaluation callbacks</returns>
+    public ReadOnlyCollection<EvaluationCallback>? EvaluationCallbacks { get; }
+
+    /// <summary>
+    ///     Returns <see cref="IJsonProvider" /> used by this configuration
+    /// </summary>
+    /// <returns> jsonProvider used</returns>
     public IJsonProvider JsonProvider { get; }
 
     /// <summary>
-    ///     Returns <see cref="IMappingProvider"/> used by this configuration
+    ///     Returns <see cref="IMappingProvider" /> used by this configuration
     /// </summary>
-    ///     <returns> mappingProvider used</returns>
+    /// <returns> mappingProvider used</returns>
     public IMappingProvider MappingProvider { get; }
 
     /// <summary>
     ///     HashSet Default configuration
     /// </summary>
-    ///     <param name="defaults">default configuration settings</param>
+    /// <param name="defaults">default configuration settings</param>
     public static void SetDefaults(IDefaults defaults)
     {
         _defaults = defaults;
@@ -96,9 +94,10 @@ public class Configuration
             .WithOptions(_options)
             .WithEvaluationCallbacks(EvaluationCallbacks).Build();
     }
+
     public Configuration SetJsonProvider<T>() where T : IJsonProvider, new()
     {
-        return this.CreateWithJsonProvider(new T());
+        return CreateWithJsonProvider(new T());
     }
 
     /// <summary>
@@ -181,11 +180,9 @@ public class Configuration
     {
         if (this == o) return true;
         if (o is Configuration configuration)
-        {
             return JsonProvider.GetType() == configuration.JsonProvider.GetType() &&
                    MappingProvider.GetType() == configuration.MappingProvider.GetType() &&
                    Equals(_options, configuration._options);
-        }
         return false;
     }
 }

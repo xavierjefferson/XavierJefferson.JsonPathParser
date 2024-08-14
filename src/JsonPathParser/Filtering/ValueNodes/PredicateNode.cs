@@ -6,12 +6,12 @@ public class PredicateNode : TypedValueNode<IPredicate>
 {
     private readonly IPredicate _predicate;
 
-    public override IPredicate Value => _predicate;
-
     public PredicateNode(IPredicate predicate)
     {
-        this._predicate = predicate;
+        _predicate = predicate;
     }
+
+    public override IPredicate Value => _predicate;
 
     public override PredicateNode AsPredicateNode()
     {

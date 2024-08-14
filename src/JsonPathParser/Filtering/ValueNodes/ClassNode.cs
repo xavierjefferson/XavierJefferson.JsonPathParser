@@ -1,17 +1,15 @@
-﻿using XavierJefferson.JsonPathParser.Interfaces;
-
-namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
+﻿namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public class ClassNode : TypedValueNode<Type>
 {
     private readonly Type _type;
 
-    public override Type Value => _type;
-
     public ClassNode(Type type)
     {
         _type = type;
     }
+
+    public override Type Value => _type;
 
     public override ClassNode AsClassNode()
     {
@@ -32,10 +30,7 @@ public class ClassNode : TypedValueNode<Type>
     public override bool Equals(object? o)
     {
         if (this == o) return true;
-        if (o is ClassNode that)
-        {
-            return _type != null && _type.Equals(that._type);
-        }
+        if (o is ClassNode that) return _type != null && _type.Equals(that._type);
         return false;
     }
 }

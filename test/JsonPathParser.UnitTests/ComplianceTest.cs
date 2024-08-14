@@ -30,7 +30,7 @@ public class ComplianceTest : TestUtils
 
         Assert.Equal(1, JsonPath.Read<int>(json, "$[0]"));
         Assert.Null(JsonPath.Read(json, "$[4]"));
-        MyAssert.ContainsAll(JsonPath.Read<JpObjectList>(json, "$[*]"), 1d, "2", 3.14d, true, null);
+        MyAssert.ContainsAll(JsonPath.Read<List<object?>>(json, "$[*]"), 1d, "2", 3.14d, true, null);
 
         var res = JsonPath.Read(json, "$[-1:]").AsList();
 
@@ -49,7 +49,7 @@ public class ComplianceTest : TestUtils
                    "             { \"id\": \"i6\", \"x\":  1, \"y\":  4 }\n" +
                    "           ]\n" +
                    "         }";
-        var z = JsonPath.Read(json, "$.points[1]") as JpDictionary;
+        var z = JsonPath.Read(json, "$.points[1]") as IDictionary<string, object?>;
 
         MyAssert.ContainsEntry(z, "id", "i2");
         MyAssert.ContainsEntry(z, "x", -2d);

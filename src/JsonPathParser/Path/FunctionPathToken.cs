@@ -15,7 +15,7 @@ public class FunctionPathToken : PathToken
 
     public FunctionPathToken(string pathFragment, SerializingList<Parameter>? parameters)
     {
-        this._pathFragment = pathFragment + (parameters != null && parameters.Count() > 0 ? "(...)" : "()");
+        _pathFragment = pathFragment + (parameters != null && parameters.Count() > 0 ? "(...)" : "()");
         if (null != pathFragment)
         {
             _functionName = pathFragment;

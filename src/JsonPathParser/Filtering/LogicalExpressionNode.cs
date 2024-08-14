@@ -1,26 +1,26 @@
 using XavierJefferson.JsonPathParser.Filtering.ValueNodes;
-using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser.Filtering;
 
 public class LogicalExpressionNode : ExpressionNode
 {
-    public LogicalOperator Operator { get; }
     protected SerializingList<ExpressionNode?> Chain = new();
 
     private LogicalExpressionNode(ExpressionNode left, LogicalOperator @operator, ExpressionNode? right)
     {
         Chain.Add(left);
         Chain.Add(right);
-        this.Operator = @operator;
+        Operator = @operator;
     }
 
     private LogicalExpressionNode(LogicalOperator @operator, ICollection<ExpressionNode> operands)
     {
         Chain.AddRange(operands);
-        this.Operator = @operator;
+        Operator = @operator;
     }
+
+    public LogicalOperator Operator { get; }
 
     public static ExpressionNode CreateLogicalNot(ExpressionNode op)
     {
@@ -71,7 +71,7 @@ public class LogicalExpressionNode : ExpressionNode
 
     public override string ToString()
     {
-        string delimiter = " " + Operator.OperatorString + " ";
+        var delimiter = " " + Operator.OperatorString + " ";
         return "(" + string.Join(delimiter, Chain.Cast<object>()) + ")";
     }
 

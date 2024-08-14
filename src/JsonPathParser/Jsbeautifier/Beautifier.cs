@@ -519,7 +519,7 @@ public class Beautifier
             (c == '/' &&
              ((LastType == TokenTypeEnum.TkWord && IsSpecialWord(LastText)) ||
               (LastType == TokenTypeEnum.TkEndExpr && (Flags.PreviousMode == "(FOR-EXPRESSION)" ||
-                                                         Flags.PreviousMode == "(COND-EXPRESSION)")) ||
+                                                       Flags.PreviousMode == "(COND-EXPRESSION)")) ||
               new[]
               {
                   TokenTypeEnum.TkComment, TokenTypeEnum.TkStartExpr, TokenTypeEnum.TkStartBlock,
@@ -574,19 +574,14 @@ public class Beautifier
                         if (!(esc || ipp != sep)) break;
                         if (ipp == betterSep && sep != betterSep)
                         {
-                            if (!esc)
-                            {
-                                resultingString += "\\";
-                            }
+                            if (!esc) resultingString += "\\";
 
                             resultingString += $"u{((int)betterSep).ToString("x4")}";
                         }
                         else
                         {
                             if (ipp == '\'' && esc)
-                            {
                                 resultingString += $"u{((int)ipp).ToString("x4")}";
-                            }
                             else
                                 resultingString += ipp;
                         }
@@ -959,7 +954,7 @@ public class Beautifier
 
     private void HandleWord(string tokenText)
     {
-        bool mightEnclose = false;
+        var mightEnclose = false;
         if (DoBlockJustClosed)
         {
             Append(" ");
@@ -1143,10 +1138,7 @@ public class Beautifier
                 Flags.VarLineReindented = false;
                 AppendNewline();
             }
-            else
-            {
-               //mightEnclose = true;
-            }
+            //mightEnclose = true;
         }
         else if (IsArray(Flags.Mode) && LastText == "," && LastLastText == "}")
         {
@@ -1156,16 +1148,11 @@ public class Beautifier
         {
             Append(" ");
         }
-        if (mightEnclose && !tokenText.StartsWith("\""))
-        {
-            Append("\"");
-        }
+
+        if (mightEnclose && !tokenText.StartsWith("\"")) Append("\"");
 
         Append(tokenText);
-        if (mightEnclose && !tokenText.StartsWith("\""))
-        {
-            Append("\"");
-        }
+        if (mightEnclose && !tokenText.StartsWith("\"")) Append("\"");
         LastWord = tokenText;
 
         if (tokenText == "var")

@@ -7,47 +7,58 @@ namespace XavierJefferson.JsonPathParser.UnitTests;
 
 public class NewtonsoftJsonProviderTest : TestUtils
 {
-    [Fact]
-    public void an_object_can_be_read()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+ 
+    public void an_object_can_be_read(IProviderTypeTestCase testCase)
     {
-        var book = JsonPath.Using(ConfigurationData.NewtonsoftJsonConfiguration).Parse(JsonTestData.JsonDocument)
-            .Read<JpDictionary>("$.store.book[0]");
+        var book = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
+            .Read<IDictionary<string, object?>>("$.store.book[0]");
 
         Assert.Equal("Nigel Rees", book["author"].ToString());
     }
 
-    [Fact]
-    public void a_property_can_be_read()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void a_property_can_be_read(IProviderTypeTestCase testCase)
     {
-        var category = JsonPath.Using(ConfigurationData.NewtonsoftJsonConfiguration).Parse(JsonTestData.JsonDocument)
+        var category = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read<string>("$.store.book[0].category");
 
         Assert.Equal("reference", category);
     }
 
-    [Fact]
-    public void a_filter_can_be_applied()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void a_filter_can_be_applied(IProviderTypeTestCase testCase)
     {
-        var fictionBooks = JsonPath.Using(ConfigurationData.NewtonsoftJsonConfiguration)
-            .Parse(JsonTestData.JsonDocument).Read<JpObjectList>("$.store.book[?(@.category == 'fiction')]");
+        var fictionBooks = JsonPath.Using(testCase.Configuration)
+            .Parse(JsonTestData.JsonDocument).Read<List<object?>>("$.store.book[?(@.category == 'fiction')]");
 
         Assert.Equal(3, fictionBooks.Count());
     }
 
-    [Fact]
-    public void result_can_be_mapped_to_object()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void result_can_be_mapped_to_object(IProviderTypeTestCase testCase)
     {
-        var books = JsonPath.Using(ConfigurationData.NewtonsoftJsonConfiguration).Parse(JsonTestData.JsonDocument)
-            .Read<JpObjectList>("$.store.book");
+        var books = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
+            .Read<List<object?>>("$.store.book");
 
         Assert.Equal(4, books.Count());
     }
 
-    [Fact]
-    public void read_books_with_isbn()
+    [Theory]
+
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void read_books_with_isb(IProviderTypeTestCase testCase)
     {
-        var books = JsonPath.Using(ConfigurationData.NewtonsoftJsonConfiguration).Parse(JsonTestData.JsonDocument)
-            .Read<JpObjectList>("$..book[?(@.isbn)]");
+        var books = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
+            .Read<List<object?>>("$..book[?(@.isbn)]");
 
         Assert.Equal(2, books.Count());
     }
