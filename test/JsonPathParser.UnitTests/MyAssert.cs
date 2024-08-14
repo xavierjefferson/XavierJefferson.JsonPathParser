@@ -71,7 +71,7 @@ public class MyAssert : Assert
     /// <summary>Shortcut for expected exception testing during path evaluation.</summary>
     /// <typeparam name="T">The type of the exception expected to be thrown</typeparam>
     /// <param name="json">json to parse</param>
-    /// <param name="path">jsonpath do evaluate</param>
+    /// <param name="path">jsonpath to evaluate</param>
     /// <param name="conf">conf to use during evaluation</param>
     public static void EvaluationThrows<T>(string json, string path,
         Configuration conf) where T : Exception

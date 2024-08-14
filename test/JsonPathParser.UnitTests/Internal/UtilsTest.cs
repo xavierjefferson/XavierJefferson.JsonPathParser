@@ -5,16 +5,7 @@ namespace XavierJefferson.JsonPathParser.UnitTests.Internal;
 
 public class UtilsTest
 {
-    [Fact]
-    public void TestConcat()
-    {
-        Assert.Equal("", StringHelper.Concat());
-        Assert.Equal("", StringHelper.Concat(""));
-        Assert.Equal("", StringHelper.Concat("", ""));
-        Assert.Equal("a", StringHelper.Concat("a"));
-        Assert.Equal("a", StringHelper.Concat("", "a", ""));
-        Assert.Equal("abc", StringHelper.Concat("a", "b", "c"));
-    }
+   
 
     [Fact]
     public void TestEscape()
@@ -52,24 +43,6 @@ public class UtilsTest
     }
 
     [Fact]
-    public void TestIsEmpty()
-    {
-        Assert.True(StringHelper.IsEmpty(null));
-        Assert.True(StringHelper.IsEmpty(""));
-        Assert.False(StringHelper.IsEmpty("foo"));
-    }
-
-    [Fact]
-    public void TestIndexOf()
-    {
-        Assert.Equal(-1, StringHelper.IndexOf("bar", "foo", 0));
-        Assert.Equal(-1, StringHelper.IndexOf("bar", "a", 2));
-        Assert.Equal(1, StringHelper.IndexOf("bar", "a", 0));
-        Assert.Equal(1, StringHelper.IndexOf("bar", "a", 1));
-    }
-
-
-    [Fact]
     public void TestIsTrue()
     {
         Assertions.IsTrue(true, "foo");
@@ -84,13 +57,13 @@ public class UtilsTest
     [Fact]
     public void testOnlyOneIsTrueThrow1()
     {
-        Assert.Throws<ArgumentException>(() => Assertions.onlyOneIsTrue("foo", false, false));
+        Assert.Throws<ArgumentException>(() => Assertions.OnlyOneIsTrue("foo", false, false));
     }
 
     [Fact]
     public void testOnlyOneIsTrueThrow2()
     {
-        Assert.Throws<ArgumentException>(() => Assertions.onlyOneIsTrue("foo", true, true));
+        Assert.Throws<ArgumentException>(() => Assertions.OnlyOneIsTrue("foo", true, true));
     }
 
     [Fact]

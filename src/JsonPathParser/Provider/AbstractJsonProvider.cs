@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Text;
 using XavierJefferson.JsonPathParser.Exceptions;
@@ -15,7 +16,24 @@ public abstract class AbstractJsonProvider : IJsonProvider
     /// <returns> true if obj is an array</returns>
     public virtual bool IsArray(object? obj)
     {
-        return obj is IList;
+        return obj is IList && !(obj is IDictionary);
+    }
+
+    static bool TryConvertToIList(object? obj, out IList list)
+    {
+        if (obj is IDictionary)
+        {
+            list = null;
+            return false;
+        }
+        list = obj as IList;
+        return list != null;
+    }
+
+    static bool TryConvertToIDictionary(object? obj, out IDictionary list)
+    {
+        list = obj as IDictionary;
+        return list != null;
     }
 
     /// <summary>
@@ -26,7 +44,11 @@ public abstract class AbstractJsonProvider : IJsonProvider
     /// <returns> the entry at the given index</returns>
     public virtual object? GetArrayIndex(object? obj, int idx)
     {
-        return ((IList)obj)[idx];
+        if (TryConvertToIList(obj, out IList? list))
+        {
+            return list[idx];
+        }
+        throw new ArgumentException("The argument is not an array");
     }
 
     [Obsolete]
@@ -37,13 +59,23 @@ public abstract class AbstractJsonProvider : IJsonProvider
 
     public virtual void SetArrayIndex(object? array, int index, object? newValue)
     {
-        if (!IsArray(array)) throw new NotImplementedException();
+        if (!TryConvertToIList(array, out var list))
+        {
+            throw new ArgumentException("The argument is not an array");
+        }
+        if (list.IsFixedSize)
+        {
+            throw new ArgumentException("The argument is a fixed size");
+        }
+        if (list.IsReadOnly)
+        {
+            throw new ArgumentException("The argument is read only");
+        }
 
-        var l = array as JpObjectList;
-        if (index == l.Count)
-            l.Add(newValue);
+        if (index == list.Count)
+            list.Add(newValue);
         else
-            l[index] = newValue;
+            list[index] = newValue;
     }
 
 
@@ -55,10 +87,16 @@ public abstract class AbstractJsonProvider : IJsonProvider
     /// <returns> the map entry or {@link com.jayway.jsonpath.spi.json.JsonProvider#UNDEFINED} for missing properties</returns>
     public virtual object? GetMapValue(object? obj, string key)
     {
-        var m = (IDictionary)obj;
-        foreach (var n in m.Keys.Cast<string>())
-            if (n == key)
-                return m[key];
+        if (TryConvertToIDictionary(obj, out IDictionary dictionary))
+        {
+            foreach (var n in dictionary.Keys.Cast<string>())
+                if (n == key)
+                    return dictionary[key];
+        }
+        else
+        {
+            throw new ArgumentException($"The argument does not implement {nameof(IDictionary)}");
+        }
 
         return IJsonProvider.Undefined;
     }
@@ -71,12 +109,12 @@ public abstract class AbstractJsonProvider : IJsonProvider
     /// <param name="value">the value to set</param>
     public virtual void SetProperty(object? obj, object? key, object? value)
     {
-        if (IsMap(obj))
-            ((IDictionary)obj).Add(key?.ToString(), value);
+        if (TryConvertToIDictionary(obj, out IDictionary? dictionary))
+        {
+            dictionary[key] = value;
+        }
         else
-            throw new JsonPathException("setProperty operation cannot be used with " + obj != null
-                ? obj.GetType().FullName
-                : "null");
+            throw new JsonPathException($"{nameof(SetProperty)} operation cannot be used with {SerializeTypeName(obj)}");
     }
 
 
@@ -87,16 +125,17 @@ public abstract class AbstractJsonProvider : IJsonProvider
     /// <param name="key">a string key or a numerical index to remove</param>
     public virtual void RemoveProperty(object? obj, object? key)
     {
-        if (IsMap(obj))
+        if (TryConvertToIDictionary(obj, out IDictionary? dictionary))
         {
-            ((IDictionary)obj).Remove(key);
+            dictionary.Remove(key);
+        }
+        else if (TryConvertToIList(obj, out IList list))
+        {
+            var index = key is int ? (int)key : int.Parse(key.ToString());
+            list.RemoveAt(index);
         }
         else
-        {
-            var list = obj as JpObjectList;
-            var index = key is int ? (int)key : int.Parse(key.ToString());
-            list.Remove(index);
-        }
+            throw new JsonPathException($"{nameof(RemoveProperty)} operation cannot be used with {SerializeTypeName(obj)}");
     }
 
 
@@ -117,9 +156,11 @@ public abstract class AbstractJsonProvider : IJsonProvider
     /// <returns> the keys for an object</returns>
     public virtual ICollection<string> GetPropertyKeys(object? obj)
     {
-        if (IsArray(obj))
-            throw new NotImplementedException();
-        return ((IDictionary)obj).Keys.Cast<string>().ToSerializingList();
+        if (TryConvertToIDictionary(obj, out IDictionary dictionary))
+        {
+            return dictionary.Keys.Cast<string>().ToSerializingList();
+        }
+        throw new ArgumentException($"The argument does not implement {nameof(IDictionary)}");
     }
 
     /// <summary>
@@ -129,14 +170,20 @@ public abstract class AbstractJsonProvider : IJsonProvider
     /// <returns> the number of entries in the array or object</returns>
     public virtual int Length(object? obj)
     {
-        if (IsArray(obj))
-            return ((IList)obj).Count;
-        if (IsMap(obj))
-            return GetPropertyKeys(obj).Count();
-        if (obj is string) return ((string)obj).Length;
-        throw new JsonPathException("length operation cannot be applied to " + (obj != null
-            ? obj.GetType().FullName
-            : "null"));
+        if (obj is string stringInstance)
+        {
+            return stringInstance.Length;
+        }
+        if (TryConvertToIList(obj, out IList? list))
+        {
+            return list.Count;
+        }
+        if (TryConvertToIDictionary(obj, out IDictionary dictionary))
+        {
+            return dictionary.Count;
+        }
+
+        throw new JsonPathException($"{nameof(Length)} operation cannot be applied to {SerializeTypeName(obj)}");
     }
 
     /// <summary>
@@ -146,9 +193,17 @@ public abstract class AbstractJsonProvider : IJsonProvider
     /// <returns> an IEnumerable that iterates over the entries of an array</returns>
     public virtual IEnumerable AsEnumerable(object? obj)
     {
-        if (IsArray(obj))
-            return (IEnumerable)obj;
-        throw new JsonPathException("Cannot iterate over " + obj != null ? obj.GetType().FullName : "null");
+        if (obj is IEnumerable enumerable)
+        {
+            return enumerable;
+        }
+        throw new JsonPathException($"Cannot iterate over {SerializeTypeName(obj)}");
+    }
+
+    static string SerializeTypeName(object? value)
+    {
+        if (value == null) return "null";
+        return value.GetType().FullName;
     }
 
 

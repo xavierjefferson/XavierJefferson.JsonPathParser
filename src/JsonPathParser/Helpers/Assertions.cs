@@ -30,18 +30,15 @@ public static class Assertions
     /// </summary>
     /// <param name="message">error describing message</param>
     /// <param name="expressions">the bool expressions to check if zero or more than one expressions are true</param>
-    public static void onlyOneIsTrue(string message, params bool[] expressions)
+    public static void OnlyOneIsTrue(string message, params bool[] expressions)
     {
         if (!OnlyOneIsTrueNonThrow(expressions)) throw new ArgumentException(message);
     }
 
-    public static bool OnlyOneIsTrueNonThrow(params bool[] expressions)
+    public static bool OnlyOneIsTrueNonThrow(params bool[]? expressions)
     {
-        var count = 0;
-        foreach (var expression in expressions)
-            if (expression && ++count > 1)
-                return false;
-        return 1 == count;
+        if (expressions == null || expressions.Length == 0) return false;
+        return expressions.Count(i => i) == 1;
     }
 
     /// <summary>

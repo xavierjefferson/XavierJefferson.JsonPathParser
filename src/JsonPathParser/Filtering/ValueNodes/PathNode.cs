@@ -70,7 +70,7 @@ public class PathNode : TypedValueNode<IPath>
 
     public override string ToString()
     {
-        return _existsCheck && !_shouldExist ? StringHelper.Concat("!", _path.ToString()) : _path.ToString();
+        return $"{(_existsCheck && !_shouldExist ? "!" : "")}{_path}";
     }
 
     public ValueNode Evaluate(IPredicateContext ctx)

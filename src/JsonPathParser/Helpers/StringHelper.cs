@@ -1,6 +1,5 @@
 using System.Text;
 using XavierJefferson.JsonPathParser.Exceptions;
-using XavierJefferson.JsonPathParser.Extensions;
 
 namespace XavierJefferson.JsonPathParser.Helpers;
 
@@ -17,36 +16,6 @@ public static class StringHelper
     {
         var vx = objs.Select(i => $"{wrap}{i}{wrap}").ToList();
         return string.Join(delimiter, vx);
-    }
-
-    public static string Concat(params string[]? strings)
-    {
-        if (strings == null || strings.Length == 0) return "";
-        if (strings.Length == 1) return strings[0];
-        var length = 0;
-        // -1 = no result, -2 = multiple results
-        var indexOfSingleNonEmptyString = -1;
-        foreach (var tuple in strings.ToIndexedEnumerable())
-            //for (int i = 0; i < strings.Length; i++)
-        {
-            var i = tuple.Index;
-            var charSequence = tuple.Value;
-            var len = charSequence.Length;
-            length += len;
-            if (indexOfSingleNonEmptyString != -2 && len > 0)
-            {
-                if (indexOfSingleNonEmptyString == -1)
-                    indexOfSingleNonEmptyString = i;
-                else
-                    indexOfSingleNonEmptyString = -2;
-            }
-        }
-
-        if (length == 0) return "";
-        if (indexOfSingleNonEmptyString > 0) return strings[indexOfSingleNonEmptyString];
-        var sb = new StringBuilder(length);
-        foreach (var charSequence in strings) sb.Append(charSequence);
-        return sb.ToString();
     }
 
     public static string? Escape(string? str, bool escapeSingleQuote)
@@ -226,42 +195,5 @@ public static class StringHelper
 
         if (hadSlash) writer.Write('\\');
         return writer.ToString();
-    }
-
-    /// <summary>
-    ///     <p>Checks if a string is empty ("") or null.</p>
-    ///     <p />
-    ///     <pre>
-    ///         StringUtils.isEmpty(null)      = true
-    ///         StringUtils.isEmpty("")        = true
-    ///         StringUtils.isEmpty(" ")       = false
-    ///         StringUtils.isEmpty("bob")     = false
-    ///         StringUtils.isEmpty("  bob  ") = false
-    ///     </pre>
-    ///     <p />
-    ///     <p>
-    ///         NOTE: This method changed in Lang version 2.0.
-    ///         It no longer trims the string.
-    ///         That functionality is available in isBlank().
-    ///     </p>
-    ///     @since 3.0 Changed signature from isEmpty(string) to isEmpty(string)
-    /// </summary>
-    /// <param name="cs">the string to check, may be null</param>
-    /// <returns> {@code true} if the string is empty or null</returns>
-    public static bool IsEmpty(string? cs)
-    {
-        return string.IsNullOrEmpty(cs);
-    }
-
-    /// <summary>
-    ///     Used by the IndexOf(string methods) as a green implementation of IndexOf.
-    /// </summary>
-    /// <param name="cs">the {@code string} to be processed</param>
-    /// <param name="searchChar">the {@code string} to be searched for</param>
-    /// <param name="start">the start index</param>
-    /// <returns> the index where the search sequence was found</returns>
-    public static int IndexOf(string cs, string searchChar, int start)
-    {
-        return cs.IndexOf(searchChar, start);
     }
 }

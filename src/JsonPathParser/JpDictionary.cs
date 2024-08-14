@@ -1,4 +1,6 @@
-﻿namespace XavierJefferson.JsonPathParser;
+﻿using System.Collections;
+
+namespace XavierJefferson.JsonPathParser;
 
 public class JpDictionary : Dictionary<string, object?>
 {
@@ -27,11 +29,11 @@ public class JpDictionary : Dictionary<string, object?>
     {
         if (value == null) return false;
         if (value == this) return true;
-        var other = value as JpDictionary;
+        var other = value as IDictionary;
         if (other == null) return false;
         if (other.Count != Count) return false;
-        if (!other.Keys.All(Keys.Contains)) return false;
-        if (!Keys.All(other.Keys.Contains)) return false;
+        if (!other.Keys.Cast<object>().All(Keys.Contains)) return false;
+        if (!Keys.All(other.Keys.Cast<object>().Contains)) return false;
         foreach (var key in Keys)
         {
             var thisValue = this[key];

@@ -237,7 +237,7 @@ public class JsonContext : IDocumentContext
         var cache = CacheManager.Instance;
         var cacheKey = filters == null || filters.Length == 0
             ? path
-            : StringHelper.Concat(new[] { path }.Union(filters.Select(i => i.ToString())).ToArray());
+            : String.Concat(new[] { path }.Union(filters.Select(i => i.ToString())));
         var jsonPath = cache.Get(cacheKey) as JsonPath;
         if (jsonPath == null)
         {

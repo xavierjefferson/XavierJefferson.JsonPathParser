@@ -35,7 +35,7 @@ public abstract class PathToken
         if (properties.Count() == 1)
         {
             var property = properties[0];
-            var evalPath = StringHelper.Concat(currentPath, "['", property, "']");
+            var evalPath = $"{currentPath}['{property}']";
             var propertyVal = ReadObjectProperty(property, model, ctx);
             if (propertyVal == IJsonProvider.Undefined)
             {
@@ -136,7 +136,7 @@ public abstract class PathToken
 
     protected void HandleArrayIndex(int index, string currentPath, object? model, EvaluationContextImpl ctx)
     {
-        var evalPath = StringHelper.Concat(currentPath, "[", index.ToString(), "]");
+        var evalPath = $"{currentPath}[{index}]";
         var pathRef = ctx.ForUpdate() ? PathRef.Create(model, index) : PathRef.NoOp;
         var effectiveIndex = index < 0 ? ctx.JsonProvider.Length(model) + index : index;
         try
