@@ -4,7 +4,7 @@ namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public class UndefinedNode : ValueNode
 {
-    public override Type Type(IPredicateContext ctx)
+    public override Type Type(IPredicateContext context)
     {
         return typeof(void);
     }

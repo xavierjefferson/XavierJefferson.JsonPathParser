@@ -73,7 +73,7 @@ public class JsonPath
 
     private JsonPath(string jsonPath, IPredicate[]? filters)
     {
-        if (jsonPath == null) throw new ArgumentNullException(nameof(jsonPath));
+        ArgumentNullException.ThrowIfNull(jsonPath);
         _path = PathCompiler.Compile(jsonPath, filters);
     }
 
@@ -213,8 +213,8 @@ public class JsonPath
     ///     <returns> the updated jsonObject or the path list to updated objects if option AS_PATH_LIST is set.</returns>
     public object? Set(object? jsonObject, object? newVal, Configuration configuration)
     {
-        if (jsonObject == null) throw new ArgumentNullException(nameof(jsonObject));
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(jsonObject);
+        ArgumentNullException.ThrowIfNull(configuration);
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         if (!evaluationContext.GetPathList().Any())
         {
@@ -239,9 +239,9 @@ public class JsonPath
     /// <returns> the updated jsonObject or the path list to updated objects if option AS_PATH_LIST is set.</returns>
     public object? Map(object? jsonObject, MapDelegate mapFunction, Configuration configuration)
     {
-        if (jsonObject == null) throw new ArgumentNullException(nameof(jsonObject));
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
-        if (mapFunction == null) throw new ArgumentNullException(nameof(mapFunction));
+        ArgumentNullException.ThrowIfNull(jsonObject);
+        ArgumentNullException.ThrowIfNull(configuration);
+        ArgumentNullException.ThrowIfNull(mapFunction);
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         if (!evaluationContext.GetPathList().Any())
         {
@@ -269,8 +269,8 @@ public class JsonPath
     ///     <returns> the updated jsonObject or the path list to deleted objects if option AS_PATH_LIST is set.</returns>
     public object? Delete(object? jsonObject, Configuration configuration)
     {
-        if (jsonObject == null) throw new ArgumentNullException(nameof(jsonObject));
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(jsonObject);
+        ArgumentNullException.ThrowIfNull(configuration);
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         if (!evaluationContext.GetPathList().Any())
         {
@@ -299,8 +299,8 @@ public class JsonPath
     ///     <returns> the updated jsonObject or the path list to updated object if option AS_PATH_LIST is set.</returns>
     public object? Add(object? jsonObject, object? value, Configuration configuration)
     {
-        if (jsonObject == null) throw new ArgumentNullException(nameof(jsonObject));
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(jsonObject);
+        ArgumentNullException.ThrowIfNull(configuration);
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         if (!evaluationContext.GetPathList().Any())
         {
@@ -329,9 +329,9 @@ public class JsonPath
     ///     <returns> the updated jsonObject or the path list to updated objects if option AS_PATH_LIST is set.</returns>
     public object? Add(object? jsonObject, string key, object? value, Configuration configuration)
     {
-        if (jsonObject == null) throw new ArgumentNullException(nameof(jsonObject));
+        ArgumentNullException.ThrowIfNull(jsonObject);
         Assertions.NotEmpty(key, "key can not be null or empty");
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(configuration);
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         if (!evaluationContext.GetPathList().Any())
         {
@@ -348,9 +348,9 @@ public class JsonPath
 
     public object? RenameKey(object? jsonObject, string oldKeyName, string newKeyName, Configuration configuration)
     {
-        if (jsonObject == null) throw new ArgumentNullException(nameof(jsonObject));
+        ArgumentNullException.ThrowIfNull(jsonObject);
         Assertions.NotEmpty(newKeyName, "newKeyName can not be null or empty");
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(configuration);
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         foreach (var updateOperation in evaluationContext.UpdateOperations)
         {
@@ -405,7 +405,7 @@ public class JsonPath
     public object? Read(string json, Configuration configuration)
     {
         Assertions.NotEmpty(json, "json can not be null or empty");
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(configuration);
 
         return Read(configuration.JsonProvider.Parse(json), configuration);
     }
@@ -460,9 +460,9 @@ public class JsonPath
     ///     <returns> list of objects matched by the given path</returns>
     public object? Read(FileInfo jsonFile, Configuration configuration)
     {
-        if (jsonFile == null) throw new ArgumentNullException(nameof(jsonFile));
+        ArgumentNullException.ThrowIfNull(jsonFile);
         Assertions.IsTrue(jsonFile.Exists, "json file does not exist");
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(configuration);
         using (var fis = File.OpenRead(jsonFile.FullName))
         {
             return Read(fis, configuration);
@@ -497,8 +497,8 @@ public class JsonPath
     ///     <returns> list of objects matched by the given path</returns>
     public object? Read(Stream jsonInputStream, Configuration configuration)
     {
-        if (jsonInputStream == null) throw new ArgumentNullException(nameof(jsonInputStream));
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(jsonInputStream);
+        ArgumentNullException.ThrowIfNull(configuration);
         return Read(jsonInputStream, Encoding.UTF8, configuration);
     }
 
@@ -515,9 +515,9 @@ public class JsonPath
     ///     <returns> list of objects matched by the given path</returns>
     public object? Read(Stream jsonInputStream, Encoding charset, Configuration configuration)
     {
-        if (jsonInputStream == null) throw new ArgumentNullException(nameof(jsonInputStream));
-        if (charset == null) throw new ArgumentNullException(nameof(charset));
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(jsonInputStream);
+        ArgumentNullException.ThrowIfNull(charset);
+        ArgumentNullException.ThrowIfNull(configuration);
         using (jsonInputStream)
         {
             return Read(configuration.JsonProvider.Parse(jsonInputStream, charset), configuration);
@@ -833,9 +833,9 @@ public class JsonPath
     */
     public T Put<T>(object? jsonObject, string key, object? value, Configuration configuration)
     {
-        if (jsonObject == null) throw new ArgumentNullException(nameof(jsonObject));
+        ArgumentNullException.ThrowIfNull(jsonObject);
         Assertions.NotEmpty(key, "key can not be null or empty");
-        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+        ArgumentNullException.ThrowIfNull(configuration);
 
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         if (!evaluationContext.GetPathList().Any())

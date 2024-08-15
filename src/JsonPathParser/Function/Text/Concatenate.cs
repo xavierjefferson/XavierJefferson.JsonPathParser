@@ -10,20 +10,19 @@ namespace XavierJefferson.JsonPathParser.Function.Text;
 ///     */
 public class Concatenate : IPathFunction
 {
-    public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext ctx,
+    public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
         SerializingList<Parameter>? parameters)
     {
         var result = new StringBuilder();
-        if (ctx.Configuration.JsonProvider.IsArray(model))
+        if (context.Configuration.JsonProvider.IsArray(model))
         {
-            var objects = ctx.Configuration.JsonProvider.AsEnumerable(model).Cast<object>();
-            foreach (var obj in objects)
-                if (obj is string)
-                    result.Append(obj);
+            var objects = context.Configuration.JsonProvider.AsEnumerable(model);
+            foreach (var obj in objects.Where(i => i is string))
+                result.Append(obj);
         }
 
         if (parameters != null)
-            foreach (var value in Parameter.ToList<string>(ctx, parameters))
+            foreach (var value in Parameter.ToList<string>(context, parameters))
                 result.Append(value);
         return result.ToString();
     }

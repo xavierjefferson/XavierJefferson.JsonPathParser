@@ -9,12 +9,13 @@ namespace XavierJefferson.JsonPathParser.UnitTests;
 
 public class IssuesTest : TestUtils
 {
-    [Fact]
-    public void issue_143()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void issue_143(IProviderTypeTestCase testCase)
     {
         var json = "{ \"foo\": { \"bar\" : \"val\" }, \"moo\": { \"cow\" : \"val\" } }";
 
-        var configuration = Configuration.CreateBuilder().WithOptions(Option.AsPathList).Build();
+        var configuration = testCase.Configuration.SetOptions(Option.AsPathList);
 
         var pathList = JsonPath.Using(configuration).Parse(json).Read(JsonPath.Compile("$.*.bar")).AsList();
 
@@ -654,9 +655,9 @@ public class IssuesTest : TestUtils
 
         MyAssert.ContainsExactly(res, "url5");
     }
-
-    [Fact]
-    public void issue_97()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void issue_97(IProviderTypeTestCase testCase)
     {
         var json = "{ \"books\": [ " +
                    "{ \"category\": \"fiction\" }, " +
@@ -671,9 +672,7 @@ public class IssuesTest : TestUtils
                    "{ \"category\": \"reference\" }, " +
                    "{ \"category\": \"reference\" } ]  }";
 
-        var conf = Configuration.CreateBuilder().WithJsonProvider(new SystemTextJsonProvider())
-            .WithMappingProvider(new SystemTextJsonMappingProvider())
-            .Build();
+        var conf = testCase.Configuration;
 
         var context = JsonPath.Using(conf).Parse(json);
         context.Delete("$.books[?(@.category == 'reference')]");
@@ -942,12 +941,12 @@ public class IssuesTest : TestUtils
     //            .mappingProvider(new JacksonMappingProvider())
     //            .Build();
 
-    //    DocumentContext ctx = JsonPath.Using(configuration).Parse(json);
+    //    DocumentContext context = JsonPath.Using(configuration).Parse(json);
 
     //    string path = "$.nodes[*][?(!([\"1.2.3.4\"] subsetof @.ntpServers))].ntpServers";
     //    JsonPath jsonPath = JsonPath.Compile(path);
 
-    //    ctx.read(jsonPath);
+    //    context.read(jsonPath);
     //}
 
     //CS304 (manually written) Issue link: https://github.com/json-path/JsonPath/issues/620

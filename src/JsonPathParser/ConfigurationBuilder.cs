@@ -1,13 +1,13 @@
+using System.Collections.Immutable;
 using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser;
-
 /// <summary>
 ///     Configuration builder
 /// </summary>
 public class ConfigurationBuilder
 {
-    private readonly HashSet<Option> _options = new();
+    private ReadOnlySet<Option> _options = new ReadOnlySet<Option>(new HashSet<Option>());
     private List<EvaluationCallback> _evaluationCallbacks = new();
     public IMappingProvider? MappingProvider { get; private set; }
 
@@ -27,13 +27,14 @@ public class ConfigurationBuilder
 
     public ConfigurationBuilder WithOptions(params Option[] flags)
     {
-        foreach (var m in flags) _options.Add(m);
+        this._options = new ReadOnlySet<Option>(flags);
         return this;
     }
 
-    public ConfigurationBuilder WithOptions(HashSet<Option> options)
+    public ConfigurationBuilder WithOptions(IEnumerable<Option> options)
     {
-        return WithOptions(options.ToArray());
+        this._options = new ReadOnlySet<Option>(options);
+        return this;
     }
 
     public ConfigurationBuilder WithEvaluationCallbacks(params EvaluationCallback[] callbacks)

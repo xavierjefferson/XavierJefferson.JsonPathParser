@@ -1,7 +1,9 @@
-﻿using XavierJefferson.JsonPathParser.Helpers;
+﻿using System.Globalization;
+using XavierJefferson.JsonPathParser.Helpers;
 
 namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
+ 
 public class StringNode : TypedValueNode<string>
 {
     private readonly bool _useSingleQuote = true;

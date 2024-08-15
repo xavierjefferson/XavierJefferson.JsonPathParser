@@ -16,10 +16,10 @@ public class RegexEvaluatorTest : TestUtils
         //given
         var evaluator = EvaluatorFactory.CreateEvaluator(RelationalOperator.Regex);
         ValueNode patternNode = ValueNode.CreatePatternNode(testCase.Pattern);
-        var ctx = CreatePredicateContext(testCase0);
+        var context = CreatePredicateContext(testCase0);
 
         //when
-        var result = evaluator.Evaluate(patternNode, testCase.ValueNode, ctx);
+        var result = evaluator.Evaluate(patternNode, testCase.ValueNode, context);
 
         Assert.Equal(testCase.ExpectedResult, result);
     }

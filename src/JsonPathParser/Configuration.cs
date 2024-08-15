@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using XavierJefferson.JsonPathParser.Interfaces;
 
@@ -10,17 +11,14 @@ public class Configuration
 {
     private static IDefaults? _defaults;
 
-
-    private readonly HashSet<Option>? _options;
-
-    internal Configuration(IJsonProvider jsonProvider, IMappingProvider mappingProvider, HashSet<Option> options,
+    internal Configuration(IJsonProvider jsonProvider, IMappingProvider mappingProvider, ReadOnlySet<Option> options,
         IEnumerable<EvaluationCallback> evaluationCallbacks)
     {
-        if (evaluationCallbacks == null) throw new ArgumentNullException(nameof(evaluationCallbacks));
+        ArgumentNullException.ThrowIfNull(evaluationCallbacks);
         JsonProvider = jsonProvider ?? throw new ArgumentNullException(nameof(jsonProvider));
         MappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
-        if (options == null) throw new ArgumentNullException(nameof(options));
-        _options = new HashSet<Option>(options);
+        ArgumentNullException.ThrowIfNull(options);
+        Options = options;
         EvaluationCallbacks = new ReadOnlyCollection<EvaluationCallback>(evaluationCallbacks.ToList());
     }
 
@@ -41,6 +39,11 @@ public class Configuration
     /// </summary>
     /// <returns> mappingProvider used</returns>
     public IMappingProvider MappingProvider { get; }
+    /// <summary>
+    ///     Returns the options used by this configuration
+    ///     </summary>
+    ///     <returns> the new configuration instance</returns>
+    public ReadOnlySet<Option> Options { get; }
 
     /// <summary>
     ///     HashSet Default configuration
@@ -62,58 +65,53 @@ public class Configuration
     ///     Creates a new Configuration by the provided evaluation listeners to the current listeners
     ///     <param name="evaluationListener">listeners</param>
     ///     <returns> a new configuration</returns>
-    public Configuration AddEvaluationListeners(params EvaluationCallback[] evaluationListener)
+    public Configuration AddEvaluationCallbacks(params EvaluationCallback[] evaluationListener)
     {
-        return CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(MappingProvider).WithOptions(_options)
-            .WithEvaluationCallbacks(evaluationListener).Build();
+        return CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(MappingProvider).WithOptions(Options)
+            .WithEvaluationCallbacks(EvaluationCallbacks.Union(evaluationListener).ToArray()).Build();
     }
 
     /// <summary>
     ///     Creates a new Configuration with the provided evaluation listeners
     ///     <param name="evaluationListener">listeners</param>
     ///     <returns> a new configuration</returns>
-    public Configuration SetEvaluationListeners(params EvaluationCallback[] evaluationListener)
+    public Configuration SetEvaluationCallbacks(params EvaluationCallback[] evaluationListener)
     {
-        return CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(MappingProvider).WithOptions(_options)
+        return CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(MappingProvider).WithOptions(Options)
             .WithEvaluationCallbacks(evaluationListener).Build();
     }
 
-
-    public ReadOnlyCollection<EvaluationCallback>? GetEvaluationListeners()
-    {
-        return EvaluationCallbacks;
-    }
 
     /// <summary>
     ///     Creates a new Configuration based on the given {@link com.jayway.jsonpath.spi.json.JsonProvider}
     ///     <param name="newJsonProvider">json provider to use in new configuration</param>
     ///     <returns> a new configuration</returns>
-    public Configuration CreateWithJsonProvider(IJsonProvider newJsonProvider)
+    public Configuration SetJsonProvider(IJsonProvider newJsonProvider)
     {
         return CreateBuilder().WithJsonProvider(newJsonProvider).WithMappingProvider(MappingProvider)
-            .WithOptions(_options)
+            .WithOptions(Options)
             .WithEvaluationCallbacks(EvaluationCallbacks).Build();
     }
 
     public Configuration SetJsonProvider<T>() where T : IJsonProvider, new()
     {
-        return CreateWithJsonProvider(new T());
+        return SetJsonProvider(new T());
     }
 
     /// <summary>
     ///     Creates a new Configuration based on the given {@link com.jayway.jsonpath.spi.mapper.MappingProvider}
     ///     <param name="newMappingProvider">mapping provider to use in new configuration</param>
     ///     <returns> a new configuration</returns>
-    public Configuration CreateWithMappingProvider(IMappingProvider newMappingProvider)
+    public Configuration SetMappingProvider(IMappingProvider newMappingProvider)
     {
         return CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(newMappingProvider)
-            .WithOptions(_options)
+            .WithOptions(Options)
             .WithEvaluationCallbacks(EvaluationCallbacks).Build();
     }
 
     public Configuration SetMappingProvider<T>() where T : IMappingProvider, new()
     {
-        return CreateWithMappingProvider(new T());
+        return SetMappingProvider(new T());
     }
 
     /// <summary>
@@ -122,7 +120,7 @@ public class Configuration
     ///     <returns> a new configuration</returns>
     public Configuration AddOptions(params Option[] options)
     {
-        var opts = new HashSet<Option>(_options.Union(options));
+        var opts = Options.Union(options);
         return CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(MappingProvider).WithOptions(opts)
             .WithEvaluationCallbacks(EvaluationCallbacks).Build();
     }
@@ -134,16 +132,10 @@ public class Configuration
     public Configuration SetOptions(params Option[] options)
     {
         var a = CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(MappingProvider);
-        return a.WithOptions(options.ToArray()).WithEvaluationCallbacks(EvaluationCallbacks).Build();
+        return a.WithOptions(options).WithEvaluationCallbacks(EvaluationCallbacks).Build();
     }
 
-    /// <summary>
-    ///     Returns the options used by this configuration
-    ///     <returns> the new configuration instance</returns>
-    public HashSet<Option>? GetOptions()
-    {
-        return _options;
-    }
+ 
 
     /// <summary>
     ///     Check if this configuration contains the given option
@@ -151,7 +143,7 @@ public class Configuration
     ///     <returns> true if configurations contains option</returns>
     public bool ContainsOption(Option option)
     {
-        return _options.Contains(option);
+        return Options.Contains(option);
     }
 
     /// <summary>
@@ -173,7 +165,7 @@ public class Configuration
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(JsonProvider, MappingProvider, _options);
+        return HashCode.Combine(JsonProvider, MappingProvider, Options);
     }
 
     public override bool Equals(object? o)
@@ -182,7 +174,7 @@ public class Configuration
         if (o is Configuration configuration)
             return JsonProvider.GetType() == configuration.JsonProvider.GetType() &&
                    MappingProvider.GetType() == configuration.MappingProvider.GetType() &&
-                   Equals(_options, configuration._options);
+                   Equals(Options, configuration.Options);
         return false;
     }
 }

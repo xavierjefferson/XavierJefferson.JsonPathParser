@@ -493,9 +493,9 @@ public class Beautifier
                 ParserPos += 2;
 
                 if (inlineComment && NNewlines == 0)
-                    return new Tkval($"/*{comment}" + "*/", TokenTypeEnum.TkInlineComment);
+                    return new Tkval($"/*{comment}*/", TokenTypeEnum.TkInlineComment);
 
-                return new Tkval($"/*{comment}" + "*/", TokenTypeEnum.TkBlockComment);
+                return new Tkval($"/*{comment}*/", TokenTypeEnum.TkBlockComment);
             }
 
             if (Input[ParserPos] == '/') // peek // comment

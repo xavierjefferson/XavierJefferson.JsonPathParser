@@ -7,20 +7,20 @@ namespace XavierJefferson.JsonPathParser.Path;
 ///     */
 public class WildcardPathToken : PathToken
 {
-    public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl ctx)
+    public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl context)
     {
-        if (ctx.JsonProvider.IsMap(model))
-            foreach (var property in ctx.JsonProvider.GetPropertyKeys(model))
-                HandleObjectProperty(currentPath, model, ctx, new SerializingList<string> { property });
-        else if (ctx.JsonProvider.IsArray(model))
-            for (var idx = 0; idx < ctx.JsonProvider.Length(model); idx++)
+        if (context.JsonProvider.IsMap(model))
+            foreach (var property in context.JsonProvider.GetPropertyKeys(model))
+                HandleObjectProperty(currentPath, model, context, new SerializingList<string> { property });
+        else if (context.JsonProvider.IsArray(model))
+            for (var idx = 0; idx < context.JsonProvider.Length(model); idx++)
                 try
                 {
-                    HandleArrayIndex(idx, currentPath, model, ctx);
+                    HandleArrayIndex(idx, currentPath, model, context);
                 }
                 catch (PathNotFoundException p)
                 {
-                    if (ctx.Options.Contains(Option.RequireProperties)) throw p;
+                    if (context.Options.Contains(Option.RequireProperties)) throw p;
                 }
     }
 

@@ -54,7 +54,7 @@ public class ValueListNode : TypedValueNode<ICollection<ValueNode>>, IEnumerable
 
     public override string ToString()
     {
-        return "[" + string.Join(",", (IEnumerable<object>)_nodes) + "]";
+        return "[" + string.Join(",", _nodes) + "]";
     }
 
 

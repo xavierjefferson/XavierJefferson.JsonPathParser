@@ -15,10 +15,11 @@ public class OptionsTest : TestUtils
         Assert.Throws<PathNotFoundException>(() => JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read("$.baz"));
     }
 
-    [Fact]
-    public void a_leafs_can_be_defaulted_to_null()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void a_leafs_can_be_defaulted_to_null(IProviderTypeTestCase testCase)
     {
-        var conf = Configuration.CreateBuilder().WithOptions(Option.DefaultPathLeafToNull).Build();
+        var conf = testCase.Configuration.SetOptions(Option.DefaultPathLeafToNull);
 
         Assert.Null(JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read<object>("$.baz"));
     }
@@ -32,10 +33,11 @@ public class OptionsTest : TestUtils
         Assert.IsType<string>(JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read("$.foo"));
     }
 
-    [Fact]
-    public void a_definite_path_can_be_returned_as_list()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void a_definite_path_can_be_returned_as_list(IProviderTypeTestCase testCase)
     {
-        var conf = Configuration.CreateBuilder().WithOptions(Option.AlwaysReturnList).Build();
+        var conf = testCase.Configuration.SetOptions(Option.AlwaysReturnList);
         Assert.IsType<List<object?>>(JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read("$.foo"));
 
         Assert.IsType<List<object?>>(JsonPath.Using(conf).Parse("{\"foo\": null}").Read("$.foo"));

@@ -21,27 +21,15 @@ public class OrFilter : Filter
     }
 
 
-    public override bool Apply(IPredicateContext ctx)
+    public override bool Apply(IPredicateContext context)
     {
-        var a = _left.Apply(ctx);
-        return a || _right.Apply(ctx);
+        return _left.Apply(context) || _right.Apply(context);
     }
 
-
-    public override string ToString()
+    public override string ToUnenclosedString()
     {
-        var sb = new StringBuilder();
-        sb.Append("[?(");
-
-        var l = _left.ToString();
-        var r = _right.ToString();
-
-        if (l.StartsWith("[?(")) l = l.Subsequence(3, l.Length - 2);
-        if (r.StartsWith("[?(")) r = r.Subsequence(3, r.Length - 2);
-
-        sb.Append(l).Append(" || ").Append(r);
-
-        sb.Append(")]");
-        return sb.ToString();
+        return $"{_left.ToUnenclosedString()} || {_right.ToUnenclosedString()}";
     }
+
+  
 }

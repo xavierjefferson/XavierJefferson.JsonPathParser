@@ -19,7 +19,7 @@ public class PredicateNode : TypedValueNode<IPredicate>
     }
 
 
-    public override Type Type(IPredicateContext ctx)
+    public override Type Type(IPredicateContext context)
     {
         return typeof(void);
     }

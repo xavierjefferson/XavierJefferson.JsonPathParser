@@ -17,27 +17,27 @@ public class ArraySliceToken : ArrayPathToken
     }
 
 
-    public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl ctx)
+    public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl context)
     {
-        if (!CheckArrayModel(currentPath, model, ctx))
+        if (!CheckArrayModel(currentPath, model, context))
             return;
         switch (_operation.Operation())
         {
             case ArraySliceOperationEnum.SliceFrom:
-                SliceFrom(currentPath, parent, model, ctx);
+                SliceFrom(currentPath, parent, model, context);
                 break;
             case ArraySliceOperationEnum.SliceBetween:
-                SliceBetween(currentPath, parent, model, ctx);
+                SliceBetween(currentPath, parent, model, context);
                 break;
             case ArraySliceOperationEnum.SliceTo:
-                SliceTo(currentPath, parent, model, ctx);
+                SliceTo(currentPath, parent, model, context);
                 break;
         }
     }
 
-    private void SliceFrom(string currentPath, PathRef parent, object? model, EvaluationContextImpl ctx)
+    private void SliceFrom(string currentPath, PathRef parent, object? model, EvaluationContextImpl context)
     {
-        var length = ctx.JsonProvider.Length(model);
+        var length = context.JsonProvider.Length(model);
         var from = _operation.From();
         if (from < 0)
             //calculate slice start from array length
@@ -48,12 +48,12 @@ public class ArraySliceToken : ArrayPathToken
             $"Slice from index on array with length: {length}. From index: {from} to: {length - 1}. Input: {ToString()}");
 
         if (length == 0 || from >= length) return;
-        for (var i = from.Value; i < length; i++) HandleArrayIndex(i, currentPath, model, ctx);
+        for (var i = from.Value; i < length; i++) HandleArrayIndex(i, currentPath, model, context);
     }
 
-    private void SliceBetween(string currentPath, PathRef parent, object? model, EvaluationContextImpl ctx)
+    private void SliceBetween(string currentPath, PathRef parent, object? model, EvaluationContextImpl context)
     {
-        var length = ctx.JsonProvider.Length(model);
+        var length = context.JsonProvider.Length(model);
         var from = _operation.From();
         var to = _operation.To();
 
@@ -64,12 +64,12 @@ public class ArraySliceToken : ArrayPathToken
         Logger.DebugFormat("Slice between indexes on array with length: {0}. From index: {1} to: {2}. Input: {3}",
             length, from, to, ToString());
 
-        for (var i = from.Value; i < to; i++) HandleArrayIndex(i, currentPath, model, ctx);
+        for (var i = from.Value; i < to; i++) HandleArrayIndex(i, currentPath, model, context);
     }
 
-    private void SliceTo(string currentPath, PathRef parent, object? model, EvaluationContextImpl ctx)
+    private void SliceTo(string currentPath, PathRef parent, object? model, EvaluationContextImpl context)
     {
-        var length = ctx.JsonProvider.Length(model);
+        var length = context.JsonProvider.Length(model);
         if (length == 0) return;
         var to = _operation.To();
         if (to < 0)
@@ -80,7 +80,7 @@ public class ArraySliceToken : ArrayPathToken
         Logger.DebugFormat("Slice to index on array with length: {0}. From index: 0 to: {1}. Input: {2}", length, to,
             ToString());
 
-        for (var i = 0; i < to; i++) HandleArrayIndex(i, currentPath, model, ctx);
+        for (var i = 0; i < to; i++) HandleArrayIndex(i, currentPath, model, context);
     }
 
 

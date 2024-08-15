@@ -35,9 +35,9 @@ public class PathTokenTest : TestUtils
         return new PropertyPathToken(new SerializingList<string>(properties), '\'');
     }
 
-    private PathToken MakePathReturningTail(params PathToken[] tokens)
+    private PathToken? MakePathReturningTail(params PathToken[] tokens)
     {
-        PathToken last = null;
+        PathToken? last = null;
         foreach (var token in tokens)
         {
             if (last != null) last.AppendTailToken(token);

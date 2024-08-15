@@ -51,7 +51,7 @@ public class PathNode : TypedValueNode<IPath>
     }
 
 
-    public override Type Type(IPredicateContext ctx)
+    public override Type Type(IPredicateContext context)
     {
         return typeof(void);
     }
@@ -72,14 +72,14 @@ public class PathNode : TypedValueNode<IPath>
         return $"{(_existsCheck && !_shouldExist ? "!" : "")}{_path}";
     }
 
-    public ValueNode Evaluate(IPredicateContext ctx)
+    public ValueNode Evaluate(IPredicateContext context)
     {
         if (IsExistsCheck())
             try
             {
-                var c = Configuration.CreateBuilder().WithJsonProvider(ctx.Configuration.JsonProvider)
+                var c = Configuration.CreateBuilder().WithJsonProvider(context.Configuration.JsonProvider)
                     .WithOptions(Option.RequireProperties).Build();
-                var result = _path.Evaluate(ctx.Item, ctx.Root, c).GetValue(false);
+                var result = _path.Evaluate(context.Item, context.Root, c).GetValue(false);
                 return result == IJsonProvider.Undefined ? ValueNodeConstants.False : ValueNodeConstants.True;
             }
             catch (PathNotFoundException)
@@ -90,18 +90,18 @@ public class PathNode : TypedValueNode<IPath>
         try
         {
             object? res;
-            if (ctx is PredicateContextImpl predicateContextImpl)
+            if (context is PredicateContextImpl predicateContextImpl)
             {
                 //This will use cache for document ($) queries
                 res = predicateContextImpl.Evaluate(_path);
             }
             else
             {
-                var doc = _path.IsRootPath() ? ctx.Root : ctx.Item;
-                res = _path.Evaluate(doc, ctx.Root, ctx.Configuration).GetValue();
+                var doc = _path.IsRootPath() ? context.Root : context.Item;
+                res = _path.Evaluate(doc, context.Root, context.Configuration).GetValue();
             }
 
-            res = ctx.Configuration.JsonProvider.Unwrap(res);
+            res = context.Configuration.JsonProvider.Unwrap(res);
             if (res.TryConvertDouble(out var test))
                 return CreateNumberNode(test);
             if (IsNumeric(res)) return CreateNumberNode(res.ToString());
@@ -111,11 +111,11 @@ public class PathNode : TypedValueNode<IPath>
                 return CreateDateTimeOffsetNode(
                     d1); //workaround for issue: https://github.com/json-path/JsonPath/issues/613
             if (res == null) return ValueNodeConstants.NullNode;
-            if (ctx.Configuration.JsonProvider.IsArray(res))
-                return CreateJsonNode(ctx.Configuration.MappingProvider.Map(res, typeof(IList), ctx.Configuration));
-            if (ctx.Configuration.JsonProvider.IsMap(res))
+            if (context.Configuration.JsonProvider.IsArray(res))
+                return CreateJsonNode(context.Configuration.MappingProvider.Map(res, typeof(IList), context.Configuration));
+            if (context.Configuration.JsonProvider.IsMap(res))
                 return CreateJsonNode(
-                    ctx.Configuration.MappingProvider.Map(res, typeof(IDictionary), ctx.Configuration));
+                    context.Configuration.MappingProvider.Map(res, typeof(IDictionary), context.Configuration));
             throw new JsonPathException(
                 $"Could not convert {res.GetType().FullName} '{res}' to a {nameof(ValueNode)}");
         }

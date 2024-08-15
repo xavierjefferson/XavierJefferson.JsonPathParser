@@ -7,7 +7,7 @@ public class NullNode : ValueNode
     //private NullNode() { }
 
 
-    public override Type Type(IPredicateContext ctx)
+    public override Type Type(IPredicateContext context)
     {
         return typeof(void);
     }

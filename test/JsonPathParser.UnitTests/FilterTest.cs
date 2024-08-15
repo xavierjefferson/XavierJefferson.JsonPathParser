@@ -722,9 +722,9 @@ public class FilterTest : TestUtils
     {
         var mockPredicate = new Mock<IPredicate>();
         mockPredicate.Setup(i => i.Apply(It.IsAny<IPredicateContext>())).Returns(
-            (IPredicateContext ctx) =>
+            (IPredicateContext context) =>
             {
-                var t = ctx.Item as IDictionary<string, object?>;
+                var t = context.Item as IDictionary<string, object?>;
                 var i = Convert.ToInt32(t["int-key"]);
 
                 return i == 1;

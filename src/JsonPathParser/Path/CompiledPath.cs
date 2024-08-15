@@ -33,17 +33,17 @@ public class CompiledPath : IPath
     {
         if (Logger.IsDebugEnabled()) Logger.Debug($"Evaluating path: {ToString()}");
 
-        var ctx = new EvaluationContextImpl(this, rootDocument, configuration, forUpdate);
+        var context = new EvaluationContextImpl(this, rootDocument, configuration, forUpdate);
         try
         {
-            var op = ctx.ForUpdate() ? PathRef.CreateRoot(rootDocument) : PathRef.NoOp;
-            _root.Evaluate("", op, document, ctx);
+            var op = context.ForUpdate() ? PathRef.CreateRoot(rootDocument) : PathRef.NoOp;
+            _root.Evaluate("", op, document, context);
         }
         catch (EvaluationAbortException)
         {
         }
 
-        return ctx;
+        return context;
     }
 
 
@@ -86,7 +86,7 @@ public class CompiledPath : IPath
                 var parameter = new Parameter();
                 parameter.Path = new CompiledPath(path, true);
                 parameter.ParameterType = ParamType.Path;
-                functionPathToken.SetParameters(new SerializingList<Parameter> { parameter });
+                functionPathToken.Parameters = new SerializingList<Parameter> { parameter };
                 var functionRoot = new RootPathToken('$');
                 functionRoot.SetTail(token);
                 functionRoot.SetNext(token);

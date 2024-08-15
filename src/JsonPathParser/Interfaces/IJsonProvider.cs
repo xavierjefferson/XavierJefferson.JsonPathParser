@@ -64,7 +64,7 @@ public interface IJsonProvider
     /// </summary>
     /// <param name="obj">an array</param>
     /// <returns> an IEnumerable that iterates over the entries of an array</returns>
-    IEnumerable AsEnumerable(object? obj);
+    List<object?> AsEnumerable(object? obj);
 
 
     /// <summary>

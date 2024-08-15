@@ -4,5 +4,5 @@ namespace XavierJefferson.JsonPathParser.Interfaces;
 
 public interface IEvaluator
 {
-    bool Evaluate(ValueNode left, ValueNode right, IPredicateContext ctx);
+    bool Evaluate(ValueNode left, ValueNode right, IPredicateContext context);
 }

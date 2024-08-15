@@ -12,15 +12,15 @@ public class ArrayIndexToken : ArrayPathToken
     }
 
 
-    public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl ctx)
+    public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl context)
     {
-        if (!CheckArrayModel(currentPath, model, ctx))
+        if (!CheckArrayModel(currentPath, model, context))
             return;
         if (_arrayIndexOperation.IsSingleIndexOperation())
-            HandleArrayIndex(_arrayIndexOperation.Indexes()[0], currentPath, model, ctx);
+            HandleArrayIndex(_arrayIndexOperation.Indexes()[0], currentPath, model, context);
         else
             foreach (var index in _arrayIndexOperation.Indexes())
-                HandleArrayIndex(index, currentPath, model, ctx);
+                HandleArrayIndex(index, currentPath, model, context);
     }
 
 

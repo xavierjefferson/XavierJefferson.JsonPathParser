@@ -4,8 +4,9 @@ namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public abstract class ExpressionNode : IPredicate
 {
-    public abstract bool Apply(IPredicateContext ctx);
+    public abstract bool Apply(IPredicateContext context);
 
+    public abstract string ToUnenclosedString();
     public static ExpressionNode CreateExpressionNode(ExpressionNode right, LogicalOperator @operator,
         ExpressionNode left)
     {

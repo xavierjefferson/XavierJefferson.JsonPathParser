@@ -18,9 +18,9 @@ public interface IPathFunction
     /// <param name="currentPath">      The current path location inclusive of the function name</param>
     /// <param name="parent">      The path location above the current function</param>
     /// <param name="model">      The JSON model as input to this particular function</param>
-    /// <param name="ctx">      Eval context, state bag used as the path is traversed, maintains the result of executing</param>
+    /// <param name="context">      Eval context, state bag used as the path is traversed, maintains the result of executing</param>
     /// <param name="parameters">
     //////<returns> result</returns></param>
-    object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext ctx,
+    object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
         SerializingList<Parameter>? parameters);
 }

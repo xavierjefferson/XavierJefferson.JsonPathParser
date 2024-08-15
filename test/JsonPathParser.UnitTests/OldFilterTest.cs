@@ -397,9 +397,9 @@ public class OldFilterTest : TestUtils
         root.Add("children", AsList(rootChildA, rootChildB, rootChildC));
 
 
-        var customFilter = MakePredicate(ctx =>
+        var customFilter = MakePredicate(context =>
         {
-            if (ctx.Configuration.JsonProvider.GetMapValue(ctx.Item, "name").Equals("rootGrandChild_A")) return true;
+            if (context.Configuration.JsonProvider.GetMapValue(context.Item, "name").Equals("rootGrandChild_A")) return true;
             return false;
         });
 
@@ -418,7 +418,7 @@ public class OldFilterTest : TestUtils
         var doc = new Dictionary<string, object>();
         doc["items"] = new object[] { 1d, 2d, 3d };
 
-        var customFilter = MakePredicate(ctx => { return 1.0d.Equals(ctx.Item); });
+        var customFilter = MakePredicate(context => { return 1.0d.Equals(context.Item); });
 
 
         var res = JsonPath.Read(doc, "$.items[?]", customFilter).AsList();

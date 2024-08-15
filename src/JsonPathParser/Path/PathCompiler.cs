@@ -116,7 +116,7 @@ public class PathCompiler
     //
     //
     //
-    private bool ReadNextToken(IPathTokenAppender appender)
+    private bool ReadNextToken(PathTokenAppenderDelegate appender)
     {
         var c = _path.CurrentChar();
 
@@ -143,11 +143,11 @@ public class PathCompiler
     //
     // . and ..
     //
-    private bool ReadDotToken(IPathTokenAppender appender)
+    private bool ReadDotToken(PathTokenAppenderDelegate appender)
     {
         if (_path.CurrentCharIs(Period) && _path.NextCharIs(Period))
         {
-            appender.AppendPathToken(PathTokenFactory.CrateScanToken());
+            appender(PathTokenFactory.CrateScanToken());
             _path.IncrementPosition(2);
         }
         else if (!_path.HasMoreCharacters())
@@ -160,14 +160,14 @@ public class PathCompiler
         }
 
         if (_path.CurrentCharIs(Period))
-            throw new InvalidPathException($"Character '.' on position {_path.Position}" + " is not valid.");
+            throw new InvalidPathException($"Character '.' on position {_path.Position} is not valid.");
         return ReadNextToken(appender);
     }
 
     //
     // fooBar or fooBar()
     //
-    private bool ReadPropertyOrFunctionToken(IPathTokenAppender appender)
+    private bool ReadPropertyOrFunctionToken(PathTokenAppenderDelegate appender)
     {
         if (_path.CurrentCharIs(OpenSquareBracket) || _path.CurrentCharIs(Wildcard) || _path.CurrentCharIs(Period) ||
             _path.CurrentCharIs(Space)) return false;
@@ -253,9 +253,9 @@ public class PathCompiler
 
         var property = _path.Subsequence(startPosition, endPosition);
         if (isFunction)
-            appender.AppendPathToken(PathTokenFactory.CreateFunctionPathToken(property, functionParameters));
+            appender(PathTokenFactory.CreateFunctionPathToken(property, functionParameters));
         else
-            appender.AppendPathToken(PathTokenFactory.CreateSinglePropertyPathToken(property, SingleQuote));
+            appender(PathTokenFactory.CreateSinglePropertyPathToken(property, SingleQuote));
 
         return _path.CurrentIsTail() || ReadNextToken(appender);
     }
@@ -367,7 +367,7 @@ public class PathCompiler
         }
 
         if (0 != groupBrace || 0 != groupParen || 0 != groupBracket)
-            throw new InvalidPathException($"Arguments to function: '{funcName}" + "' are not closed properly.");
+            throw new InvalidPathException($"Arguments to function: '{funcName}' are not closed properly.");
         return parameters;
     }
 
@@ -412,7 +412,7 @@ public class PathCompiler
     //
     // [?], [?,?, ..]
     //
-    private bool ReadPlaceholderToken(IPathTokenAppender appender)
+    private bool ReadPlaceholderToken(PathTokenAppenderDelegate appender)
     {
         if (!_path.CurrentCharIs(OpenSquareBracket)) return false;
         var questionmarkIndex = _path.IndexOfNextSignificantChar(BeginFilter);
@@ -443,7 +443,7 @@ public class PathCompiler
             predicates.Add(_filterStack.Pop());
         }
 
-        appender.AppendPathToken(PathTokenFactory.CreatePredicatePathToken(predicates));
+        appender(PathTokenFactory.CreatePredicatePathToken(predicates));
 
         _path.SetPosition(expressionEndIndex + 1);
 
@@ -453,7 +453,7 @@ public class PathCompiler
     //
     // [?(...)]
     //
-    private bool ReadFilterToken(IPathTokenAppender appender)
+    private bool ReadFilterToken(PathTokenAppenderDelegate appender)
     {
         if (!_path.CurrentCharIs(OpenSquareBracket) && !_path.NextSignificantCharIs(BeginFilter)) return false;
 
@@ -471,7 +471,7 @@ public class PathCompiler
 
 
         IPredicate predicate = FilterCompiler.Compile(criteria);
-        appender.AppendPathToken(PathTokenFactory.CreatePredicatePathToken(predicate));
+        appender(PathTokenFactory.CreatePredicatePathToken(predicate));
 
         _path.SetPosition(closeStatementBracketIndex + 1);
 
@@ -482,7 +482,7 @@ public class PathCompiler
     // [*]
     // *
     //
-    private bool ReadWildCardToken(IPathTokenAppender appender)
+    private bool ReadWildCardToken(PathTokenAppenderDelegate appender)
     {
         var inBracket = _path.CurrentCharIs(OpenSquareBracket);
 
@@ -505,7 +505,7 @@ public class PathCompiler
             _path.IncrementPosition(1);
         }
 
-        appender.AppendPathToken(PathTokenFactory.CreateWildCardPathToken());
+        appender(PathTokenFactory.CreateWildCardPathToken());
 
         return _path.CurrentIsTail() || ReadNextToken(appender);
     }
@@ -513,7 +513,7 @@ public class PathCompiler
     //
     // [1], [1,2, n], [1:], [1:2], [:2]
     //
-    private bool ReadArrayToken(IPathTokenAppender appender)
+    private bool ReadArrayToken(PathTokenAppenderDelegate appender)
     {
         if (!_path.CurrentCharIs(OpenSquareBracket)) return false;
         var nextSignificantChar = _path.NextSignificantChar();
@@ -541,12 +541,12 @@ public class PathCompiler
         if (isSliceOperation)
         {
             var arraySliceOperation = ArraySliceOperation.Parse(expression);
-            appender.AppendPathToken(PathTokenFactory.CreateSliceArrayPathToken(arraySliceOperation));
+            appender(PathTokenFactory.CreateSliceArrayPathToken(arraySliceOperation));
         }
         else
         {
             var arrayIndexOperation = ArrayIndexOperation.Parse(expression);
-            appender.AppendPathToken(PathTokenFactory.CreateIndexArrayPathToken(arrayIndexOperation));
+            appender(PathTokenFactory.CreateIndexArrayPathToken(arrayIndexOperation));
         }
 
         _path.SetPosition(expressionEndIndex + 1);
@@ -557,7 +557,7 @@ public class PathCompiler
     //
     // ['foo']
     //
-    private bool ReadBracketPropertyToken(IPathTokenAppender appender)
+    private bool ReadBracketPropertyToken(PathTokenAppenderDelegate appender)
     {
         if (!_path.CurrentCharIs(OpenSquareBracket)) return false;
         var potentialStringDelimiter = _path.NextSignificantChar();
@@ -626,7 +626,7 @@ public class PathCompiler
 
         _path.SetPosition(endBracketIndex);
 
-        appender.AppendPathToken(PathTokenFactory.CreatePropertyPathToken(properties, potentialStringDelimiter));
+        appender(PathTokenFactory.CreatePropertyPathToken(properties, potentialStringDelimiter));
 
         return _path.CurrentIsTail() || ReadNextToken(appender);
     }

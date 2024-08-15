@@ -11,15 +11,15 @@ namespace XavierJefferson.JsonPathParser.Function.Sequence;
 /// </summary>
 public abstract class AbstractSequenceAggregation : IPathFunction, IInvocable
 {
-    public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext ctx,
+    public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
         SerializingList<Parameter>? parameters)
     {
-        if (ctx.Configuration.JsonProvider.IsArray(model))
+        if (context.Configuration.JsonProvider.IsArray(model))
         {
-            var objects = ctx.Configuration.JsonProvider.AsEnumerable(model);
-            var objectList = objects.Cast<object>().ToSerializingList();
+            var objects = context.Configuration.JsonProvider.AsEnumerable(model);
+            var objectList = objects;
 
-            var targetIndex = TargetIndex(ctx, parameters);
+            var targetIndex = TargetIndex(context, parameters);
             if (targetIndex >= 0) return objectList[targetIndex];
 
             var realIndex = objectList.Count() + targetIndex;
@@ -31,11 +31,11 @@ public abstract class AbstractSequenceAggregation : IPathFunction, IInvocable
         throw new JsonPathException(AbstractAggregation.EmptyArrayMessage);
     }
 
-    protected abstract int TargetIndex(IEvaluationContext ctx, SerializingList<Parameter>? parameters);
+    protected abstract int TargetIndex(IEvaluationContext context, SerializingList<Parameter>? parameters);
 
-    protected int GetIndexFromParameters(IEvaluationContext ctx, SerializingList<Parameter>? parameters)
+    protected int GetIndexFromParameters(IEvaluationContext context, SerializingList<Parameter>? parameters)
     {
-        var numbers = Parameter.ToList<double>(ctx, parameters);
+        var numbers = Parameter.ToList<double>(context, parameters);
         return Convert.ToInt32(numbers[0]);
     }
 }

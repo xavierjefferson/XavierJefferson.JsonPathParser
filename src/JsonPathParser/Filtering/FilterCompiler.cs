@@ -85,7 +85,7 @@ public class FilterCompiler
         }
         catch (Exception e)
         {
-            throw new InvalidPathException($"Failed to Parse filter: {_filter}" + ", error on position: " +
+            throw new InvalidPathException($"Failed to Parse filter: {_filter}, error on position: " +
                                            _filter.Position + ", char: " + _filter.CurrentChar(), e);
         }
     }
@@ -287,7 +287,7 @@ public class FilterCompiler
 
         var closingIndex = _filter.IndexOfMatchingCloseChar(_filter.Position, openChar, closeChar, true, false);
         if (closingIndex == -1)
-            throw new InvalidPathException($"string not closed. Expected {SingleQuote}" + $" in {_filter}");
+            throw new InvalidPathException($"string not closed. Expected {SingleQuote} in {_filter}");
         _filter.SetPosition(closingIndex + 1);
         var json = _filter.Subsequence(begin, _filter.Position);
         Logger.Trace($"JsonLiteral from {begin} to {_filter.Position} -> [{json}]");
@@ -318,7 +318,7 @@ public class FilterCompiler
         var begin = _filter.Position;
         var closingIndex = _filter.NextIndexOfUnescaped(Pattern);
         if (closingIndex == -1)
-            throw new InvalidPathException($"Regex not closed. Expected {Pattern}" + $" in {_filter}");
+            throw new InvalidPathException($"Regex not closed. Expected {Pattern} in {_filter}");
 
         if (_filter.InBounds(closingIndex + 1))
         {
@@ -451,18 +451,19 @@ public class FilterCompiler
         }
 
 
-        public override bool Apply(IPredicateContext ctx)
+        public override bool Apply(IPredicateContext context)
         {
-            return _predicate.Apply(ctx);
+            return _predicate.Apply(context);
         }
 
+        public override string ToUnenclosedString()
+        {
+            return _predicate.ToUnenclosedString();
+        }
 
         public override string ToString()
         {
-            var predicateString = _predicate.ToString();
-            if (predicateString.StartsWith("("))
-                return $"[?{predicateString}" + "]";
-            return $"[?({predicateString}" + ")]";
+            return $"[?({ToUnenclosedString()})]";
         }
     }
 }

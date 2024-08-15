@@ -1,6 +1,3 @@
 namespace XavierJefferson.JsonPathParser.Path;
 
-public interface IPathTokenAppender
-{
-    IPathTokenAppender AppendPathToken(PathToken next);
-}
+public delegate void PathTokenAppenderDelegate(PathToken next);

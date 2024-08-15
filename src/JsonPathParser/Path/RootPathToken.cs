@@ -2,8 +2,6 @@ using XavierJefferson.JsonPathParser.PathRefs;
 
 namespace XavierJefferson.JsonPathParser.Path;
 
-/// <summary>
-///     */
 public class RootPathToken : PathToken
 {
     private readonly string _rootToken;
@@ -37,22 +35,22 @@ public class RootPathToken : PathToken
         return this;
     }
 
-    public IPathTokenAppender GetPathTokenAppender()
+    public PathTokenAppenderDelegate GetPathTokenAppender()
     {
-        return new L1(this);
+        return i => Append(i);
     }
 
 
-    public override void Evaluate(string currentPath, PathRef pathRef, object? model, EvaluationContextImpl ctx)
+    public override void Evaluate(string currentPath, PathRef pathRef, object? model, EvaluationContextImpl context)
     {
         if (IsLeaf())
         {
-            var op = ctx.ForUpdate() ? pathRef : PathRef.NoOp;
-            ctx.AddResult(_rootToken, op, model);
+            var op = context.ForUpdate() ? pathRef : PathRef.NoOp;
+            context.AddResult(_rootToken, op, model);
         }
         else
         {
-            Next().Evaluate(_rootToken, pathRef, model, ctx);
+            Next().Evaluate(_rootToken, pathRef, model, context);
         }
     }
 
@@ -76,21 +74,5 @@ public class RootPathToken : PathToken
     public void SetTail(PathToken token)
     {
         _tail = token;
-    }
-
-    private class L1 : IPathTokenAppender
-    {
-        private readonly RootPathToken _rpt;
-
-        public L1(RootPathToken rpt)
-        {
-            _rpt = rpt;
-        }
-
-        public IPathTokenAppender AppendPathToken(PathToken next)
-        {
-            _rpt.Append(next);
-            return this;
-        }
     }
 }

@@ -4,86 +4,88 @@ using XavierJefferson.JsonPathParser.PathRefs;
 
 namespace XavierJefferson.JsonPathParser.Path;
 
-/// <summary>
-///     */
+
 public class ScanPathToken : PathToken
 {
     private static readonly IPredicate FalsePredicate = new FalsePredicateImpl();
 
 
-    public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl ctx)
+    public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl context)
     {
         var pt = Next();
 
-        Walk(pt, currentPath, parent, model, ctx, CreateScanPredicate(pt, ctx));
+        Walk(pt, currentPath, parent, model, context, CreateScanPredicate(pt, context));
     }
 
-    public static void Walk(PathToken pt, string currentPath, PathRef parent, object? model, EvaluationContextImpl ctx,
+    public static void Walk(PathToken pt, string currentPath, PathRef parent, object? model, EvaluationContextImpl context,
         IPredicate predicate)
     {
-        if (ctx.JsonProvider.IsMap(model))
-            WalkObject(pt, currentPath, parent, model, ctx, predicate);
-        else if (ctx.JsonProvider.IsArray(model)) WalkArray(pt, currentPath, parent, model, ctx, predicate);
+        if (context.JsonProvider.IsMap(model))
+            WalkObject(pt, currentPath, parent, model, context, predicate);
+        else if (context.JsonProvider.IsArray(model)) WalkArray(pt, currentPath, parent, model, context, predicate);
     }
 
     public static void WalkArray(PathToken pt, string currentPath, PathRef parent, object? model,
-        EvaluationContextImpl ctx, IPredicate predicate)
+        EvaluationContextImpl context, IPredicate predicate)
     {
         if (predicate.Matches(model))
         {
             if (pt.IsLeaf())
             {
-                pt.Evaluate(currentPath, parent, model, ctx);
+                pt.Evaluate(currentPath, parent, model, context);
             }
             else
             {
                 var next = pt.Next();
-                var models1 = ctx.JsonProvider.AsEnumerable(model);
-                foreach (var evalModel in models1.Cast<object?>().ToIndexedEnumerable())
+                var models1 = context.JsonProvider.AsEnumerable(model);
+                foreach (var evalModel in models1.ToIndexedEnumerable())
                 {
                     var evalPath = currentPath + $"[{evalModel.Index}]";
                     next.SetUpstreamArrayIndex(evalModel.Index);
-                    next.Evaluate(evalPath, parent, evalModel.Value, ctx);
+                    next.Evaluate(evalPath, parent, evalModel.Value, context);
                 }
             }
         }
 
-        var models = ctx.JsonProvider.AsEnumerable(model).Cast<object?>();
-        var idx = 0;
-        foreach (var evalModel in models)
+        var models = context.JsonProvider.AsEnumerable(model);
+
+        foreach (var evalModel in models.ToIndexedEnumerable())
         {
-            var evalPath = currentPath + "[" + idx + "]";
-            Walk(pt, evalPath, PathRef.Create(model, idx), evalModel, ctx, predicate);
-            idx++;
+            var evalPath = $"{currentPath}[{evalModel.Index}]";
+            Walk(pt, evalPath, PathRef.Create(model, evalModel.Index), evalModel.Value, context, predicate);
         }
     }
 
-    public static void WalkObject(PathToken pt, string currentPath, PathRef parent, object? model,
-        EvaluationContextImpl ctx, IPredicate predicate)
+    public static void WalkObject(PathToken pathToken, string currentPath, PathRef parent, object? model,
+        EvaluationContextImpl context, IPredicate predicate)
     {
-        if (predicate.Matches(model)) pt.Evaluate(currentPath, parent, model, ctx);
-        var properties = ctx.JsonProvider.GetPropertyKeys(model);
+        if (predicate.Matches(model)) pathToken.Evaluate(currentPath, parent, model, context);
+        var properties = context.JsonProvider.GetPropertyKeys(model);
 
         foreach (var property in properties)
         {
-            var evalPath = currentPath + "['" + property + "']";
-            var propertyModel = ctx.JsonProvider.GetMapValue(model, property);
+            var evalPath = $"{currentPath}['{property}']";
+            var propertyModel = context.JsonProvider.GetMapValue(model, property);
             if (propertyModel != IJsonProvider.Undefined)
-                Walk(pt, evalPath, PathRef.Create(model, property), propertyModel, ctx, predicate);
+                Walk(pathToken, evalPath, PathRef.Create(model, property), propertyModel, context, predicate);
         }
     }
 
-    private static IPredicate CreateScanPredicate(PathToken target, EvaluationContextImpl ctx)
+    private static IPredicate CreateScanPredicate(PathToken target, EvaluationContextImpl context)
     {
-        if (target is PropertyPathToken)
-            return new PropertyPathTokenPredicate(target, ctx);
-        if (target is ArrayPathToken)
-            return new ArrayPathTokenPredicate(ctx);
-        if (target is WildcardPathToken)
-            return new WildcardPathTokenPredicate();
-        if (target is PredicatePathToken)
-            return new FilterPathTokenPredicate(target, ctx);
-        return FalsePredicate;
+        switch (target)
+        {
+            case PropertyPathToken:
+                return new PropertyPathTokenPredicate(target, context);
+            case ArrayPathToken:
+                return new ArrayPathTokenPredicate(context);
+            case WildcardPathToken:
+                return new WildcardPathTokenPredicate();
+            case PredicatePathToken:
+                return new FilterPathTokenPredicate(target, context);
+            default:
+                return FalsePredicate;
+        }
     }
 
 
@@ -113,19 +115,19 @@ public class ScanPathToken : PathToken
 
     public class FilterPathTokenPredicate : IPredicate
     {
-        private readonly EvaluationContextImpl _ctx;
+        private readonly EvaluationContextImpl _context;
         private readonly PredicatePathToken _predicatePathToken;
 
-        public FilterPathTokenPredicate(PathToken target, EvaluationContextImpl ctx)
+        public FilterPathTokenPredicate(PathToken target, EvaluationContextImpl context)
         {
-            _ctx = ctx;
+            _context = context;
             _predicatePathToken = (PredicatePathToken)target;
         }
 
 
         public bool Matches(object? model)
         {
-            return _predicatePathToken.Accept(model, _ctx.RootDocument, _ctx.Configuration, _ctx);
+            return _predicatePathToken.Accept(model, _context.RootDocument, _context.Configuration, _context);
         }
     }
 
@@ -139,35 +141,35 @@ public class ScanPathToken : PathToken
 
     public class ArrayPathTokenPredicate : IPredicate
     {
-        private readonly EvaluationContextImpl _ctx;
+        private readonly EvaluationContextImpl _context;
 
-        public ArrayPathTokenPredicate(EvaluationContextImpl ctx)
+        public ArrayPathTokenPredicate(EvaluationContextImpl context)
         {
-            _ctx = ctx;
+            _context = context;
         }
 
 
         public bool Matches(object? model)
         {
-            return _ctx.JsonProvider.IsArray(model);
+            return _context.JsonProvider.IsArray(model);
         }
     }
 
     public class PropertyPathTokenPredicate : IPredicate
     {
-        private readonly EvaluationContextImpl _ctx;
+        private readonly EvaluationContextImpl _context;
         private readonly PropertyPathToken _propertyPathToken;
 
-        public PropertyPathTokenPredicate(PathToken target, EvaluationContextImpl ctx)
+        public PropertyPathTokenPredicate(PathToken target, EvaluationContextImpl context)
         {
-            _ctx = ctx;
+            _context = context;
             _propertyPathToken = (PropertyPathToken)target;
         }
 
 
         public bool Matches(object? model)
         {
-            if (!_ctx.JsonProvider.IsMap(model)) return false;
+            if (!_context.JsonProvider.IsMap(model)) return false;
 
             //
             // The commented code below makes it really hard understand, use and predict the result
@@ -176,7 +178,7 @@ public class ScanPathToken : PathToken
             // in a deep scanning scenario. For details read conversation in commit
             // https://github.com/jayway/JsonPath/commit/1a72fc078deb16995e323442bfb681bd715ce45a#commitcomment-14616092
             //
-            //            if (ctx.Options.Contains(Option.REQUIRE_PROPERTIES)) {
+            //            if (context.Options.Contains(Option.REQUIRE_PROPERTIES)) {
             //                // Have to require properties defined in path when an indefinite path is evaluated,
             //                // so have to go there and search for it.
             //                return true;
@@ -187,11 +189,11 @@ public class ScanPathToken : PathToken
                 // so we'll allow it to do its job.
                 return true;
 
-            if (_propertyPathToken.IsLeaf() && _ctx.Options.Contains(Option.DefaultPathLeafToNull))
+            if (_propertyPathToken.IsLeaf() && _context.Options.Contains(Option.DefaultPathLeafToNull))
                 // In case of DEFAULT_PATH_LEAF_TO_NULL missing properties is not a problem.
                 return true;
 
-            var keys = _ctx.JsonProvider.GetPropertyKeys(model);
+            var keys = _context.JsonProvider.GetPropertyKeys(model);
             return keys.ContainsAll(_propertyPathToken.GetProperties());
         }
     }

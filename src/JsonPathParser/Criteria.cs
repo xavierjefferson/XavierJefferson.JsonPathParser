@@ -26,19 +26,23 @@ public class Criteria : IPredicate
     }
 
 
-    public bool Apply(IPredicateContext ctx)
+    public bool Apply(IPredicateContext context)
     {
         foreach (var expressionNode in ToRelationalExpressionNodes())
-            if (!expressionNode.Apply(ctx))
+            if (!expressionNode.Apply(context))
                 return false;
         return true;
     }
 
+    public string ToUnenclosedString()
+    {
+        var objs = ToRelationalExpressionNodes();
+        return string.Join(" && ", objs);
+    }
 
     public override string ToString()
     {
-        var objs = ToRelationalExpressionNodes().Cast<object?>();
-        return string.Join(" && ", objs);
+        return ToUnenclosedString();
     }
 
     private ICollection<RelationalExpressionNode> ToRelationalExpressionNodes()
@@ -187,7 +191,7 @@ public class Criteria : IPredicate
     /// </param>
     public Criteria Regex(Regex pattern)
     {
-        if (pattern == null) throw new ArgumentNullException(nameof(pattern));
+        ArgumentNullException.ThrowIfNull(pattern);
         _criteriaType = RelationalOperator.Regex;
         _right = ValueNode.ToValueNode(pattern);
         return this;
@@ -212,7 +216,8 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria In(ICollection<object?> collection)
     {
-        if (collection == null) throw new ArgumentNullException(nameof(collection));
+        
+        ArgumentNullException.ThrowIfNull(collection);
         _criteriaType = RelationalOperator.In;
         _right = new ValueListNode(collection);
         return this;
@@ -250,7 +255,7 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria Nin(ICollection<object?> collection)
     {
-        if (collection == null) throw new ArgumentNullException(nameof(collection));
+        ArgumentNullException.ThrowIfNull(collection);
         _criteriaType = RelationalOperator.Nin;
         _right = new ValueListNode(collection);
         return this;
@@ -277,7 +282,7 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria SubsetOf(ICollection<object?>? c)
     {
-        if (c == null) throw new ArgumentNullException(nameof(c));
+        ArgumentNullException.ThrowIfNull(c);
         _criteriaType = RelationalOperator.SubsetOf;
         _right = new ValueListNode(c ?? new List<object?>());
         return this;
@@ -302,7 +307,7 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria AnyOf<T>(IEnumerable<T> c)
     {
-        if (c == null) throw new ArgumentNullException(nameof(c));
+        ArgumentNullException.ThrowIfNull(c);
         _criteriaType = RelationalOperator.AnyOf;
         _right = new ValueListNode(c.Cast<object?>().ToSerializingList());
         return this;
@@ -327,7 +332,7 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria NoneOf(ICollection<object?> c)
     {
-        if (c == null) throw new ArgumentNullException(nameof(c));
+        ArgumentNullException.ThrowIfNull(c);
         _criteriaType = RelationalOperator.NoneOf;
         _right = new ValueListNode(c ?? new List<object?>());
         return this;
@@ -354,7 +359,7 @@ public class Criteria : IPredicate
     /// </param>
     public Criteria All(ICollection<object?> collection)
     {
-        if (collection == null) throw new ArgumentNullException(nameof(collection));
+        ArgumentNullException.ThrowIfNull(collection);
         _criteriaType = RelationalOperator.All;
         _right = new ValueListNode(collection);
         return this;

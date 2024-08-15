@@ -30,14 +30,15 @@ public class PropertyPathTokenTest
                                          "}";
 
 
-    [Fact]
-    public void property_not_found()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void property_not_found(IProviderTypeTestCase testCase)
     {
         //String result = JsonPath.Read(SIMPLE_MAP, "$.not-found");
 
         //Assert.Null(result);
 
-        var configuration = Configuration.CreateBuilder().WithOptions(Option.SuppressExceptions).Build();
+        var configuration = testCase.Configuration.SetOptions(Option.SuppressExceptions);
 
         var json = "{\"a\":{\"b\":1,\"c\":2}";
         Assert.Null(JsonPath.Parse(_simpleMap, configuration).Read("$.not-found"));

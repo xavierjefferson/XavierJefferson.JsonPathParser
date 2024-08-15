@@ -102,7 +102,7 @@ public class CharacterIndex
         bool skipRegex)
     {
         if (CharAt(startPosition) != openChar)
-            throw new InvalidPathException($"Expected {openChar}" + " but found " + CharAt(startPosition));
+            throw new InvalidPathException($"Expected {openChar} but found " + CharAt(startPosition));
 
         var opened = 1;
         var readPosition = startPosition + 1;

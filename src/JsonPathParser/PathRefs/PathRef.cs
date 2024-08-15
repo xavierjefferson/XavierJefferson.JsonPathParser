@@ -43,7 +43,7 @@ public abstract class PathRef : IComparable<PathRef>
         if (configuration.JsonProvider.IsMap(targetMap))
         {
             if (configuration.JsonProvider.GetMapValue(targetMap, oldKeyName) == IJsonProvider.Undefined)
-                throw new PathNotFoundException($"No results for Key {oldKeyName}" + " found in map!");
+                throw new PathNotFoundException($"No results for Key {oldKeyName} found in map!");
             configuration.JsonProvider.SetProperty(targetMap, newKeyName,
                 configuration.JsonProvider.GetMapValue(targetMap, oldKeyName));
             configuration.JsonProvider.RemoveProperty(targetMap, oldKeyName);

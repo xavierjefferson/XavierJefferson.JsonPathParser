@@ -138,7 +138,7 @@ public class PathCompilerTest : TestUtils
     public void a_placeholder_criteria_can_be_parsed()
     {
         var p = new Mock<IPredicate>();
-        p.Setup(i => i.Apply(It.IsAny<IPredicateContext>())).Returns((IPredicateContext ctx) => { return false; });
+        p.Setup(i => i.Apply(It.IsAny<IPredicateContext>())).Returns((IPredicateContext context) => { return false; });
         Assert.Equal("$[?]", PathCompiler.Compile("$[?]", p.Object).ToString());
         Assert.Equal("$[?,?]", PathCompiler.Compile("$[?,?]", p.Object, p.Object).ToString());
         Assert.Equal("$[?,?,?]", PathCompiler.Compile("$[?,?,?]", p.Object, p.Object, p.Object).ToString());

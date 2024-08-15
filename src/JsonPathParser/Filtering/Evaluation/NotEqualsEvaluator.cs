@@ -5,9 +5,8 @@ namespace XavierJefferson.JsonPathParser.Filtering.Evaluation;
 
 internal class NotEqualsEvaluator : EqualsEvaluator
 {
-    public override bool Evaluate(ValueNode left, ValueNode right, IPredicateContext ctx)
+    public override bool Evaluate(ValueNode left, ValueNode right, IPredicateContext context)
     {
-        return !base.Evaluate(left, right, ctx);
-        //return !EvaluatorFactory.Evaluators[RelationalOperator.Eq].Evaluate(left, right, ctx);
+        return !base.Evaluate(left, right, context);
     }
 }

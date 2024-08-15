@@ -29,14 +29,14 @@ public abstract class PathToken
         return next;
     }
 
-    public void HandleObjectProperty(string currentPath, object? model, EvaluationContextImpl ctx,
+    public void HandleObjectProperty(string currentPath, object? model, EvaluationContextImpl context,
         SerializingList<string> properties)
     {
         if (properties.Count() == 1)
         {
             var property = properties[0];
             var evalPath = $"{currentPath}['{property}']";
-            var propertyVal = ReadObjectProperty(property, model, ctx);
+            var propertyVal = ReadObjectProperty(property, model, context);
             if (propertyVal == IJsonProvider.Undefined)
             {
                 // Conditions below heavily depend on current token type (and its logic) and are not "universal",
@@ -47,14 +47,14 @@ public abstract class PathToken
 
                 if (IsLeaf())
                 {
-                    if (ctx.Options.Contains(Option.DefaultPathLeafToNull))
+                    if (context.Options.Contains(Option.DefaultPathLeafToNull))
                     {
                         propertyVal = null;
                     }
                     else
                     {
-                        if (ctx.Options.Contains(Option.SuppressExceptions) ||
-                            !ctx.Options.Contains(Option.RequireProperties))
+                        if (context.Options.Contains(Option.SuppressExceptions) ||
+                            !context.Options.Contains(Option.RequireProperties))
                             return;
                         throw new PathNotFoundException("No results for path: " + evalPath);
                     }
@@ -62,8 +62,8 @@ public abstract class PathToken
                 else
                 {
                     if ((!(IsUpstreamDefinite() && IsTokenDefinite()) &&
-                         !ctx.Options.Contains(Option.RequireProperties)) ||
-                        ctx.Options.Contains(Option.SuppressExceptions))
+                         !context.Options.Contains(Option.RequireProperties)) ||
+                        context.Options.Contains(Option.SuppressExceptions))
                         // If there is some indefiniteness in the path and properties are not required - we'll ignore
                         // absent property. And also in case of exception suppression - so that other path evaluation
                         // branches could be examined.
@@ -72,16 +72,16 @@ public abstract class PathToken
                 }
             }
 
-            var pathRef = ctx.ForUpdate() ? PathRef.Create(model, property) : PathRef.NoOp;
+            var pathRef = context.ForUpdate() ? PathRef.Create(model, property) : PathRef.NoOp;
             if (IsLeaf())
             {
                 var idx = $"[{_upstreamArrayIndex}]";
-                if (_upstreamArrayIndex == -1 || ctx.GetRoot().GetTail().Prev().GetPathFragment().Equals(idx))
-                    ctx.AddResult(evalPath, pathRef, propertyVal);
+                if (_upstreamArrayIndex == -1 || context.GetRoot().GetTail().Prev().GetPathFragment().Equals(idx))
+                    context.AddResult(evalPath, pathRef, propertyVal);
             }
             else
             {
-                Next().Evaluate(evalPath, pathRef, propertyVal, ctx);
+                Next().Evaluate(evalPath, pathRef, propertyVal, context);
             }
         }
         else
@@ -90,16 +90,16 @@ public abstract class PathToken
 
             Debug.Assert(IsLeaf(), "non-leaf multi props handled elsewhere");
 
-            var merged = ctx.JsonProvider.CreateMap();
+            var merged = context.JsonProvider.CreateMap();
             foreach (var property in properties)
             {
                 object? propertyVal;
-                if (HasProperty(property, model, ctx))
+                if (HasProperty(property, model, context))
                 {
-                    propertyVal = ReadObjectProperty(property, model, ctx);
+                    propertyVal = ReadObjectProperty(property, model, context);
                     if (propertyVal == IJsonProvider.Undefined)
                     {
-                        if (ctx.Options.Contains(Option.DefaultPathLeafToNull))
+                        if (context.Options.Contains(Option.DefaultPathLeafToNull))
                             propertyVal = null;
                         else
                             continue;
@@ -107,45 +107,45 @@ public abstract class PathToken
                 }
                 else
                 {
-                    if (ctx.Options.Contains(Option.DefaultPathLeafToNull))
+                    if (context.Options.Contains(Option.DefaultPathLeafToNull))
                         propertyVal = null;
-                    else if (ctx.Options.Contains(Option.RequireProperties))
+                    else if (context.Options.Contains(Option.RequireProperties))
                         throw new PathNotFoundException($"Missing property in path {evalPath}");
                     else
                         continue;
                 }
 
-                ctx.JsonProvider.SetProperty(merged, property, propertyVal);
+                context.JsonProvider.SetProperty(merged, property, propertyVal);
             }
 
-            var pathRef = ctx.ForUpdate() ? PathRef.Create(model, properties) : PathRef.NoOp;
-            ctx.AddResult(evalPath, pathRef, merged);
+            var pathRef = context.ForUpdate() ? PathRef.Create(model, properties) : PathRef.NoOp;
+            context.AddResult(evalPath, pathRef, merged);
         }
     }
 
-    private static bool HasProperty(string property, object? model, EvaluationContextImpl ctx)
+    private static bool HasProperty(string property, object? model, EvaluationContextImpl context)
     {
-        return ctx.JsonProvider.GetPropertyKeys(model).Contains(property);
+        return context.JsonProvider.GetPropertyKeys(model).Contains(property);
     }
 
-    private static object? ReadObjectProperty(string property, object? model, EvaluationContextImpl ctx)
+    private static object? ReadObjectProperty(string property, object? model, EvaluationContextImpl context)
     {
-        return ctx.JsonProvider.GetMapValue(model, property);
+        return context.JsonProvider.GetMapValue(model, property);
     }
 
 
-    protected void HandleArrayIndex(int index, string currentPath, object? model, EvaluationContextImpl ctx)
+    protected void HandleArrayIndex(int index, string currentPath, object? model, EvaluationContextImpl context)
     {
         var evalPath = $"{currentPath}[{index}]";
-        var pathRef = ctx.ForUpdate() ? PathRef.Create(model, index) : PathRef.NoOp;
-        var effectiveIndex = index < 0 ? ctx.JsonProvider.Length(model) + index : index;
+        var pathRef = context.ForUpdate() ? PathRef.Create(model, index) : PathRef.NoOp;
+        var effectiveIndex = index < 0 ? context.JsonProvider.Length(model) + index : index;
         try
         {
-            var evalHit = ctx.JsonProvider.GetArrayIndex(model, effectiveIndex);
+            var evalHit = context.JsonProvider.GetArrayIndex(model, effectiveIndex);
             if (IsLeaf())
-                ctx.AddResult(evalPath, pathRef, evalHit);
+                context.AddResult(evalPath, pathRef, evalHit);
             else
-                Next().Evaluate(evalPath, pathRef, evalHit, ctx);
+                Next().Evaluate(evalPath, pathRef, evalHit, context);
         }
         catch (ArgumentOutOfRangeException)
         {
@@ -227,12 +227,12 @@ public abstract class PathToken
     }
 
     public void Invoke(IPathFunction pathFunction, string currentPath, PathRef parent, object? model,
-        EvaluationContextImpl ctx)
+        EvaluationContextImpl context)
     {
-        ctx.AddResult(currentPath, parent, pathFunction.Invoke(currentPath, parent, model, ctx, null));
+        context.AddResult(currentPath, parent, pathFunction.Invoke(currentPath, parent, model, context, null));
     }
 
-    public abstract void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl ctx);
+    public abstract void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl context);
 
     public abstract bool IsTokenDefinite();
 

@@ -19,9 +19,9 @@ public class PredicateTest : TestUtils
         var m = new Mock<IPredicate>();
 
         m.Setup(i => i.ToString()).Returns(() => "Test123");
-        m.Setup(i => i.Apply(It.IsAny<IPredicateContext>())).Returns((IPredicateContext ctx) =>
+        m.Setup(i => i.Apply(It.IsAny<IPredicateContext>())).Returns((IPredicateContext context) =>
         {
-            return ctx.GetItem<IDictionary<string, object?>>().ContainsKey("isbn");
+            return context.GetItem<IDictionary<string, object?>>().ContainsKey("isbn");
         });
 
         var nn = Reader.Read<List<object?>>("$.store.book[?].isbn", m.Object);

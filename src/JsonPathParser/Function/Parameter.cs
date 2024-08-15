@@ -49,43 +49,41 @@ public class Parameter
     /// <summary>
     ///     Translate the collection of parameters into a collection of values of type T.
     /// </summary>
-    /// <param name="type">*      The type to translate the collection into.</param>
-    /// <param name="ctx">*      Context.</param>
-    /// <param name="parameters">*      ICollection of parameters.</param>
+    /// <param name="type">      The type to translate the collection into.</param>
+    /// <param name="context">      Context.</param>
+    /// <param name="parameters">      ICollection of parameters.</param>
     /// <param name="
     /// 
     /// 
     /// <T>
-    ///     ">*      Type T returned as a List of T.</param>
+    ///     ">      Type T returned as a List of T.</param>
     ///     <returns>List of T either empty or containing contents.</returns>
     ///     </summary>
-    public static SerializingList<T> ToList<T>(IEvaluationContext ctx, SerializingList<Parameter>? parameters)
+    public static SerializingList<T> ToList<T>(IEvaluationContext context, IEnumerable<Parameter>? parameters)
     {
         var values = new SerializingList<T>();
         if (parameters == null) return values;
         foreach (var param in parameters)
-            Consume(ctx, values, param.GetValue());
+            Consume(context, values, param.GetValue());
         return values;
     }
 
     /// <summary>
-    ///     Either consume the object as an array and.Add each element to the collection, or alternatively.Add each element
+    ///     Either consume the object as an array and.Add each element to the collection, or alternatively add each element
     /// </summary>
-    /// <param name="expectedType">
-    ///     *      the expected class type to consume, if null or not of this type the element is not
+    /// <typeparam name="T">
+    ///          the expected class type to consume, if null or not of this type the element is not
     ///     added to the array.
-    /// </param>
-    /// <param name="ctx">*      the JSON context to determine if this is an array or value.</param>
-    /// <param name="collection">*      The collection to append into.</param>
-    /// <param name="value">*      The value to evaluate.</param>
-    public static void Consume<T>(IEvaluationContext ctx, ICollection<T> collection, object? value)
+    /// </typeparam>
+    /// <param name="context">      the JSON context to determine if this is an array or value.</param>
+    /// <param name="collection">      The collection to append into.</param>
+    /// <param name="value">      The value to evaluate.</param>
+    public static void Consume<T>(IEvaluationContext context, ICollection<T> collection, object? value)
     {
         List<object?> toAdd;
         var expectedType = typeof(T);
-        var canAddNull = false;
-        if (ctx.Configuration.JsonProvider.IsArray(value))
-            toAdd = ctx.Configuration.JsonProvider.AsEnumerable(value).Cast<object?>()
-                .Where(i => i != null).ToList();
+        if (context.Configuration.JsonProvider.IsArray(value))
+            toAdd = context.Configuration.JsonProvider.AsEnumerable(value);
         else
             toAdd = new List<object?> { value };
 

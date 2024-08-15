@@ -5,19 +5,18 @@ namespace XavierJefferson.JsonPathParser.Filtering.Evaluation;
 
 public class AllEvaluator : IEvaluator
 {
-    public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext ctx)
+    public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext context)
     {
         var requiredValues = right.AsValueListNode();
 
-        if (left is JsonNode)
+        if (left is JsonNode jsonNode)
         {
             var valueNode =
-                left.AsJsonNode().AsValueListNode(ctx); //returns UndefinedNode if conversion is not possible
-            if (valueNode is ValueListNode)
+                jsonNode.AsValueListNode(context); //returns UndefinedNode if conversion is not possible
+            if (valueNode is ValueListNode valueListNode)
             {
-                var shouldContainAll = valueNode.AsValueListNode();
                 foreach (var required in requiredValues)
-                    if (!Enumerable.Contains(shouldContainAll, required))
+                    if (!Enumerable.Contains(valueListNode, required))
                         return false;
             }
 

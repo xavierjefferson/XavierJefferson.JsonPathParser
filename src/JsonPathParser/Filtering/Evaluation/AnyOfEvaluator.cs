@@ -5,12 +5,12 @@ namespace XavierJefferson.JsonPathParser.Filtering.Evaluation;
 
 public class AnyOfEvaluator : IEvaluator
 {
-    public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext ctx)
+    public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext context)
     {
         ValueListNode rightValueListNode;
-        if (right is JsonNode)
+        if (right is JsonNode jsonNode)
         {
-            var vn = right.AsJsonNode().AsValueListNode(ctx);
+            var vn = jsonNode.AsValueListNode(context);
             if (vn is UndefinedNode)
                 return false;
             rightValueListNode = vn.AsValueListNode();
@@ -21,9 +21,9 @@ public class AnyOfEvaluator : IEvaluator
         }
 
         ValueListNode leftValueListNode;
-        if (left is JsonNode)
+        if (left is JsonNode jsonNode1)
         {
-            var vn = left.AsJsonNode().AsValueListNode(ctx);
+            var vn = jsonNode1.AsValueListNode(context);
             if (vn is UndefinedNode)
                 return false;
             leftValueListNode = vn.AsValueListNode();

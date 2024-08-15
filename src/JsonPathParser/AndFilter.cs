@@ -1,4 +1,5 @@
 using System.Text;
+using XavierJefferson.JsonPathParser.Extensions;
 using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.Interfaces;
 
@@ -25,29 +26,19 @@ public class AndFilter : Filter
     }
 
 
-    public override bool Apply(IPredicateContext ctx)
+    public override bool Apply(IPredicateContext context)
     {
-        foreach (var predicate in _predicates)
-            if (!predicate.Apply(ctx))
-                return false;
-        return true;
+        return _predicates.All(i => i.Apply(context));
+        //foreach (var predicate in _predicates)
+        //    if (!predicate.Apply(context))
+        //        return false;
+        //return true;
+    }
+
+    public override string ToUnenclosedString()
+    {
+        return string.Join(" && ", _predicates.Select(i => i.ToUnenclosedString()));
     }
 
 
-    public override string ToString()
-    {
-        var sb = new StringBuilder();
-        sb.Append("[?(");
-        foreach (var px in _predicates.Select((i, j) => new { i = i.ToString(), j }))
-        {
-            var p = px.i;
-            if (px.j > 0) sb.Append(" && ");
-
-            if (p.StartsWith("[?(")) p = p.Subsequence(3, p.Length - 2);
-            sb.Append(p);
-        }
-
-        sb.Append(")]");
-        return sb.ToString();
-    }
 }

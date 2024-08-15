@@ -42,27 +42,27 @@ public class PropertyPathToken : PathToken
     }
 
 
-    public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl ctx)
+    public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl context)
     {
         // Can't assert it in ctor because isLeaf() could be changed later on.
         Debug.Assert(Assertions.OnlyOneIsTrueNonThrow(SinglePropertyCase(), MultiPropertyMergeCase(),
             MultiPropertyIterationCase()));
 
-        if (!ctx.JsonProvider.IsMap(model))
+        if (!context.JsonProvider.IsMap(model))
         {
             if (!IsUpstreamDefinite()
-                || ctx.Options.Contains(Option.SuppressExceptions))
+                || context.Options.Contains(Option.SuppressExceptions))
                 return;
 
             var m = model == null ? "null" : model.GetType().FullName;
             throw new PathNotFoundException(
                 $"Expected to find an object with property {GetPathFragment()} in path {currentPath} but found '{m}'. " +
-                $"This is not a json object according to the JsonProvider: '{ctx.Configuration.JsonProvider.GetType().FullName}'.");
+                $"This is not a json object according to the JsonProvider: '{context.Configuration.JsonProvider.GetType().FullName}'.");
         }
 
         if (SinglePropertyCase() || MultiPropertyMergeCase())
         {
-            HandleObjectProperty(currentPath, model, ctx, _properties);
+            HandleObjectProperty(currentPath, model, context, _properties);
             return;
         }
 
@@ -72,7 +72,7 @@ public class PropertyPathToken : PathToken
         foreach (var property in _properties)
         {
             currentlyHandledProperty[0] = property;
-            HandleObjectProperty(currentPath, model, ctx, currentlyHandledProperty);
+            HandleObjectProperty(currentPath, model, context, currentlyHandledProperty);
         }
     }
 

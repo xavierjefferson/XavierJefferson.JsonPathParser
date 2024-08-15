@@ -45,7 +45,7 @@ public class JsonContext : IDocumentContext
 
     public object? Read(JsonPath path)
     {
-        if (path == null) throw new ArgumentNullException(nameof(path));
+        ArgumentNullException.ThrowIfNull(path);
         return path.Read(Json, Configuration);
     }
 
@@ -80,7 +80,7 @@ public class JsonContext : IDocumentContext
 
     public IReadContext WithListeners(params EvaluationCallback[] listener)
     {
-        return new JsonContext(Json, Configuration.SetEvaluationListeners(listener));
+        return new JsonContext(Json, Configuration.SetEvaluationCallbacks(listener));
     }
 
 

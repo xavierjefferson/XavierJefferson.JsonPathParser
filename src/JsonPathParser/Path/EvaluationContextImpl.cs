@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
@@ -36,7 +37,7 @@ public class EvaluationContextImpl : IEvaluationContext
     public IJsonProvider JsonProvider => Configuration.JsonProvider;
 
 
-    public HashSet<Option> Options => Configuration.GetOptions();
+    public IReadOnlySet<Option> Options => Configuration.Options;
 
 
     public Configuration Configuration { get; }
@@ -91,7 +92,7 @@ public class EvaluationContextImpl : IEvaluationContext
         if (_resultIndex > 0)
         {
             var objects = Configuration.JsonProvider.AsEnumerable(_pathResult);
-            foreach (var o in objects) res.Add((string)o);
+            res.AddRange(objects.Select(i => i.ToString()));
         }
 
         return res;
@@ -120,7 +121,7 @@ public class EvaluationContextImpl : IEvaluationContext
         Configuration.JsonProvider.SetArrayIndex(_valueResult, _resultIndex, model);
         Configuration.JsonProvider.SetArrayIndex(_pathResult, _resultIndex, path);
         _resultIndex++;
-        if (!!Configuration.EvaluationCallbacks.Any())
+        if (Configuration.EvaluationCallbacks.Any())
         {
             var idx = _resultIndex - 1;
             foreach (var listener in Configuration.EvaluationCallbacks)

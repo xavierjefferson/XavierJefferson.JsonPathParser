@@ -10,7 +10,7 @@ public abstract class ValueNode
 
 
 {
-    public abstract Type Type(IPredicateContext ctx);
+    public abstract Type Type(IPredicateContext context);
 
     public virtual PatternNode AsPatternNode()
     {

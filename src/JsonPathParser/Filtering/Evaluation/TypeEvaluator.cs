@@ -5,8 +5,8 @@ namespace XavierJefferson.JsonPathParser.Filtering.Evaluation;
 
 public class TypeEvaluator : IEvaluator
 {
-    public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext ctx)
+    public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext context)
     {
-        return right.AsClassNode().Value == left.Type(ctx);
+        return right.AsClassNode().Value == left.Type(context);
     }
 }

@@ -7,23 +7,22 @@ public abstract class CompareEvaluator : IEvaluator
 {
     protected abstract List<int> CompareValues { get; }
 
-    public virtual bool Evaluate(ValueNode left, ValueNode right, IPredicateContext ctx)
+    public virtual bool Evaluate(ValueNode left, ValueNode right, IPredicateContext context)
     {
-        if (left is JsonNode && right is JsonNode) return left.AsJsonNode().Equals(right.AsJsonNode(), ctx);
+        if (left is JsonNode leftJsonNode && right is JsonNode rightJsonNode) return leftJsonNode.Equals(rightJsonNode, context);
 
-        if (left is NumberNode && right is NumberNode)
-            return CompareValues.Contains(left.AsNumberNode().Value
-                .CompareTo(right.AsNumberNode().Value));
-        if (left is StringNode && right is StringNode)
-            return CompareValues.Contains(left.AsStringNode().Value
-                .CompareTo(right.AsStringNode().Value));
-        if (left is DateTimeOffsetNode && right is DateTimeOffsetNode)
+        if (left is NumberNode leftNumberNode && right is NumberNode rightNumberNode)
+            return CompareValues.Contains(leftNumberNode.Value
+                .CompareTo(rightNumberNode.Value));
+        if (left is StringNode leftStringNode && right is StringNode rightStringNode)
+            return CompareValues.Contains(leftStringNode.Value
+                .CompareTo(rightStringNode.Value));
+        if (left is DateTimeOffsetNode leftDateTimeOffsetNode && right is DateTimeOffsetNode rightDateTimeOffsetNode)
             //workaround for issue: https://github.com/json-path/JsonPath/issues/613
-            return CompareValues.Contains(left.AsDateTimeOffsetNode().Value
-                .CompareTo(right.AsDateTimeOffsetNode().Value));
+            return CompareValues.Contains(leftDateTimeOffsetNode.Value
+                .CompareTo(rightDateTimeOffsetNode.Value));
         if (left is IComparable c && right is IComparable d) return CompareValues.Contains(c.CompareTo(d));
         if (CompareValues.Contains(0)) return left.Equals(right);
         return false;
-        //return CompareValues.Contains( left.Com.Equals(right);
     }
 }

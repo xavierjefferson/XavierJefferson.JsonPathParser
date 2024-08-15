@@ -22,7 +22,7 @@ public class ParseContextImpl : IParseContext
 
     public IDocumentContext Parse(object? json)
     {
-        if (json == null) throw new ArgumentNullException(nameof(json));
+        ArgumentNullException.ThrowIfNull(json);
         if (json is IDictionary<string, object?> || json is IList) return new JsonContext(json, _configuration);
         object? obj;
         if (json is string jsonString)
@@ -58,8 +58,8 @@ public class ParseContextImpl : IParseContext
 
     public IDocumentContext Parse(Stream stream, Encoding encoding)
     {
-        if (stream == null) throw new ArgumentNullException(nameof(stream));
-        if (encoding == null) throw new ArgumentNullException(nameof(encoding));
+        ArgumentNullException.ThrowIfNull(stream);
+        ArgumentNullException.ThrowIfNull(encoding);
         using (stream)
         {
             var obj = _configuration.JsonProvider.Parse(stream, encoding);
@@ -70,7 +70,7 @@ public class ParseContextImpl : IParseContext
 
     public IDocumentContext Parse(FileInfo fileInfo)
     {
-        if (fileInfo == null) throw new ArgumentNullException(nameof(fileInfo));
+        ArgumentNullException.ThrowIfNull(fileInfo);
         using (var fis = fileInfo.OpenRead())
         {
             return Parse(fis, Encoding.UTF8);
@@ -81,7 +81,7 @@ public class ParseContextImpl : IParseContext
     [Obsolete]
     public IDocumentContext Parse(Uri url)
     {
-        if (url == null) throw new ArgumentNullException(nameof(url));
+        ArgumentNullException.ThrowIfNull(url);
 
         using (var fis = new HttpClient().GetStreamAsync(url).WaitAndUnwrapException())
         {

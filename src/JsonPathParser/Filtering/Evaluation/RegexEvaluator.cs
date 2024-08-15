@@ -5,19 +5,28 @@ namespace XavierJefferson.JsonPathParser.Filtering.Evaluation;
 
 public class RegexEvaluator : IEvaluator
 {
-    public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext ctx)
+    public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext context)
     {
         if (!(left is PatternNode ^ right is PatternNode)) return false;
 
-        if (left is PatternNode)
+        if (left is PatternNode leftPatternNode)
         {
-            if (right is ValueListNode || (right is JsonNode && right.AsJsonNode().IsArray(ctx)))
-                return MatchesAny(left.AsPatternNode(), right.AsJsonNode().AsValueListNode(ctx));
-            return Matches(left.AsPatternNode(), GetInput(right));
+            if (right is ValueListNode rightValueListNode)
+            {
+                return MatchesAny(leftPatternNode, rightValueListNode);
+            }
+
+            if (right is JsonNode rightJsonNode && rightJsonNode.IsArray(context))
+                return MatchesAny(leftPatternNode, rightJsonNode.AsValueListNode(context));
+            return Matches(leftPatternNode, GetInput(right));
+        }
+        if (left is ValueListNode leftValueListNode)
+        {
+            return MatchesAny(right.AsPatternNode(), leftValueListNode);
         }
 
-        if (left is ValueListNode || (left is JsonNode && left.AsJsonNode().IsArray(ctx)))
-            return MatchesAny(right.AsPatternNode(), left.AsJsonNode().AsValueListNode(ctx));
+        if (left is JsonNode leftJsonNode && leftJsonNode.IsArray(context))
+            return MatchesAny(right.AsPatternNode(), leftJsonNode.AsValueListNode(context));
         return Matches(right.AsPatternNode(), GetInput(left));
     }
 
@@ -28,12 +37,11 @@ public class RegexEvaluator : IEvaluator
 
     private bool MatchesAny(PatternNode patternNode, ValueNode valueNode)
     {
-        if (valueNode is ValueListNode)
+        if (valueNode is ValueListNode valueListNode)
         {
-            var listNode = valueNode.AsValueListNode();
             var pattern = patternNode.Value;
 
-            foreach (var it in listNode)
+            foreach (var it in valueListNode)
             {
                 var input = GetInput(it);
                 if (pattern.IsMatch(input)) return true;
@@ -48,10 +56,10 @@ public class RegexEvaluator : IEvaluator
     private string GetInput(ValueNode valueNode)
     {
         var input = "";
-
+        
         if (valueNode is StringNode || valueNode is NumberNode)
             input = valueNode.AsStringNode().Value;
-        else if (valueNode is BooleanNode) input = valueNode.AsBooleanNode().ToString();
+        else if (valueNode is BooleanNode booleanNode) input = booleanNode.ToString();
 
         return input;
     }

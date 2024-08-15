@@ -15,13 +15,13 @@ public abstract class AbstractAggregation : IPathFunction
     public const string EmptyArrayMessage = "Aggregation function attempted to calculate value using empty array";
 
 
-    public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext ctx,
+    public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
         SerializingList<Parameter>? parameters)
     {
         var count = 0;
-        if (ctx.Configuration.JsonProvider.IsArray(model))
+        if (context.Configuration.JsonProvider.IsArray(model))
         {
-            var objects = ctx.Configuration.JsonProvider.AsEnumerable(model).Cast<object>();
+            var objects = context.Configuration.JsonProvider.AsEnumerable(model);
             foreach (var obj in objects)
                 if (obj.TryConvertDouble(out var test))
                 {
@@ -31,7 +31,7 @@ public abstract class AbstractAggregation : IPathFunction
         }
 
         if (parameters != null)
-            foreach (var value in Parameter.ToList<double>(ctx, parameters))
+            foreach (var value in Parameter.ToList<double>(context, parameters))
             {
                 count++;
                 Next(value);

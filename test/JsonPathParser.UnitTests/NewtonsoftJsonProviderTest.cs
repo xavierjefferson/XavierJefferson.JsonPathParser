@@ -96,8 +96,8 @@ public class NewtonsoftJsonProviderTest : TestUtils
     {
         var json = "{\"foo\": \"bar\", \"emptyObject\": {},\"emptyList\":[]}";
         var config = testCase.Configuration
-            .CreateWithJsonProvider(new NewtonsoftJsonProvider())
-            .CreateWithMappingProvider(new NewtonsoftJsonMappingProvider());
+            .SetJsonProvider<NewtonsoftJsonProvider>()
+            .SetMappingProvider(new NewtonsoftJsonMappingProvider());
         var result = JsonPath.Using(config).Parse(json).Read("$..foo").AsList();
         MyAssert.ContainsExactly(result, "bar");
     }
@@ -108,8 +108,8 @@ public class NewtonsoftJsonProviderTest : TestUtils
     {
         var json = "{\"foo\": \"bar\", \"emptyObject\": {\"emptyList\":[]},\"emptyList\":[]}";
         var config = testCase.Configuration
-            .CreateWithJsonProvider(new NewtonsoftJsonProvider())
-            .CreateWithMappingProvider(new NewtonsoftJsonMappingProvider());
+            .SetJsonProvider(new NewtonsoftJsonProvider())
+            .SetMappingProvider(new NewtonsoftJsonMappingProvider());
         var result = JsonPath.Using(config).Parse(json).Read("$..foo").AsList();
         MyAssert.ContainsExactly(result, "bar");
     }

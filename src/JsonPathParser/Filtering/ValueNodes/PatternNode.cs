@@ -31,7 +31,7 @@ public class PatternNode : TypedValueNode<Regex>
     public override Regex Value => _compiledPattern;
 
 
-    public override Type Type(IPredicateContext ctx)
+    public override Type Type(IPredicateContext context)
     {
         return typeof(void);
     }

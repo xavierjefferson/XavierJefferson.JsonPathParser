@@ -5,8 +5,8 @@ namespace XavierJefferson.JsonPathParser.Filtering.Evaluation;
 
 public class TypeSafeEqualsEvaluator : EqualsEvaluator
 {
-    public override bool Evaluate(ValueNode left, ValueNode right, IPredicateContext ctx)
+    public override bool Evaluate(ValueNode left, ValueNode right, IPredicateContext context)
     {
-        return left.GetType().Equals(right.GetType()) && base.Evaluate(left, right, ctx);
+        return left.GetType().Equals(right.GetType()) && base.Evaluate(left, right, context);
     }
 }

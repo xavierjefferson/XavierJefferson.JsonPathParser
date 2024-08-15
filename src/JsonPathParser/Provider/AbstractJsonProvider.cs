@@ -15,7 +15,7 @@ public abstract class AbstractJsonProvider : IJsonProvider
     /// <returns> true if obj is an array</returns>
     public virtual bool IsArray(object? obj)
     {
-        return obj is IList && !(obj is IDictionary);
+        return obj is IList;
     }
 
     /// <summary>
@@ -59,8 +59,8 @@ public abstract class AbstractJsonProvider : IJsonProvider
     {
         if (TryConvertToIDictionary(obj, out var dictionary))
         {
-            foreach (var n in dictionary.Keys.Cast<string>())
-                if (n == key)
+            foreach (var currentKey in dictionary.Keys.Cast<string>())
+                if (currentKey == key)
                     return dictionary[key];
         }
         else
@@ -97,17 +97,18 @@ public abstract class AbstractJsonProvider : IJsonProvider
         if (TryConvertToIDictionary(obj, out var dictionary))
         {
             dictionary.Remove(key);
+            return;
         }
-        else if (TryConvertToIList(obj, out var list))
+        if (TryConvertToIList(obj, out var list))
         {
             var index = key is int ? (int)key : int.Parse(key.ToString());
             list.RemoveAt(index);
+            return;
         }
-        else
-        {
-            throw new JsonPathException(
-                $"{nameof(RemoveProperty)} operation cannot be used with {SerializeTypeName(obj)}");
-        }
+
+        throw new JsonPathException(
+            $"{nameof(RemoveProperty)} operation cannot be used with {SerializeTypeName(obj)}");
+
     }
 
 
@@ -140,8 +141,9 @@ public abstract class AbstractJsonProvider : IJsonProvider
     public virtual int Length(object? obj)
     {
         if (obj is string stringInstance) return stringInstance.Length;
-        if (TryConvertToIList(obj, out var list)) return list.Count;
         if (TryConvertToIDictionary(obj, out var dictionary)) return dictionary.Count;
+        if (TryConvertToIList(obj, out var list)) return list.Count;
+
 
         throw new JsonPathException($"{nameof(Length)} operation cannot be applied to {SerializeTypeName(obj)}");
     }
@@ -151,9 +153,9 @@ public abstract class AbstractJsonProvider : IJsonProvider
     /// </summary>
     /// <param name="obj">an array</param>
     /// <returns> an IEnumerable that iterates over the entries of an array</returns>
-    public virtual IEnumerable AsEnumerable(object? obj)
+    public virtual List<object?> AsEnumerable(object? obj)
     {
-        if (obj is IEnumerable enumerable) return enumerable;
+        if (obj is IEnumerable enumerable) return enumerable.Cast<object?>().ToList();
         throw new JsonPathException($"Cannot iterate over {SerializeTypeName(obj)}");
     }
 

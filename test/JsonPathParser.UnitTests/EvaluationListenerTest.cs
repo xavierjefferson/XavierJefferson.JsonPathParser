@@ -81,7 +81,7 @@ public class EvaluationListenerTest : TestUtils
     public void evaluation_listeners_can_be_cleared()
     {
         var configuration1 = Configuration.CreateBuilder().WithEvaluationCallbacks(_ => EvaluationContinuationEnum.Continue).Build();
-        var configuration2 = configuration1.SetEvaluationListeners();
+        var configuration2 = configuration1.SetEvaluationCallbacks();
 
         Assert.Equal(1, configuration1.EvaluationCallbacks.Count());
         Assert.Equal(0, configuration2.EvaluationCallbacks.Count());

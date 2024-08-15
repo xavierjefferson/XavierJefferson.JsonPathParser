@@ -10,10 +10,10 @@ namespace XavierJefferson.JsonPathParser.Function.Json;
 /// </summary>
 public class Append : IPathFunction, IInvocable
 {
-    public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext ctx,
+    public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
         SerializingList<Parameter>? parameters)
     {
-        var jsonProvider = ctx.Configuration.JsonProvider;
+        var jsonProvider = context.Configuration.JsonProvider;
         if (parameters != null && parameters.Count() > 0)
             foreach (var param in parameters)
                 if (jsonProvider.IsArray(model))

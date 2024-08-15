@@ -5,11 +5,11 @@ namespace XavierJefferson.JsonPathParser.Filtering.Evaluation;
 
 public class EmptyEvaluator : IEvaluator
 {
-    public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext ctx)
+    public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext context)
     {
-        if (left is StringNode)
-            return left.AsStringNode().IsEmpty() == right.AsBooleanNode().Value;
-        if (left is JsonNode) return left.AsJsonNode().IsEmpty(ctx) == right.AsBooleanNode().Value;
+        if (left is StringNode leftStringNode)
+            return leftStringNode.IsEmpty() == right.AsBooleanNode().Value;
+        if (left is JsonNode leftJsonNode) return leftJsonNode.IsEmpty(context) == right.AsBooleanNode().Value;
         return false;
     }
 }

@@ -7,7 +7,7 @@ namespace XavierJefferson.JsonPathParser.Function.Sequence;
 /// </summary>
 public class First : AbstractSequenceAggregation
 {
-    protected override int TargetIndex(IEvaluationContext ctx, SerializingList<Parameter>? parameters)
+    protected override int TargetIndex(IEvaluationContext context, SerializingList<Parameter>? parameters)
     {
         return 0;
     }

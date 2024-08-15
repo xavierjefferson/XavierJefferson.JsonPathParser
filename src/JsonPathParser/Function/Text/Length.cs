@@ -17,15 +17,15 @@ public class Length : IPathFunction
     ///     When we calculate the length of a path, what we're asking is given the node we land on how many children does it
     ///     have.  Thus when we wrote the original query what we really wanted was $..book.Length or $.Length($..book.*)
     /// </summary>
-    /// <param name="currentPath">*      The current path location inclusive of the function name</param>
-    /// <param name="parent">*      The path location above the current function</param>
-    /// <param name="model">*      The JSON model as input to this particular function</param>
-    /// <param name="ctx">*      Eval context, state bag used as the path is traversed, maintains the result of executing</param>
+    /// <param name="currentPath">      The current path location inclusive of the function name</param>
+    /// <param name="parent">      The path location above the current function</param>
+    /// <param name="model">      The JSON model as input to this particular function</param>
+    /// <param name="context">      Eval context, state bag used as the path is traversed, maintains the result of executing</param>
     /// <param name="parameters">
     ///     ///
     ///     <returns></returns>
     /// </param>
-    public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext ctx,
+    public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
         SerializingList<Parameter>? parameters)
     {
         if (null != parameters && parameters.Count() > 0)
@@ -46,14 +46,14 @@ public class Length : IPathFunction
                 }
             }
 
-            var innerModel = parameters[0].Path.Evaluate(model, model, ctx.Configuration).GetValue();
-            if (ctx.Configuration.JsonProvider.IsArray(innerModel))
-                return ctx.Configuration.JsonProvider.Length(innerModel);
+            var innerModel = parameters[0].Path.Evaluate(model, model, context.Configuration).GetValue();
+            if (context.Configuration.JsonProvider.IsArray(innerModel))
+                return context.Configuration.JsonProvider.Length(innerModel);
         }
 
-        if (ctx.Configuration.JsonProvider.IsArray(model))
-            return ctx.Configuration.JsonProvider.Length(model);
-        if (ctx.Configuration.JsonProvider.IsMap(model)) return ctx.Configuration.JsonProvider.Length(model);
+        if (context.Configuration.JsonProvider.IsArray(model))
+            return context.Configuration.JsonProvider.Length(model);
+        if (context.Configuration.JsonProvider.IsMap(model)) return context.Configuration.JsonProvider.Length(model);
         return null;
     }
 }

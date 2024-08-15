@@ -27,13 +27,13 @@ public class JsonNode : TypedValueNode<object?>
         return _value.GetHashCode();
     }
 
-    public override Type Type(IPredicateContext ctx)
+    public override Type Type(IPredicateContext context)
     {
-        if (IsArray(ctx)) return TypeConstants.ListType;
+        if (IsArray(context)) return TypeConstants.ListType;
 
-        if (IsMap(ctx)) return TypeConstants.DictionaryType;
+        if (IsMap(context)) return TypeConstants.DictionaryType;
 
-        var parsed = Parse(ctx);
+        var parsed = Parse(context);
         if (parsed is double) return typeof(double);
         if (parsed is string) return typeof(string);
         if (parsed is bool) return typeof(bool);
@@ -45,17 +45,17 @@ public class JsonNode : TypedValueNode<object?>
         return this;
     }
 
-    public ValueNode AsValueListNode(IPredicateContext ctx)
+    public ValueNode AsValueListNode(IPredicateContext context)
     {
-        if (!IsArray(ctx))
+        if (!IsArray(context))
             return ValueNodeConstants.Undefined;
-        return new ValueListNode(Parse(ctx) as ICollection<object?>);
+        return new ValueListNode(Parse(context) as ICollection<object?>);
     }
 
-    public object? Parse(IPredicateContext ctx)
+    public object? Parse(IPredicateContext context)
     {
         if (_parsed) return _value;
-        var p = ctx.Configuration.JsonProvider;
+        var p = context.Configuration.JsonProvider;
         return p.Parse(_value.ToString());
     }
 
@@ -70,25 +70,25 @@ public class JsonNode : TypedValueNode<object?>
         return _value;
     }
 
-    public bool IsArray(IPredicateContext ctx)
+    public bool IsArray(IPredicateContext context)
     {
-        return Parse(ctx) is IList;
+        return Parse(context) is IList;
     }
 
-    public bool IsMap(IPredicateContext ctx)
+    public bool IsMap(IPredicateContext context)
     {
-        return Parse(ctx) is IDictionary;
+        return Parse(context) is IDictionary;
     }
 
-    public int Length(IPredicateContext ctx)
+    public int Length(IPredicateContext context)
     {
-        return IsArray(ctx) ? ((ICollection<object>)Parse(ctx)).Count() : -1;
+        return IsArray(context) ? ((ICollection<object>)Parse(context)).Count() : -1;
     }
 
-    public bool IsEmpty(IPredicateContext ctx)
+    public bool IsEmpty(IPredicateContext context)
     {
-        if (IsArray(ctx) || IsMap(ctx)) return ((ICollection<object>)Parse(ctx)).Count() == 0;
-        if (Parse(ctx) is string) return ((string)Parse(ctx)).Length == 0;
+        if (IsArray(context) || IsMap(context)) return ((ICollection<object>)Parse(context)).Count() == 0;
+        if (Parse(context) is string) return ((string)Parse(context)).Length == 0;
         return true;
     }
 
@@ -98,21 +98,20 @@ public class JsonNode : TypedValueNode<object?>
         return _value.ToString();
     }
 
-    public bool Equals(JsonNode jsonNode, IPredicateContext ctx)
+    public bool Equals(JsonNode jsonNode, IPredicateContext context)
     {
         if (this == jsonNode) return true;
         if (_value != null)
         {
-            var c = jsonNode.Parse(ctx);
+            var c = jsonNode.Parse(context);
             if (c == null) return false;
             if (c is IList a && _value is IList b)
             {
                 if (a.Count != b.Count) return false;
                 for (var i = 0; i < a.Count; i++)
-                {
-                    var left = a is ValueNode ? (ValueNode)a[i] : ToValueNode(a[i]);
-                    var right = b is ValueNode ? (ValueNode)b[i] : ToValueNode(b[i]);
-
+                {                   
+                    var left = a[i] is ValueNode valueNodeA ? valueNodeA : ToValueNode(a[i]);
+                    var right = b[i] is ValueNode valueNodeB ? valueNodeB: ToValueNode(b[i]);
 
                     if (!left.Equals(right)) return false;
                 }

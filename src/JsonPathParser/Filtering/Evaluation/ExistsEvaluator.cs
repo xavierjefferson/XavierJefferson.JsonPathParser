@@ -6,7 +6,7 @@ namespace XavierJefferson.JsonPathParser.Filtering.Evaluation;
 
 internal class ExistsEvaluator : IEvaluator
 {
-    public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext ctx)
+    public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext context)
     {
         if (left is BooleanNode || right is BooleanNode)
             return left.AsBooleanNode().Value == right.AsBooleanNode().Value;

@@ -22,28 +22,28 @@ public class PredicatePathToken : PathToken
     }
 
 
-    public override void Evaluate(string currentPath, PathRef @ref, object? model, EvaluationContextImpl ctx)
+    public override void Evaluate(string currentPath, PathRef @ref, object? model, EvaluationContextImpl context)
     {
-        if (ctx.JsonProvider.IsMap(model))
+        if (context.JsonProvider.IsMap(model))
         {
-            if (Accept(model, ctx.RootDocument, ctx.Configuration, ctx))
+            if (Accept(model, context.RootDocument, context.Configuration, context))
             {
-                var op = ctx.ForUpdate() ? @ref : PathRef.NoOp;
+                var op = context.ForUpdate() ? @ref : PathRef.NoOp;
                 if (IsLeaf())
-                    ctx.AddResult(currentPath, op, model);
+                    context.AddResult(currentPath, op, model);
                 else
-                    Next().Evaluate(currentPath, op, model, ctx);
+                    Next().Evaluate(currentPath, op, model, context);
             }
         }
-        else if (ctx.JsonProvider.IsArray(model))
+        else if (context.JsonProvider.IsArray(model))
         {
             var idx = 0;
-            var objects = ctx.JsonProvider.AsEnumerable(model);
+            var objects = context.JsonProvider.AsEnumerable(model);
 
             foreach (var idxModel in objects)
             {
-                if (Accept(idxModel, ctx.RootDocument, ctx.Configuration, ctx))
-                    HandleArrayIndex(idx, currentPath, model, ctx);
+                if (Accept(idxModel, context.RootDocument, context.Configuration, context))
+                    HandleArrayIndex(idx, currentPath, model, context);
                 idx++;
             }
         }
@@ -57,13 +57,13 @@ public class PredicatePathToken : PathToken
 
     public bool Accept(object? obj, object? root, Configuration configuration, EvaluationContextImpl evaluationContext)
     {
-        IPredicateContext ctx =
+        IPredicateContext context =
             new PredicateContextImpl(obj, root, configuration, evaluationContext.DocumentEvalCache());
 
         foreach (var predicate in _predicates)
             try
             {
-                if (!predicate.Apply(ctx)) return false;
+                if (!predicate.Apply(context)) return false;
             }
             catch (InvalidPathException e)
             {

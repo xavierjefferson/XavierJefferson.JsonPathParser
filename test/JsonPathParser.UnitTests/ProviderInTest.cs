@@ -22,18 +22,18 @@ public class ProviderInTest
     public void TestJsonPathQuotes(IProviderTypeTestCase testCase)
     {
         var configuration = testCase.Configuration;
-        var ctx = JsonPath.Using(configuration).Parse((object)Json);
+        var context = JsonPath.Using(configuration).Parse((object)Json);
 
-        var doubleQuoteEqualsResult = ctx.Read(DoubleQuotesEqualsFilter) as List<object?>;
+        var doubleQuoteEqualsResult = context.Read(DoubleQuotesEqualsFilter) as List<object?>;
         Assert.Equal("bar", doubleQuoteEqualsResult[0]);
 
-        var singleQuoteEqualsResult = ctx.Read(SingleQuotesEqualsFilter) as List<object?>;
+        var singleQuoteEqualsResult = context.Read(SingleQuotesEqualsFilter) as List<object?>;
         Assert.Equal(doubleQuoteEqualsResult[0], singleQuoteEqualsResult[0]);
 
-        var doubleQuoteInResult = ctx.Read(DoubleQuotesInFilter) as List<object?>;
+        var doubleQuoteInResult = context.Read(DoubleQuotesInFilter) as List<object?>;
         Assert.Equal(doubleQuoteInResult[0], doubleQuoteEqualsResult[0]);
 
-        var singleQuoteInResult = ctx.Read(SingleQuotesInFilter) as List<object?>;
+        var singleQuoteInResult = context.Read(SingleQuotesInFilter) as List<object?>;
         Assert.Equal(doubleQuoteInResult[0], singleQuoteInResult[0]);
     }
 }

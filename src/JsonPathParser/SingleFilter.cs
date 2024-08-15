@@ -12,17 +12,13 @@ public class SingleFilter : Filter
     }
 
 
-    public override bool Apply(IPredicateContext ctx)
+    public override bool Apply(IPredicateContext context)
     {
-        return _predicate.Apply(ctx);
+        return _predicate.Apply(context);
     }
 
-
-    public override string ToString()
+    public override string ToUnenclosedString()
     {
-        var predicateString = _predicate?.ToString();
-        if (predicateString.StartsWith("("))
-            return "[?" + predicateString + "]";
-        return "[?(" + predicateString + ")]";
+        return _predicate.ToUnenclosedString();
     }
 }

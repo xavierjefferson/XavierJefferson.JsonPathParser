@@ -54,7 +54,7 @@ public class PathFunctionFactory
     /// @see #FUNCTIONS
     /// @see PathFunction
     /// </summary>
-    /// <param name="name">*      The name of the function</param>
+    /// <param name="name">      The name of the function</param>
     /// <returns>The implementation of a function</returns>
     public static IPathFunction NewFunction(string? name)
     {

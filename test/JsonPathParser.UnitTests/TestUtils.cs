@@ -14,9 +14,9 @@ public class TestUtils
 
     public static Stream GetResourceAsStream(string path)
     {
-        var a = typeof(TestUtils).Assembly.GetManifestResourceNames()
+        var name = typeof(TestUtils).Assembly.GetManifestResourceNames()
             .FirstOrDefault(i => i.EndsWith(path, StringComparison.InvariantCultureIgnoreCase));
-        return typeof(TestUtils).Assembly.GetManifestResourceStream(a);
+        return typeof(TestUtils).Assembly.GetManifestResourceStream(name);
     }
 
     public IDictionary<string, object?> GetSingletonMap(string key, object? value)

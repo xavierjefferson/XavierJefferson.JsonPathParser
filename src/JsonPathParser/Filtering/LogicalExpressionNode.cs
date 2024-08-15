@@ -68,20 +68,23 @@ public class LogicalExpressionNode : ExpressionNode
         return this;
     }
 
-
-    public override string ToString()
+    public override string ToUnenclosedString()
     {
         var delimiter = " " + Operator.OperatorString + " ";
-        return "(" + string.Join(delimiter, Chain.Cast<object>()) + ")";
+        return string.Join(delimiter, Chain);
+    }
+    public override string ToString()
+    {        
+        return "(" + ToUnenclosedString() + ")";
     }
 
 
-    public override bool Apply(IPredicateContext ctx)
+    public override bool Apply(IPredicateContext context)
     {
         if (Operator == LogicalOperator.Or)
         {
             foreach (var expression in Chain)
-                if (expression.Apply(ctx))
+                if (expression.Apply(context))
                     return true;
             return false;
         }
@@ -89,14 +92,14 @@ public class LogicalExpressionNode : ExpressionNode
         if (Operator == LogicalOperator.And)
         {
             foreach (var expression in Chain)
-                if (!expression.Apply(ctx))
+                if (!expression.Apply(context))
                     return false;
             return true;
         }
 
         {
             var expression = Chain[0];
-            return !expression.Apply(ctx);
+            return !expression.Apply(context);
         }
     }
 }

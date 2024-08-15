@@ -5,6 +5,6 @@ namespace XavierJefferson.JsonPathParser.Interfaces;
 
 public interface IInvocable
 {
-    object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext ctx,
+    object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
         SerializingList<Parameter>? parameters);
 }

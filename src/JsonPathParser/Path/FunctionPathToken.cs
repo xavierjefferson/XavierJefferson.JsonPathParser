@@ -9,41 +9,43 @@ namespace XavierJefferson.JsonPathParser.Path;
 /// </summary>
 public class FunctionPathToken : PathToken
 {
-    private readonly string? _functionName;
     private readonly string? _pathFragment;
-    private SerializingList<Parameter>? _functionParams;
+
+    public SerializingList<Parameter>? Parameters { get; set; }
+
+    public string? FunctionName { get; }
 
     public FunctionPathToken(string pathFragment, SerializingList<Parameter>? parameters)
     {
-        _pathFragment = pathFragment + (parameters != null && parameters.Count() > 0 ? "(...)" : "()");
+        _pathFragment = $"{pathFragment}{(parameters != null && parameters.Count() > 0 ? "(...)" : "()")}";
         if (null != pathFragment)
         {
-            _functionName = pathFragment;
-            _functionParams = parameters;
+            FunctionName = pathFragment;
+            Parameters = parameters;
         }
         else
         {
-            _functionName = null;
-            _functionParams = null;
+            FunctionName = null;
+            Parameters = null;
         }
     }
 
 
-    public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl ctx)
+    public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl context)
     {
-        var pathFunction = PathFunctionFactory.NewFunction(_functionName);
-        EvaluateParameters(currentPath, parent, model, ctx);
-        var result = pathFunction.Invoke(currentPath, parent, model, ctx, _functionParams);
-        ctx.AddResult(currentPath + $".{_functionName}", parent, result);
+        var pathFunction = PathFunctionFactory.NewFunction(FunctionName);
+        EvaluateParameters(currentPath, parent, model, context);
+        var result = pathFunction.Invoke(currentPath, parent, model, context, Parameters);
+        context.AddResult($"{currentPath}.{FunctionName}", parent, result);
         CleanWildcardPathToken();
-        if (!IsLeaf()) Next()?.Evaluate(currentPath, parent, result, ctx);
+        if (!IsLeaf()) Next()?.Evaluate(currentPath, parent, result, context);
     }
 
     private void CleanWildcardPathToken()
     {
-        if (null != _functionParams && _functionParams.Count() > 0)
+        if (null != Parameters && Parameters.Count() > 0)
         {
-            var path = _functionParams[0].Path;
+            var path = Parameters[0].Path;
             if (null != path && !path.IsFunctionPath() && path is CompiledPath)
             {
                 var root = ((CompiledPath)path).GetRoot();
@@ -62,15 +64,15 @@ public class FunctionPathToken : PathToken
         }
     }
 
-    private void EvaluateParameters(string currentPath, PathRef parent, object? model, EvaluationContextImpl ctx)
+    private void EvaluateParameters(string currentPath, PathRef parent, object? model, EvaluationContextImpl context)
     {
-        if (null != _functionParams)
-            foreach (var param in _functionParams)
+        if (null != Parameters)
+            foreach (var param in Parameters)
                 switch (param.ParameterType)
                 {
                     case ParamType.Path:
                         var pathLateBindingValue =
-                            new PathLateBindingValue(param.Path, ctx.RootDocument, ctx.Configuration);
+                            new PathLateBindingValue(param.Path, context.RootDocument, context.Configuration);
                         if (!param.Evaluated || !pathLateBindingValue.Equals(param.LateBinding))
                         {
                             param.LateBinding = pathLateBindingValue;
@@ -81,7 +83,7 @@ public class FunctionPathToken : PathToken
                     case ParamType.Json:
                         if (!param.Evaluated)
                         {
-                            param.LateBinding = new JsonLateBindingValue(ctx.Configuration.JsonProvider, param);
+                            param.LateBinding = new JsonLateBindingValue(context.Configuration.JsonProvider, param);
                             param.Evaluated = true;
                         }
 
@@ -104,20 +106,5 @@ public class FunctionPathToken : PathToken
     {
         return $".{_pathFragment}";
     }
-
-
-    public void SetParameters(SerializingList<Parameter>? parameters)
-    {
-        _functionParams = parameters;
-    }
-
-    public SerializingList<Parameter>? GetParameters()
-    {
-        return _functionParams;
-    }
-
-    public string? GetFunctionName()
-    {
-        return _functionName;
-    }
+     
 }

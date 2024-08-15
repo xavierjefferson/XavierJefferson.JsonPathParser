@@ -12,7 +12,7 @@ public static class Assertions
     ///     appended to the exception message only in the case of an error.
     /// </summary>
     /// <param name="expression">the bool expression to check</param>
-    /// <param name="message">* @ if expression is {@code false}</param>
+    /// <param name="message"> @ if expression is {@code false}</param>
     public static void IsTrue(bool expression, string message)
     {
         if (expression == false) throw new ArgumentException(message);
