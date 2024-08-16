@@ -850,7 +850,7 @@ public class IssuesTest : TestUtils
     //[Fact]
     //public void github_89()
     //{
-    //    var json = new Dictionary<string, object> { { "foo", "bar" } };
+    //    var json = new Dictionary<string, object?> { { "foo", "bar" } };
 
     //    var path = JsonPath.Compile("$.foo");
     //    Assert.Throws<PathNotFoundException>(() =>

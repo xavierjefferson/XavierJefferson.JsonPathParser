@@ -11,8 +11,8 @@ public static class DictionaryExtensions
         // Check whether the dictionaries are equal
         if (x.Count == y.Count)
         {
-            if (!x.Keys.Cast<object>().All(y.Keys.Contains)) return false;
-            if (!y.Keys.All(x.Keys.Cast<object>().Contains)) return false;
+            if (!x.Keys.All(y.Keys.Contains)) return false;
+            if (!y.Keys.All(x.Keys.Contains)) return false;
             foreach (var key in y.Keys)
             {
                 var thisValue = y[key];

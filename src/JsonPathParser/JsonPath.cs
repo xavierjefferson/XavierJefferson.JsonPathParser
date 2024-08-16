@@ -122,15 +122,10 @@ public class JsonPath
     /// <summary>
     ///     Applies this JsonPath to the provided json document.
     ///     Note that the document must be identified as either a List or Dictionary by
-    ///     the {@link JsonProvider}
+    ///     the <see cref="IJsonProvider" />
     /// </summary>
     /// <param name="jsonObject">a container object</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> object(s) matched by the given path</returns>
+    /// <returns> object(s) matched by the given path</returns>
     public object? Read(object? jsonObject)
     {
         return Read(jsonObject, Configuration.DefaultConfiguration());
@@ -139,16 +134,11 @@ public class JsonPath
     /// <summary>
     ///     Applies this JsonPath to the provided json document.
     ///     Note that the document must be identified as either a List or Dictionary by
-    ///     the {@link JsonProvider}
+    ///     the <see cref="IJsonProvider" />
     /// </summary>
     /// <param name="jsonObject">a container object</param>
     /// <param name="configuration">configuration to use</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> object(s) matched by the given path</returns>
+    /// <returns> object(s) matched by the given path</returns>
     public object? Read(object? jsonObject, Configuration configuration)
     {
         var optAsPathList = configuration.ContainsOption(Option.AsPathList);
@@ -205,12 +195,7 @@ public class JsonPath
     /// <param name="jsonObject">a json object</param>
     /// <param name="newVal"></param>
     /// <param name="configuration">configuration to use</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> the updated jsonObject or the path list to updated objects if option AS_PATH_LIST is set.</returns>
+    /// <returns> the updated jsonObject or the path list to updated objects if option AS_PATH_LIST is set.</returns>
     public object? Set(object? jsonObject, object? newVal, Configuration configuration)
     {
         ArgumentNullException.ThrowIfNull(jsonObject);
@@ -231,7 +216,7 @@ public class JsonPath
 
 
     /// <summary>
-    ///     Replaces the value on the given path with the result of the {@link MapFunction}.
+    ///     Replaces the value on the given path with the result of the <see cref="MapDelegate" />.
     /// </summary>
     /// <param name="jsonObject">a json object</param>
     /// <param name="mapFunction">Converter object to be invoked</param>
@@ -261,12 +246,7 @@ public class JsonPath
     /// </summary>
     /// <param name="jsonObject">a json object</param>
     /// <param name="configuration">configuration to use</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> the updated jsonObject or the path list to deleted objects if option AS_PATH_LIST is set.</returns>
+    /// <returns> the updated jsonObject or the path list to deleted objects if option AS_PATH_LIST is set.</returns>
     public object? Delete(object? jsonObject, Configuration configuration)
     {
         ArgumentNullException.ThrowIfNull(jsonObject);
@@ -291,12 +271,7 @@ public class JsonPath
     /// <param name="jsonObject">a json object</param>
     /// <param name="value">the value to.Add</param>
     /// <param name="configuration">configuration to use</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> the updated jsonObject or the path list to updated object if option AS_PATH_LIST is set.</returns>
+    /// <returns> the updated jsonObject or the path list to updated object if option AS_PATH_LIST is set.</returns>
     public object? Add(object? jsonObject, object? value, Configuration configuration)
     {
         ArgumentNullException.ThrowIfNull(jsonObject);
@@ -321,12 +296,7 @@ public class JsonPath
     /// <param name="key">the key to.Add or update</param>
     /// <param name="value">the new value</param>
     /// <param name="configuration">configuration to use</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> the updated jsonObject or the path list to updated objects if option AS_PATH_LIST is set.</returns>
+    /// <returns> the updated jsonObject or the path list to updated objects if option AS_PATH_LIST is set.</returns>
     public object? Add(object? jsonObject, string key, object? value, Configuration configuration)
     {
         ArgumentNullException.ThrowIfNull(jsonObject);
@@ -352,21 +322,18 @@ public class JsonPath
         Assertions.NotEmpty(newKeyName, "newKeyName can not be null or empty");
         ArgumentNullException.ThrowIfNull(configuration);
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
+        var optSuppressExceptions = configuration.ContainsOption(Option.SuppressExceptions);
         foreach (var updateOperation in evaluationContext.UpdateOperations)
         {
-            var optSuppressExceptions = configuration.ContainsOption(Option.SuppressExceptions);
             try
             {
                 updateOperation.RenameKey(oldKeyName, newKeyName, configuration);
             }
-            catch (Exception e)
+            catch
             {
-                if (optSuppressExceptions)
-                {
-                    // With option SUPPRESS_EXCEPTIONS,
-                    // the PathNotFoundException should be ignored and the other updateOperation should be continued.
-                }
-                else
+                // With option SUPPRESS_EXCEPTIONS,
+                // the PathNotFoundException should be ignored and the other updateOperation should be continued.
+                if (!optSuppressExceptions)
                 {
                     throw;
                 }
@@ -380,12 +347,7 @@ public class JsonPath
     ///     Applies this JsonPath to the provided json string
     /// </summary>
     /// <param name="json">a json string</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     public object? Read(string json)
     {
         return Read(json, Configuration.DefaultConfiguration());
@@ -396,12 +358,7 @@ public class JsonPath
     /// </summary>
     /// <param name="json">a json string</param>
     /// <param name="configuration">configuration to use</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     public object? Read(string json, Configuration configuration)
     {
         Assertions.NotEmpty(json, "json can not be null or empty");
@@ -414,12 +371,7 @@ public class JsonPath
     ///     Applies this JsonPath to the provided json URL
     /// </summary>
     /// <param name="uri">url to read from</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     public object? Read(Uri uri)
     {
         return Read(uri, Configuration.DefaultConfiguration());
@@ -435,12 +387,7 @@ public class JsonPath
     ///     Applies this JsonPath to the provided json file
     /// </summary>
     /// <param name="jsonFile">file to read from</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     public object? Read(FileInfo jsonFile)
     {
         return Read(jsonFile, Configuration.DefaultConfiguration());
@@ -452,12 +399,7 @@ public class JsonPath
     /// </summary>
     /// <param name="jsonFile">file to read from</param>
     /// <param name="configuration">configuration to use</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     public object? Read(FileInfo jsonFile, Configuration configuration)
     {
         ArgumentNullException.ThrowIfNull(jsonFile);
@@ -473,12 +415,7 @@ public class JsonPath
     ///     Applies this JsonPath to the provided json input stream
     /// </summary>
     /// <param name="jsonInputStream">input stream to read from</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     public object? Read(Stream jsonInputStream)
     {
         return Read(jsonInputStream, Configuration.DefaultConfiguration());
@@ -489,12 +426,7 @@ public class JsonPath
     /// </summary>
     /// <param name="jsonInputStream">input stream to read from</param>
     /// <param name="configuration">configuration to use</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     public object? Read(Stream jsonInputStream, Configuration configuration)
     {
         ArgumentNullException.ThrowIfNull(jsonInputStream);
@@ -507,12 +439,7 @@ public class JsonPath
     /// </summary>
     /// <param name="jsonInputStream">input stream to read from</param>
     /// <param name="configuration">configuration to use</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     public object? Read(Stream jsonInputStream, Encoding charset, Configuration configuration)
     {
         ArgumentNullException.ThrowIfNull(jsonInputStream);
@@ -556,12 +483,7 @@ public class JsonPath
     /// <param name="json">a json object</param>
     /// <param name="jsonPath">the json path</param>
     /// <param name="filters">filters to be applied to the filter place holders  [?] in the path</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     public static object? Read(object? json, string jsonPath, params IPredicate[] filters)
     {
         return Parse(json).Read(jsonPath, filters);
@@ -578,12 +500,7 @@ public class JsonPath
     /// <param name="json">a json string</param>
     /// <param name="jsonPath">the json path</param>
     /// <param name="filters">filters to be applied to the filter place holders  [?] in the path</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     public static object? Read(string json, string jsonPath, params IPredicate[] filters)
     {
         return new ParseContextImpl().Parse(json).Read(jsonPath, filters);
@@ -596,12 +513,7 @@ public class JsonPath
     /// <param name="uri">url pointing to json doc</param>
     /// <param name="jsonPath">the json path</param>
     /// <param name="filters">filters to be applied to the filter place holders  [?] in the path</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     [Obsolete]
     public static object? Read(Uri uri, string jsonPath, params IPredicate[] filters)
     {
@@ -614,12 +526,7 @@ public class JsonPath
     /// <param name="jsonFile">json file</param>
     /// <param name="jsonPath">the json path</param>
     /// <param name="filters">filters to be applied to the filter place holders  [?] in the path</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     public static object? Read(FileInfo jsonFile, string jsonPath, params IPredicate[] filters)
     {
         return new ParseContextImpl().Parse(jsonFile).Read(jsonPath, filters);
@@ -631,12 +538,7 @@ public class JsonPath
     /// <param name="jsonInputStream">json input stream</param>
     /// <param name="jsonPath">the json path</param>
     /// <param name="filters">filters to be applied to the filter place holders  [?] in the path</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
-    ///     ">expected return type</param>
-    ///     <returns> list of objects matched by the given path</returns>
+    /// <returns> list of objects matched by the given path</returns>
     public static object? Read(Stream jsonInputStream, string jsonPath, params IPredicate[] filters)
     {
         return new ParseContextImpl().Parse(jsonInputStream).Read(jsonPath, filters);
@@ -651,8 +553,8 @@ public class JsonPath
 
 
     /// <summary>
-    ///     Creates a {@link ParseContext} that can be used to Parse JSON input. The Parse context
-    ///     is as thread safe as the underlying {@link JsonProvider}. Note that not all JsonProvider are
+    ///     Creates a <see cref="IParseContext" /> that can be used to Parse JSON input. The Parse context
+    ///     is as thread safe as the underlying <see cref="IJsonProvider" />. Note that not all JsonProvider are
     ///     thread safe.
     /// </summary>
     /// <param name="configuration">configuration to use when parsing JSON</param>
@@ -664,16 +566,16 @@ public class JsonPath
 
     public static IParseContext Create(Action<ConfigurationBuilder>? action = null)
     {
-        var cb = new ConfigurationBuilder();
+        var builder = new ConfigurationBuilder();
         var c = DefaultsImpl.Instance;
-        cb.WithOptions(c.Options).WithJsonProvider(c.JsonProvider).WithMappingProvider(c.MappingProvider);
+        builder.WithOptions(c.Options).WithJsonProvider(c.JsonProvider).WithMappingProvider(c.MappingProvider);
         if (action != null)
-            action(cb);
-        return new ParseContextImpl(cb.Build());
+            action(builder);
+        return new ParseContextImpl(builder.Build());
     }
 
     /// <summary>
-    ///     Creates a {@link ParseContext} that will Parse a given JSON input.
+    ///     Creates a <see cref="IParseContext" /> that will Parse a given JSON input.
     /// </summary>
     /// <param name="provider">jsonProvider to use when parsing JSON</param>
     /// <returns> a parsing context based on given jsonProvider</returns>
@@ -684,8 +586,8 @@ public class JsonPath
     }
 
     /// <summary>
-    ///     Parses the given JSON input using the default {@link Configuration} and
-    ///     returns a {@link DocumentContext} for path evaluation
+    ///     Parses the given JSON input using the default <see cref="Configuration" /> and
+    ///     returns a <see cref="IDocumentContext" /> for path evaluation
     /// </summary>
     /// <param name="json">input</param>
     /// <returns> a read context</returns>
@@ -697,8 +599,8 @@ public class JsonPath
     }
 
     /// <summary>
-    ///     Parses the given JSON input using the default {@link Configuration} and
-    ///     returns a {@link DocumentContext} for path evaluation
+    ///     Parses the given JSON input using the default <see cref="Configuration" /> and
+    ///     returns a <see cref="IDocumentContext" /> for path evaluation
     /// </summary>
     /// <param name="json">string</param>
     /// <returns> a read context</returns>
@@ -708,8 +610,8 @@ public class JsonPath
     }
 
     /// <summary>
-    ///     Parses the given JSON input using the default {@link Configuration} and
-    ///     returns a {@link DocumentContext} for path evaluation
+    ///     Parses the given JSON input using the default <see cref="Configuration" /> and
+    ///     returns a <see cref="IDocumentContext" /> for path evaluation
     /// </summary>
     /// <param name="json">stream</param>
     /// <returns> a read context</returns>
@@ -719,8 +621,8 @@ public class JsonPath
     }
 
     /// <summary>
-    ///     Parses the given JSON input using the default {@link Configuration} and
-    ///     returns a {@link DocumentContext} for path evaluation
+    ///     Parses the given JSON input using the default <see cref="Configuration" /> and
+    ///     returns a <see cref="IDocumentContext" /> for path evaluation
     /// </summary>
     /// <param name="json">file</param>
     /// <returns> a read context</returns>
@@ -730,8 +632,8 @@ public class JsonPath
     }
 
     /// <summary>
-    ///     Parses the given JSON input using the default {@link Configuration} and
-    ///     returns a {@link DocumentContext} for path evaluation
+    ///     Parses the given JSON input using the default <see cref="Configuration" /> and
+    ///     returns a <see cref="IDocumentContext" /> for path evaluation
     /// </summary>
     /// <param name="json">url</param>
     /// <returns> a read context</returns>
@@ -742,8 +644,8 @@ public class JsonPath
     }
 
     /// <summary>
-    ///     Parses the given JSON input using the provided {@link Configuration} and
-    ///     returns a {@link DocumentContext} for path evaluation
+    ///     Parses the given JSON input using the provided <see cref="Configuration" /> and
+    ///     returns a <see cref="IDocumentContext" /> for path evaluation
     /// </summary>
     /// <param name="json">input</param>
     /// <returns> a read context</returns>
@@ -753,8 +655,8 @@ public class JsonPath
     }
 
     /// <summary>
-    ///     Parses the given JSON input using the provided {@link Configuration} and
-    ///     returns a {@link DocumentContext} for path evaluation
+    ///     Parses the given JSON input using the provided <see cref="Configuration" /> and
+    ///     returns a <see cref="IDocumentContext" /> for path evaluation
     /// </summary>
     /// <param name="json">input</param>
     /// <returns> a read context</returns>
@@ -764,8 +666,8 @@ public class JsonPath
     }
 
     /// <summary>
-    ///     Parses the given JSON input using the provided {@link Configuration} and
-    ///     returns a {@link DocumentContext} for path evaluation
+    ///     Parses the given JSON input using the provided <see cref="Configuration" /> and
+    ///     returns a <see cref="IDocumentContext" /> for path evaluation
     /// </summary>
     /// <param name="json">input</param>
     /// <returns> a read context</returns>
@@ -775,8 +677,8 @@ public class JsonPath
     }
 
     /// <summary>
-    ///     Parses the given JSON input using the provided {@link Configuration} and
-    ///     returns a {@link DocumentContext} for path evaluation
+    ///     Parses the given JSON input using the provided <see cref="Configuration" /> and
+    ///     returns a <see cref="IDocumentContext" /> for path evaluation
     /// </summary>
     /// <param name="json">input</param>
     /// <param name="configuration"></param>
@@ -787,8 +689,8 @@ public class JsonPath
     }
 
     /// <summary>
-    ///     Parses the given JSON input using the provided {@link Configuration} and
-    ///     returns a {@link DocumentContext} for path evaluation
+    ///     Parses the given JSON input using the provided <see cref="Configuration" /> and
+    ///     returns a <see cref="IDocumentContext" /> for path evaluation
     /// </summary>
     /// <param name="json">input</param>
     /// <param name="configuration"></param>
@@ -822,15 +724,11 @@ public class JsonPath
     ///     Adds or updates the Object this path points to in the provided jsonObject with a key with a value
     /// </summary>
     /// <param name="jsonObject">a json object</param>
-    /*
-    
-    * @param jsonObject    a json object
-    * @param key           the key to add or update
-    * @param value         the new value
-    * @param configuration configuration to use
-    * @param <T>           expected return type
-    * @return the updated jsonObject or the path list to updated objects if option AS_PATH_LIST is set.
-    */
+    /// <param name="key"> the key to add or update</param>
+    /// <param name="value"> the new value</param>
+    /// <param name="configuration" configuration to use></param>
+    /// <typeparam name="T"> expected return type</typeparam>
+    /// <returns>the updated jsonObject or the path list to updated objects if option AS_PATH_LIST is set.</returns>
     public T Put<T>(object? jsonObject, string key, object? value, Configuration configuration)
     {
         ArgumentNullException.ThrowIfNull(jsonObject);

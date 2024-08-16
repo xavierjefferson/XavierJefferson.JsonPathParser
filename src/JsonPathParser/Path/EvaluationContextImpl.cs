@@ -13,7 +13,7 @@ public class EvaluationContextImpl : IEvaluationContext
 {
     private static readonly EvaluationAbortException AbortEvaluation = new();
 
-    private readonly Dictionary<IPath, object> _documentEvalCache = new();
+    private readonly Dictionary<IPath, object?> _documentEvalCache = new();
     private readonly bool _forUpdate;
     private readonly IPath _path;
     private readonly object? _pathResult;
@@ -104,7 +104,7 @@ public class EvaluationContextImpl : IEvaluationContext
         return ((CompiledPath)_path).GetRoot();
     }
 
-    public Dictionary<IPath, object> DocumentEvalCache()
+    public Dictionary<IPath, object?> DocumentEvalCache()
     {
         return _documentEvalCache;
     }

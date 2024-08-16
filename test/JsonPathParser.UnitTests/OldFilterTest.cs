@@ -62,7 +62,7 @@ public class OldFilterTest : TestUtils
 
     public void is_filters_evaluates(IProviderTypeTestCase testCase)
     {
-        var check = new Dictionary<string, object>();
+        var check = new Dictionary<string, object?>();
         check["foo"] = "foo";
         check["bar"] = null;
 
@@ -106,7 +106,7 @@ public class OldFilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void gte_filters_evaluates(IProviderTypeTestCase testCase)
     {
-        var check = new Dictionary<string, object>();
+        var check = new Dictionary<string, object?>();
         check["foo"] = 12.5D;
         check["foo_null"] = null;
 
@@ -121,7 +121,7 @@ public class OldFilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void lt_filters_evaluates(IProviderTypeTestCase testCase)
     {
-        var check = new Dictionary<string, object>();
+        var check = new Dictionary<string, object?>();
         check["foo"] = 10.5D;
         check["foo_null"] = null;
 
@@ -135,7 +135,7 @@ public class OldFilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void lte_filters_evaluates(IProviderTypeTestCase testCase)
     {
-        var check = new Dictionary<string, object>();
+        var check = new Dictionary<string, object?>();
         check["foo"] = 12.5D;
         check["foo_null"] = null;
 
@@ -149,7 +149,7 @@ public class OldFilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void in_filters_evaluates(IProviderTypeTestCase testCase)
     {
-        var check = new Dictionary<string, object>();
+        var check = new Dictionary<string, object?>();
         check["item"] = 3;
         check["null_item"] = null;
 
@@ -174,7 +174,7 @@ public class OldFilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void nin_filters_evaluates(IProviderTypeTestCase testCase)
     {
-        var check = new Dictionary<string, object>();
+        var check = new Dictionary<string, object?>();
         check["item"] = 3;
         check["null_item"] = null;
 
@@ -197,7 +197,7 @@ public class OldFilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void all_filters_evaluates(IProviderTypeTestCase testCase)
     {
-        var check = new Dictionary<string, object>();
+        var check = new Dictionary<string, object?>();
         check.Add("items", AsList(1, 2, 3));
 
         Assert.True(Filter.Create(Criteria.Where("items").All(1, 2, 3))
@@ -224,7 +224,7 @@ public class OldFilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void exists_filters_evaluates(IProviderTypeTestCase testCase)
     {
-        var check = new Dictionary<string, object>();
+        var check = new Dictionary<string, object?>();
         check["foo"] = "foo";
         check["foo_null"] = null;
 
@@ -244,7 +244,7 @@ public class OldFilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void type_filters_evaluates(IProviderTypeTestCase testCase)
     {
-        var check = new Dictionary<string, object>
+        var check = new Dictionary<string, object?>
         {
             ["string"] = "foo",
             ["string_null"] = null,
@@ -286,7 +286,7 @@ public class OldFilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void pattern_filters_evaluates(IProviderTypeTestCase testCase)
     {
-        var check = new Dictionary<string, object>
+        var check = new Dictionary<string, object?>
         {
             ["name"] = "kalle",
             ["name_null"] = null
@@ -350,7 +350,7 @@ public class OldFilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void filters_can_be_combined(IProviderTypeTestCase testCase)
     {
-        var check = new Dictionary<string, object>
+        var check = new Dictionary<string, object?>
         {
             { "string", "foo" },
             { "string_null", null },
@@ -371,29 +371,29 @@ public class OldFilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void arrays_of_maps_can_be_filtered(IProviderTypeTestCase testCase)
     {
-        var rootGrandChildA = new Dictionary<string, object>();
+        var rootGrandChildA = new Dictionary<string, object?>();
         rootGrandChildA["name"] = "rootGrandChild_A";
 
-        var rootGrandChildB = new Dictionary<string, object>();
+        var rootGrandChildB = new Dictionary<string, object?>();
         rootGrandChildB["name"] = "rootGrandChild_B";
 
-        var rootGrandChildC = new Dictionary<string, object>();
+        var rootGrandChildC = new Dictionary<string, object?>();
         rootGrandChildC["name"] = "rootGrandChild_C";
 
 
-        var rootChildA = new Dictionary<string, object>();
+        var rootChildA = new Dictionary<string, object?>();
         rootChildA["name"] = "rootChild_A";
         rootChildA.Add("children", AsList(rootGrandChildA, rootGrandChildB, rootGrandChildC));
 
-        var rootChildB = new Dictionary<string, object>();
+        var rootChildB = new Dictionary<string, object?>();
         rootChildB["name"] = "rootChild_B";
         rootChildB.Add("children", AsList(rootGrandChildA, rootGrandChildB, rootGrandChildC));
 
-        var rootChildC = new Dictionary<string, object>();
+        var rootChildC = new Dictionary<string, object?>();
         rootChildC["name"] = "rootChild_C";
         rootChildC.Add("children", AsList(rootGrandChildA, rootGrandChildB, rootGrandChildC));
 
-        var root = new Dictionary<string, object>();
+        var root = new Dictionary<string, object?>();
         root.Add("children", AsList(rootChildA, rootChildB, rootChildC));
 
 
@@ -415,7 +415,7 @@ public class OldFilterTest : TestUtils
     [Fact]
     public void arrays_of_objects_can_be_filtered()
     {
-        var doc = new Dictionary<string, object>();
+        var doc = new Dictionary<string, object?>();
         doc["items"] = new object[] { 1d, 2d, 3d };
 
         var customFilter = MakePredicate(context => { return 1.0d.Equals(context.Item); });

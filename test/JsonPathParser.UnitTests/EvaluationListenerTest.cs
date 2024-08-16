@@ -15,10 +15,11 @@ public class EvaluationListenerTest : TestUtils
         MyAssert.ContainsExactly(title, "Sayings of the Century");
     }
 
-    [Fact]
-    public void an_evaluation_listener_can_abort_after_one_result_using_configuration()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void an_evaluation_listener_can_abort_after_one_result_using_configuration(IProviderTypeTestCase testCase)
     {
-        var configuration = Configuration.CreateBuilder().WithEvaluationCallbacks(i => EvaluationContinuationEnum.Abort).Build();
+        var configuration = testCase.Configuration.SetEvaluationCallbacks(_ => EvaluationContinuationEnum.Abort);
 
         var title = JsonPath.Using(configuration).Parse(JsonTestData.JsonDocument).Read("$..title", TypeConstants.ListType)
             .AsList();
@@ -77,10 +78,11 @@ public class EvaluationListenerTest : TestUtils
         MyAssert.ContainsExactly(idxs2, 0, 1, 2, 3);
     }
 
-    [Fact]
-    public void evaluation_listeners_can_be_cleared()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void evaluation_listeners_can_be_cleared(IProviderTypeTestCase testCase)
     {
-        var configuration1 = Configuration.CreateBuilder().WithEvaluationCallbacks(_ => EvaluationContinuationEnum.Continue).Build();
+        var configuration1 = testCase.Configuration.SetEvaluationCallbacks(_ => EvaluationContinuationEnum.Continue);
         var configuration2 = configuration1.SetEvaluationCallbacks();
 
         Assert.Equal(1, configuration1.EvaluationCallbacks.Count());

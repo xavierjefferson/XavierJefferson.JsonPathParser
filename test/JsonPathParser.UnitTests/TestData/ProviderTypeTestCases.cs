@@ -19,11 +19,9 @@ internal class ProviderTypeTestCases : TheoryData<ProviderTypeTestCase>
 
     public static Dictionary<ProviderTypeEnum, ProviderTypeTestCase> Cases =
         RootData.ToDictionary(i => i.Key, i => new ProviderTypeTestCase(i.Key, i.Value));
+
     public ProviderTypeTestCases()
     {
-        foreach (var type in Cases)
-        {
-            this.Add(type.Value);
-        }
+        foreach (var type in Cases) Add(type.Value);
     }
 }

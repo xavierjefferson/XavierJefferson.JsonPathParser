@@ -31,12 +31,6 @@ public class MyAssert : Assert
         if (!result.ContainsKey(key)) throw FailException.ForFailure("");
     }
 
-    public static void EvaluationThrows<T>(string json, string path, IProviderTypeTestCase testCase)
-        where T : Exception
-    {
-        EvaluationThrows<T>(json, path, testCase.Configuration);
-    }
-
     /// <summary>Shortcut for counting found nodes.</summary>
     /// <param name="json">json to be parsed</param>
     /// <param name="path">path to be evaluated</param>

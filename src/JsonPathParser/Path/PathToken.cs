@@ -56,7 +56,7 @@ public abstract class PathToken
                         if (context.Options.Contains(Option.SuppressExceptions) ||
                             !context.Options.Contains(Option.RequireProperties))
                             return;
-                        throw new PathNotFoundException("No results for path: " + evalPath);
+                        throw new PathNotFoundException($"No results for path: {evalPath}");
                     }
                 }
                 else
@@ -68,7 +68,7 @@ public abstract class PathToken
                         // absent property. And also in case of exception suppression - so that other path evaluation
                         // branches could be examined.
                         return;
-                    throw new PathNotFoundException("Missing property in path " + evalPath);
+                    throw new PathNotFoundException($"Missing property in path {evalPath}");
                 }
             }
 

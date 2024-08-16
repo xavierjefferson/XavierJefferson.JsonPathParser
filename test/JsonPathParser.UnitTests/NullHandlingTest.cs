@@ -35,10 +35,11 @@ public class NullHandlingTest
     }
 
 
-    [Fact]
-    public void last_token_defaults_to_null()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void last_token_defaults_to_null(IProviderTypeTestCase testCase)
     {
-        var configuration = Configuration.CreateBuilder().WithOptions(Option.DefaultPathLeafToNull).Build();
+        var configuration = testCase.Configuration.SetOptions(Option.DefaultPathLeafToNull);
 
         Assert.Null(JsonPath.Parse(Document, configuration).Read("$.children[2].age"));
     }
@@ -55,29 +56,11 @@ public class NullHandlingTest
     [ClassData(typeof(ProviderTypeTestCases))]
     public void the_age_of_all_with_age_defined(IProviderTypeTestCase testCase)
     {
-        //IList<int> result = JsonPath.Read(DOCUMENT, "$.children[*].age");
         var result = JsonPath.Using(testCase.Configuration.SetOptions(Option.SuppressExceptions))
             .Parse(Document).Read("$.children[*].age").AsList();
 
         MyAssert.ContainsExactly(result, 0d, null);
-        //bool found = false;
-        //var index = 0;
-        //while (true)
-        //{
-        //    if (index + 1 >= result.Count) break;
-        //    if (result[index].Equals(0d) && result[index + 1] == null)
-        //    {
-        //        found = true;
-        //        break;
-        //    }
-        //}
-        //Assert.True(found);
-        ////for(var i = 0; i < result.Count - 2; i++)
-        ////{
 
-        ////}
-
-        //Assert.True(result).containsSequence(0, null);
     }
 
     [Fact]

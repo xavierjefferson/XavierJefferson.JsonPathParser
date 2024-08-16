@@ -28,7 +28,7 @@ public class ScientificNotationTest : TestUtils
         MyAssert.ContainsOnly(numbers, 1d, -1e-10d, .1e10d, 2e-20d, -.2E20d);
     }
 
-    private List<object> GetNumbers(object? result)
+    private List<object?> GetNumbers(object? result)
     {
         var numbers = result.AsListOfMap().Where(i => i.ContainsKey("num")).Select(i => i["num"]).ToList();
         return numbers;

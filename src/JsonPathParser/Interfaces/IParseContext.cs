@@ -3,7 +3,7 @@ using System.Text;
 namespace XavierJefferson.JsonPathParser.Interfaces;
 
 /// <summary>
-///     Parses JSON as specified by the used {@link com.jayway.jsonpath.spi.json.JsonProvider}.
+///     Parses JSON as specified by the used <see cref="IJsonProvider"/>.
 /// </summary>
 public interface IParseContext
 {

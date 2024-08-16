@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using XavierJefferson.JsonPathParser.Interfaces;
 
@@ -39,10 +38,11 @@ public class Configuration
     /// </summary>
     /// <returns> mappingProvider used</returns>
     public IMappingProvider MappingProvider { get; }
+
     /// <summary>
     ///     Returns the options used by this configuration
-    ///     </summary>
-    ///     <returns> the new configuration instance</returns>
+    /// </summary>
+    /// <returns> the new configuration instance</returns>
     public ReadOnlySet<Option> Options { get; }
 
     /// <summary>
@@ -73,6 +73,7 @@ public class Configuration
 
     /// <summary>
     ///     Creates a new Configuration with the provided evaluation listeners
+    /// </summary>
     ///     <param name="evaluationListener">listeners</param>
     ///     <returns> a new configuration</returns>
     public Configuration SetEvaluationCallbacks(params EvaluationCallback[] evaluationListener)
@@ -83,7 +84,8 @@ public class Configuration
 
 
     /// <summary>
-    ///     Creates a new Configuration based on the given {@link com.jayway.jsonpath.spi.json.JsonProvider}
+    ///     Creates a new Configuration based on the given <see cref="IJsonProvider"/>
+    /// </summary>
     ///     <param name="newJsonProvider">json provider to use in new configuration</param>
     ///     <returns> a new configuration</returns>
     public Configuration SetJsonProvider(IJsonProvider newJsonProvider)
@@ -99,8 +101,9 @@ public class Configuration
     }
 
     /// <summary>
-    ///     Creates a new Configuration based on the given {@link com.jayway.jsonpath.spi.mapper.MappingProvider}
+    ///     Creates a new Configuration based on the given <see cref="IMappingProvider"/>
     ///     <param name="newMappingProvider">mapping provider to use in new configuration</param>
+    /// </summary>
     ///     <returns> a new configuration</returns>
     public Configuration SetMappingProvider(IMappingProvider newMappingProvider)
     {
@@ -116,6 +119,7 @@ public class Configuration
 
     /// <summary>
     ///     Creates a new configuration by adding the new options to the options used in this configuration.
+    /// </summary>
     ///     <param name="options">options to.Add</param>
     ///     <returns> a new configuration</returns>
     public Configuration AddOptions(params Option[] options)
@@ -127,6 +131,7 @@ public class Configuration
 
     /// <summary>
     ///     Creates a new configuration with the provided options. Options in this configuration are discarded.
+    /// </summary>
     ///     <param name="options">></param>
     //////<returns> the new configuration instance</returns>
     public Configuration SetOptions(params Option[] options)
@@ -135,10 +140,10 @@ public class Configuration
         return a.WithOptions(options).WithEvaluationCallbacks(EvaluationCallbacks).Build();
     }
 
- 
 
     /// <summary>
     ///     Check if this configuration contains the given option
+    /// </summary>
     ///     <param name="option">option to check</param>
     ///     <returns> true if configurations contains option</returns>
     public bool ContainsOption(Option option)
@@ -148,6 +153,7 @@ public class Configuration
 
     /// <summary>
     ///     Creates a new configuration based on default values
+    /// </summary>
     ///     <returns> a new configuration based on defaults</returns>
     public static Configuration DefaultConfiguration()
     {
@@ -157,7 +163,8 @@ public class Configuration
 
     /// <summary>
     ///     Returns a new ConfigurationBuilder
-    ///     <returns> a builder</returns>
+    /// </summary>
+    /// <returns> a builder</returns>
     public static ConfigurationBuilder CreateBuilder()
     {
         return new ConfigurationBuilder();

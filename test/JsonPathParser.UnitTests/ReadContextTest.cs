@@ -17,9 +17,9 @@ public class ReadContextTest : TestUtils
     [Theory]
 
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void json_can_be_fetched_as_string(IProviderTypeTestCase providerTypeTestCase)
+    public void json_can_be_fetched_as_string(IProviderTypeTestCase testCase)
     {
-        var jsonString1 = JsonPath.Using(providerTypeTestCase.Configuration)
+        var jsonString1 = JsonPath.Using(testCase.Configuration)
             .Parse((object)JsonTestData.JsonBookDocument).JsonString;
         Assert.StartsWith("{", jsonString1);
 

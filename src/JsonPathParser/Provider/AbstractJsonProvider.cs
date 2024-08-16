@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Extensions;
 using XavierJefferson.JsonPathParser.Interfaces;
@@ -101,6 +99,7 @@ public abstract class AbstractJsonProvider : IJsonProvider
             dictionary.Remove(key);
             return;
         }
+
         if (TryConvertToIList(obj, out var list))
         {
             var index = key is int ? (int)key : int.Parse(key.ToString());
@@ -110,7 +109,6 @@ public abstract class AbstractJsonProvider : IJsonProvider
 
         throw new JsonPathException(
             $"{nameof(RemoveProperty)} operation cannot be used with {SerializeTypeName(obj)}");
-
     }
 
 
@@ -151,7 +149,7 @@ public abstract class AbstractJsonProvider : IJsonProvider
     }
 
     /// <summary>
-    ///     Converts given array to an {@link IEnumerable}
+    ///     Converts given array to an <see cref=""/>
     /// </summary>
     /// <param name="obj">an array</param>
     /// <returns> an IEnumerable that iterates over the entries of an array</returns>
@@ -171,19 +169,19 @@ public abstract class AbstractJsonProvider : IJsonProvider
     public abstract T Deserialize<T>(string obj);
     public abstract string Serialize(object? obj);
 
-    protected abstract object? Cleanup(object? obj);
     public object? Parse(string json)
     {
         try
         {
-            var json1 = StringExtensions.Beautify(json);
-            return Cleanup(Deserialize<object>(json));
+            var cleanJson = StringExtensions.Beautify(json);
+            return Cleanup(Deserialize<object?>(cleanJson));
         }
         catch (Exception e)
         {
             throw new InvalidJsonException(e);
         }
     }
+
     public object? Parse(Stream jsonStream, Encoding encoding)
     {
         try
@@ -203,6 +201,7 @@ public abstract class AbstractJsonProvider : IJsonProvider
     {
         return Serialize(obj);
     }
+
     public object? CreateArray()
     {
         return new List<object?>();
@@ -213,6 +212,11 @@ public abstract class AbstractJsonProvider : IJsonProvider
     {
         return new Dictionary<string, object?>();
     }
+
+
+    public abstract object? Deserialize(string obj, Type type);
+
+    protected abstract object? Cleanup(object? obj);
 
     private static bool TryConvertToIList(object? obj, out IList list)
     {
@@ -237,8 +241,4 @@ public abstract class AbstractJsonProvider : IJsonProvider
         if (value == null) return "null";
         return value.GetType().FullName;
     }
-
-
-
-    public abstract object? Deserialize(string obj, Type type);
 }

@@ -162,7 +162,7 @@ public class JsonPathTest : TestUtils
     [Fact]
     public void read_document_from_root()
     {
-        var result = JsonPath.Read(Document, "$.store") as Dictionary<string, object>;
+        var result = JsonPath.Read(Document, "$.store") as Dictionary<string, object?>;
 
         Assert.Equal(2, result.Values.Count());
     }

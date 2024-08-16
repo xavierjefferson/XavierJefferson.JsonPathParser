@@ -14,10 +14,9 @@ public interface IReadContext : IJsonContainer
     /// </summary>
     /// <param name="path">path to read</param>
     /// <param name="filters">filters</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
+
+
+
     ///     ">///
     ///     <returns> result</returns></param>
     object? Read(string path, params IPredicate[] filters);
@@ -28,10 +27,9 @@ public interface IReadContext : IJsonContainer
     /// <param name="path">path to read</param>
     /// <param name="type">expected return type (will try to map)</param>
     /// <param name="filters">filters</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
+
+
+
     ///     ">///
     ///     <returns> result</returns></param>
     object? Read(string path, Type type, params IPredicate[] filters);
@@ -42,10 +40,9 @@ public interface IReadContext : IJsonContainer
     ///     Reads the given path from this context
     /// </summary>
     /// <param name="path">path to apply</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
+
+
+
     ///     ">///
     ///     <returns> result</returns></param>
     object? Read(JsonPath path);
@@ -55,10 +52,9 @@ public interface IReadContext : IJsonContainer
     /// </summary>
     /// <param name="path">path to apply</param>
     /// <param name="type">expected return type (will try to map)</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
+
+
+
     ///     ">///
     ///     <returns> result</returns></param>
     object? Read(JsonPath path, Type type);
@@ -73,10 +69,9 @@ public interface IReadContext : IJsonContainer
     /// </summary>
     /// <param name="path">path to apply</param>
     /// <param name="typeRef">expected return type (will try to map)</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
+
+
+
     ///     ">///
     ///     <returns> result</returns></param>
     T? Read<T>(JsonPath path);
@@ -91,10 +86,9 @@ public interface IReadContext : IJsonContainer
     /// </summary>
     /// <param name="path">path to apply</param>
     /// <param name="typeRef">expected return type (will try to map)</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
+
+
+
     ///     ">///
     ///     <returns> result</returns></param>
     T? Read<T>(string path);

@@ -1,32 +1,30 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using XavierJefferson.JsonPathParser.Exceptions;
-using XavierJefferson.JsonPathParser.Extensions;
 
 namespace XavierJefferson.JsonPathParser.Provider;
 
 public class NewtonsoftJsonProvider : AbstractJsonProvider
 {
-    public override T Deserialize<T>(string obj)
-    {
-        return JsonConvert.DeserializeObject<T>(obj, _settings);
-    }
-    public override string Serialize(object? obj)
-    {
-        return JsonConvert.SerializeObject(obj, _settings);
-    }
-    private JsonSerializerSettings _settings = new JsonSerializerSettings { };
+    private readonly JsonSerializerSettings _settings = new();
+
     public NewtonsoftJsonProvider()
     {
-
     }
+
     public NewtonsoftJsonProvider(JsonSerializerSettings settings)
     {
         _settings = settings;
     }
 
-    
+    public override T Deserialize<T>(string obj)
+    {
+        return JsonConvert.DeserializeObject<T>(obj, _settings);
+    }
 
+    public override string Serialize(object? obj)
+    {
+        return JsonConvert.SerializeObject(obj, _settings);
+    }
 
 
     public override object? Deserialize(string obj, Type type)
@@ -60,7 +58,6 @@ public class NewtonsoftJsonProvider : AbstractJsonProvider
                     return jToken.Value<string>();
                 case JTokenType.Integer:
                     return Convert.ToDouble(jToken.Value<long>());
-                //return new IntegerNumber(jToken.Value<long>());
                 case JTokenType.Float:
                     return jToken.Value<double>();
                 case JTokenType.Null:

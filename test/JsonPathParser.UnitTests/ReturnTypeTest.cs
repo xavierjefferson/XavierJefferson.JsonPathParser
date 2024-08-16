@@ -63,10 +63,11 @@ public class ReturnTypeTest : TestUtils
         MyAssert.ContainsEntry(n, "display-price", 8.95D);
     }
 
-    [Fact]
-    public void a_path_evaluation_can_be_returned_as_PATH_LIST()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void a_path_evaluation_can_be_returned_as_PATH_LIST(IProviderTypeTestCase testCase)
     {
-        var conf = Configuration.CreateBuilder().WithOptions(Option.AsPathList).Build();
+        var conf = testCase.Configuration.SetOptions(Option.AsPathList);
 
         var pathList = JsonPath.Using(conf).Parse(JsonTestData.JsonDocument).Read("$..author").AsList();
 

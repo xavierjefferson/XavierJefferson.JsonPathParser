@@ -53,10 +53,9 @@ public class Parameter
     /// <param name="type">      The type to translate the collection into.</param>
     /// <param name="context">      Context.</param>
     /// <param name="parameters">      ICollection of parameters.</param>
-    /// <param name="
-    /// 
-    /// 
-    /// <T>
+
+
+
     ///     ">      Type T returned as a List of T.</param>
     ///     <returns>List of T either empty or containing contents.</returns>
     ///     </summary>

@@ -88,7 +88,7 @@ public class JsonNode : TypedValueNode<object?>
     public bool IsEmpty(IPredicateContext context)
     {
         if (IsArray(context) || IsMap(context)) return ((ICollection<object>)Parse(context)).Count() == 0;
-        if (Parse(context) is string) return ((string)Parse(context)).Length == 0;
+        if (Parse(context) is string stringInstance) return string.IsNullOrEmpty(stringInstance);
         return true;
     }
 
@@ -103,15 +103,15 @@ public class JsonNode : TypedValueNode<object?>
         if (this == jsonNode) return true;
         if (_value != null)
         {
-            var c = jsonNode.Parse(context);
-            if (c == null) return false;
-            if (c is IList a && _value is IList b)
+            var leftNode = jsonNode.Parse(context);
+            if (leftNode == null) return false;
+            if (leftNode is IList leftList && _value is IList rightList)
             {
-                if (a.Count != b.Count) return false;
-                for (var i = 0; i < a.Count; i++)
+                if (leftList.Count != rightList.Count) return false;
+                for (var i = 0; i < leftList.Count; i++)
                 {                   
-                    var left = a[i] is ValueNode valueNodeA ? valueNodeA : ToValueNode(a[i]);
-                    var right = b[i] is ValueNode valueNodeB ? valueNodeB: ToValueNode(b[i]);
+                    var left = leftList[i] as ValueNode ?? ToValueNode(leftList[i]);
+                    var right = rightList[i] as ValueNode ?? ToValueNode(rightList[i]);
 
                     if (!left.Equals(right)) return false;
                 }
@@ -119,7 +119,7 @@ public class JsonNode : TypedValueNode<object?>
                 return true;
             }
 
-            return _value.Equals(c);
+            return _value.Equals(leftNode);
         }
 
         return jsonNode._value == null;
@@ -129,10 +129,8 @@ public class JsonNode : TypedValueNode<object?>
     public override bool Equals(object? o)
     {
         if (this == o) return true;
-        if (!(o is JsonNode)) return false;
+        if (!(o is JsonNode jsonNode)) return false;
 
-        var jsonNode = (JsonNode)o;
-
-        return !(_value != null ? !_value.Equals(jsonNode._value) : jsonNode._value != null);
+        return _value?.Equals(jsonNode._value) ?? jsonNode._value == null;
     }
 }

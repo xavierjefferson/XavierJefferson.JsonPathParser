@@ -21,7 +21,7 @@ public class OptionsTest : TestUtils
     {
         var conf = testCase.Configuration.SetOptions(Option.DefaultPathLeafToNull);
 
-        Assert.Null(JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read<object>("$.baz"));
+        Assert.Null(JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read<object?>("$.baz"));
     }
 
     [Theory]
@@ -45,10 +45,11 @@ public class OptionsTest : TestUtils
         MyAssert.ContainsExactly(aa[0].AsList(), 1d, 4d, 8d);
     }
 
-    [Fact]
-    public void an_indefinite_path_can_be_returned_as_list()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void an_indefinite_path_can_be_returned_as_list(IProviderTypeTestCase testCase)
     {
-        var conf = Configuration.CreateBuilder().WithOptions(Option.AlwaysReturnList).Build();
+        var conf = testCase.Configuration.SetOptions(Option.AlwaysReturnList);
         var result = JsonPath.Using(conf).Parse("{\"bar\": {\"foo\": null}}").Read("$..foo").AsList();
         Assert.Single(result);
         Assert.Null(result[0]);
@@ -67,10 +68,11 @@ public class OptionsTest : TestUtils
         Assert.Equal("bar", (string)JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read("$.foo"));
     }
 
-    [Fact]
-    public void a_path_evaluation_can_be_returned_as_PATH_LIST()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void a_path_evaluation_can_be_returned_as_PATH_LIST(IProviderTypeTestCase testCase)
     {
-        var conf = Configuration.CreateBuilder().WithOptions(Option.AsPathList).Build();
+        var conf = testCase.Configuration.SetOptions(Option.AsPathList);
 
         var pathList = JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read("$.foo").AsList();
 
@@ -143,10 +145,11 @@ public class OptionsTest : TestUtils
     }
 
 
-    [Fact]
-    public void issue_suppress_exceptions_does_not_break_indefinite_evaluation()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void issue_suppress_exceptions_does_not_break_indefinite_evaluation(IProviderTypeTestCase testCase)
     {
-        var conf = Configuration.CreateBuilder().WithOptions(Option.SuppressExceptions).Build();
+        var conf = testCase.Configuration.SetOptions(Option.SuppressExceptions);
 
         MyAssert.ContainsOnly(JsonPath.Using(conf).Parse("{\"foo2\": [5]}").Read("$..foo2[0]").AsList(), 5d);
         Assert.True(JsonPath.Using(conf).Parse("{\"foo\" : {\"foo2\": [5]}}").Read("$..foo2[0]").AsList()
@@ -161,7 +164,8 @@ public class OptionsTest : TestUtils
             .Read("$[*].foo2[0]").AsList().ContainsOnly(5d));
     }
 
-    [Theory][ClassData(typeof(ProviderTypeTestCases))]
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
     public void isbn_is_defaulted_when_option_is_provided(IProviderTypeTestCase testCase)
     {
         var result1 = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)

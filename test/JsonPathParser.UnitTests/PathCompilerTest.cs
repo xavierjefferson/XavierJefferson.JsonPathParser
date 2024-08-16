@@ -97,7 +97,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void a_wildcard_can_be_compiledd()
+    public void a_wildcard_can_be_compiled()
     {
         Assert.Equal("$[*]", PathCompiler.Compile("$.*").ToString());
         Assert.Equal("$[*]", PathCompiler.Compile("$[*]").ToString());

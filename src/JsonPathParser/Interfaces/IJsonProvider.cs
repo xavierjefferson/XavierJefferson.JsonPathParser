@@ -63,7 +63,7 @@ public interface IJsonProvider
     int Length(object? obj);
 
     /// <summary>
-    ///     Converts given array to an {@link IEnumerable}
+    ///     Converts given array to an <see cref="IEnumerable"/>
     /// </summary>
     /// <param name="obj">an array</param>
     /// <returns> an IEnumerable that iterates over the entries of an array</returns>

@@ -1,30 +1,27 @@
 using XavierJefferson.JsonPathParser.Mapper;
 using XavierJefferson.JsonPathParser.Provider;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
+using XavierJefferson.JsonPathParser.UnitTests.TestData;
 
 namespace XavierJefferson.JsonPathParser.UnitTests;
 
 public class TestSuppressExceptions
 {
-    [Fact]
-    public void TestSuppressExceptionsIsRespected()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestSuppressExceptionsIsRespected(IProviderTypeTestCase testCase)
     {
-        var parseContext = JsonPath.Using(
-            new ConfigurationBuilder().WithJsonProvider(new NewtonsoftJsonProvider())
-                .WithMappingProvider(new NewtonsoftJsonMappingProvider()).WithOptions(Option.SuppressExceptions)
-                .Build());
+        var parseContext = JsonPath.Using(testCase.Configuration.SetOptions(Option.SuppressExceptions));
         var json = "{}";
         Assert.Null(parseContext.Parse(json).Read(JsonPath.Compile("$.missing")));
     }
 
-    [Fact]
-    public void TestSuppressExceptionsIsRespectedPath()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void TestSuppressExceptionsIsRespectedPath(IProviderTypeTestCase testCase)
     {
-        var parseContext = JsonPath.Using(
-            new ConfigurationBuilder().WithJsonProvider(new NewtonsoftJsonProvider())
-                .WithMappingProvider(new NewtonsoftJsonMappingProvider())
-                .WithOptions(Option.SuppressExceptions, Option.AsPathList)
-                .Build());
+        var parseContext = JsonPath.Using(testCase.Configuration
+            .SetOptions(Option.SuppressExceptions, Option.AsPathList));
         var json = "{}";
 
         var result = parseContext.Parse(json).Read(JsonPath.Compile("$.missing")).AsList();

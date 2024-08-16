@@ -142,7 +142,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void require_single_property_ok(IProviderTypeTestCase providerTypeTestCase)
+    public void require_single_property_ok(IProviderTypeTestCase testCase)
     {
         var json = new List<IDictionary<string, object?>>
         {
@@ -150,7 +150,7 @@ public class DeepScanTest : TestUtils
             GetSingletonMap("a", "a1")
         };
 
-        var configuration = providerTypeTestCase.Configuration.AddOptions(Option.RequireProperties);
+        var configuration = testCase.Configuration.AddOptions(Option.RequireProperties);
 
         var result = JsonPath.Using(configuration).Parse(json).Read("$..a");
 
@@ -159,7 +159,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void require_single_property(IProviderTypeTestCase providerTypeTestCase)
+    public void require_single_property(IProviderTypeTestCase testCase)
     {
         var json = new List<object?>
         {
@@ -167,7 +167,7 @@ public class DeepScanTest : TestUtils
             GetSingletonMap("b", "b2")
         };
 
-        var configuration = providerTypeTestCase.Configuration.AddOptions(Option.RequireProperties);
+        var configuration = testCase.Configuration.AddOptions(Option.RequireProperties);
 
         var result = JsonPath.Using(configuration).Parse(json).Read("$..a");
 
@@ -176,7 +176,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void require_multi_property_all_match(IProviderTypeTestCase providerTypeTestCase)
+    public void require_multi_property_all_match(IProviderTypeTestCase testCase)
     {
         var ab = new Dictionary<string, object?>
         {
@@ -190,7 +190,7 @@ public class DeepScanTest : TestUtils
             ab
         };
 
-        var configuration = providerTypeTestCase.Configuration.AddOptions(Option.RequireProperties);
+        var configuration = testCase.Configuration.AddOptions(Option.RequireProperties);
 
         var result = JsonPath.Using(configuration).Parse(json).Read("$..['a', 'b']").AsListOfMap();
 
@@ -199,7 +199,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void require_multi_property_some_match(IProviderTypeTestCase providerTypeTestCase)
+    public void require_multi_property_some_match(IProviderTypeTestCase testCase)
     {
         var ab = new Dictionary<string, object?>
         {
@@ -219,7 +219,7 @@ public class DeepScanTest : TestUtils
             ad
         };
 
-        var configuration = providerTypeTestCase.Configuration.AddOptions(Option.RequireProperties);
+        var configuration = testCase.Configuration.AddOptions(Option.RequireProperties);
 
         var result = JsonPath.Using(configuration).Parse(json).Read("$..['a', 'b']").AsListOfMap();
 
@@ -287,7 +287,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void scan_for_property_path_missing_required_property(IProviderTypeTestCase providerTypeTestCase)
+    public void scan_for_property_path_missing_required_property(IProviderTypeTestCase testCase)
     {
         var a = new Dictionary<string, object?>
         {
@@ -312,7 +312,7 @@ public class DeepScanTest : TestUtils
             y,
             z
         };
-        Assert.True(JsonPath.Using(providerTypeTestCase.Configuration.AddOptions(Option.RequireProperties))
+        Assert.True(JsonPath.Using(testCase.Configuration.AddOptions(Option.RequireProperties))
             .Parse(json)
             .Read<List<object?>>("$..['a'].x").ContainsExactly("xx", "xx"));
     }
@@ -320,7 +320,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void scans_can_be_filtered(IProviderTypeTestCase providerTypeTestCase)
+    public void scans_can_be_filtered(IProviderTypeTestCase testCase)
     {
         var brown = GetSingletonMap("val", "brown");
         var white = GetSingletonMap("val", "white");
@@ -346,7 +346,7 @@ public class DeepScanTest : TestUtils
             frog
         };
         var jpObjectList = JsonPath
-            .Using(providerTypeTestCase.Configuration.AddOptions(Option.RequireProperties)).Parse(animals)
+            .Using(testCase.Configuration.AddOptions(Option.RequireProperties)).Parse(animals)
             .Read<List<object?>>("$..[?(@.mammal == true)].color");
         MyAssert.ContainsExactly(jpObjectList, brown, white);
     }
@@ -358,19 +358,21 @@ public class DeepScanTest : TestUtils
         Assert.Single(result);
     }
 
-    [Fact]
-    public void DeepScanPathDefault()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void DeepScanPathDefault(IProviderTypeTestCase testCase)
     {
-        ExecuteScanPath();
+        ExecuteScanPath(testCase);
     }
 
-    [Fact]
-    public void DeepScanPathRequireProperties()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void DeepScanPathRequireProperties(IProviderTypeTestCase testCase)
     {
-        ExecuteScanPath(Option.RequireProperties);
+        ExecuteScanPath(testCase, Option.RequireProperties);
     }
 
-    private void ExecuteScanPath(params Option[] options)
+    private void ExecuteScanPath(IProviderTypeTestCase testCase, params Option[] options)
     {
         var json = "{'index': 'index', 'data': {'array': [{ 'object1': { 'name': 'robert'} }]}}";
         var expected = new Dictionary<string, object?>
@@ -384,10 +386,7 @@ public class DeepScanTest : TestUtils
         };
 
 
-        var configuration = Configuration
-            .CreateBuilder()
-            .WithOptions(options)
-            .Build();
+        var configuration = testCase.Configuration.SetOptions(options);
 
         var result = JsonPath
             .Using(configuration)

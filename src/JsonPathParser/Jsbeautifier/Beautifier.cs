@@ -1352,7 +1352,7 @@ public class Beautifier
         var lines = tokenText.Replace("\r", "").Split('\n');
         // all lines start with an asterisk? that's a proper box comment
 
-        if (lines.Skip(1).Where(x => x.Trim() == "" || x.TrimStart()[0] != '*').All(string.IsNullOrEmpty))
+        if (lines.Skip(1).Where(x => x.Trim().Length == 0 || x.TrimStart()[0] != '*').All(string.IsNullOrEmpty))
         {
             AppendNewline();
             Append(lines[0]);

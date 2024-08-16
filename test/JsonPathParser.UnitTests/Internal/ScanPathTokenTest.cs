@@ -199,7 +199,7 @@ public class ScanPathTokenTest
     {
         var result = PathCompiler.Compile("$..[?(@.address.city == 'Stockholm')]")
             .Evaluate(Document(testCase.Configuration), Document(testCase.Configuration), testCase.Configuration)
-            .GetPathList().Cast<object>().ToList();
+            .GetPathList();
 
         Assert.True(result.ContainsOnly(
             "$['store']['bicycle']",
@@ -213,7 +213,7 @@ public class ScanPathTokenTest
     {
         var result = PathCompiler.Compile("$..[?(@.isbn)]")
             .Evaluate(Document(testCase.Configuration), Document(testCase.Configuration), testCase.Configuration)
-            .GetPathList().Cast<object>().ToList();
+            .GetPathList();
 
         Assert.True(result.ContainsOnly(
             "$['store']['book'][2]"));

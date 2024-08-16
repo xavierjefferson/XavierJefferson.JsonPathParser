@@ -3,7 +3,7 @@ namespace XavierJefferson.JsonPathParser.Interfaces;
 public interface IDefaults
 {
     /// <summary>
-    ///     Returns the default {@link com.jayway.jsonpath.spi.json.JsonProvider}
+    ///     Returns the default <see cref="json."/>
     ///     <returns> default json provider</returns>
     IJsonProvider JsonProvider { get; }
 
@@ -13,7 +13,7 @@ public interface IDefaults
     HashSet<Option> Options { get; }
 
     /// <summary>
-    ///     Returns the default {@link com.jayway.jsonpath.spi.mapper.MappingProvider}
+    ///     Returns the default <see cref="MappingProvider"/>
     /// </summary>
     /// <returns> default mapping provider</returns>
     IMappingProvider MappingProvider { get; }
