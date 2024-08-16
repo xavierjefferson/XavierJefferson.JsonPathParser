@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Function;
 using XavierJefferson.JsonPathParser.Function.LateBinding;
 using XavierJefferson.JsonPathParser.PathRefs;
@@ -70,7 +71,7 @@ public class FunctionPathToken : PathToken
             foreach (var param in Parameters)
                 switch (param.ParameterType)
                 {
-                    case ParamType.Path:
+                    case ParameterTypeEnum.Path:
                         var pathLateBindingValue =
                             new PathLateBindingValue(param.Path, context.RootDocument, context.Configuration);
                         if (!param.Evaluated || !pathLateBindingValue.Equals(param.LateBinding))
@@ -80,7 +81,7 @@ public class FunctionPathToken : PathToken
                         }
 
                         break;
-                    case ParamType.Json:
+                    case ParameterTypeEnum.Json:
                         if (!param.Evaluated)
                         {
                             param.LateBinding = new JsonLateBindingValue(context.Configuration.JsonProvider, param);

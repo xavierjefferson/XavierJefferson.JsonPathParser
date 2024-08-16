@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Extensions;
 using XavierJefferson.JsonPathParser.Interfaces;
 
@@ -17,19 +18,19 @@ public class Parameter
     public Parameter(string json)
     {
         _json = json;
-        ParameterType = ParamType.Json;
+        ParameterType = ParameterTypeEnum.Json;
     }
 
     public Parameter(IPath path)
     {
         Path = path;
-        ParameterType = ParamType.Path;
+        ParameterType = ParameterTypeEnum.Path;
     }
 
     public bool Evaluated { get; set; }
     public ILateBindingValue LateBinding { get; set; }
     public IPath Path { get; set; }
-    public ParamType ParameterType { get; set; }
+    public ParameterTypeEnum ParameterType { get; set; }
 
     public object? GetValue()
     {

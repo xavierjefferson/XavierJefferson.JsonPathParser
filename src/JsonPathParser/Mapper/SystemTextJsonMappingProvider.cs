@@ -5,11 +5,7 @@ namespace XavierJefferson.JsonPathParser.Mapper;
 
 public class SystemTextJsonMappingProvider : MappingProviderBase
 {
-    protected override object? Deserialize(string s, Type t)
-    {
-        return JsonSerializer.Deserialize(s, t,
-            new JsonSerializerOptions { AllowTrailingCommas = true, PropertyNameCaseInsensitive = true });
-    }
+     
 
     protected override object? MapToObject(object? source)
     {
@@ -26,9 +22,5 @@ public class SystemTextJsonMappingProvider : MappingProviderBase
             return null;
         return source;
     }
-
-    protected override string Serialize(object? source)
-    {
-        return JsonSerializer.Serialize(source);
-    }
+ 
 }

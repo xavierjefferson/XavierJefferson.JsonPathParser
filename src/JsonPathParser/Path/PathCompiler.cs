@@ -1,4 +1,5 @@
 using System.Text;
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Filtering;
 using XavierJefferson.JsonPathParser.Function;
@@ -289,7 +290,7 @@ public class PathCompiler
     /// </returns>
     private SerializingList<Parameter> ParseFunctionParameters(string funcName)
     {
-        ParamType? type = null;
+        ParameterTypeEnum? type = null;
 
         // Parenthesis starts at 1 since we're marking the start of a function call, the close paren will denote the
         // last parameter boundary
@@ -309,10 +310,10 @@ public class PathCompiler
                 if (IsWhitespace(c)) continue;
 
                 if (c == OpenBrace || c.IsDigit() || DoubleQuote == c || Minus == c)
-                    type = ParamType.Json;
+                    type = ParameterTypeEnum.Json;
                 else if
                     (IsPathContext(c))
-                    type = ParamType.Path; // read until we reach a terminating comma and we've reset grouping to zero
+                    type = ParameterTypeEnum.Path; // read until we reach a terminating comma and we've reset grouping to zero
             }
 
             switch (c)
@@ -371,7 +372,7 @@ public class PathCompiler
         return parameters;
     }
 
-    private static void ProcessComma(ref ParamType? type, int groupParen, int groupBracket, int groupBrace,
+    private static void ProcessComma(ref ParameterTypeEnum? type, int groupParen, int groupBracket, int groupBrace,
         int groupQuote, ref bool endOfStream, SerializingList<Parameter> parameters, StringBuilder parameter, char c)
     {
         // In this state we've reach the end of a function parameter and we can pass along the parameter string
@@ -386,11 +387,11 @@ public class PathCompiler
                 Parameter? param = null;
                 switch (type)
                 {
-                    case ParamType.Json:
+                    case ParameterTypeEnum.Json:
                         // Parse the json and set the value
                         param = new Parameter(parameter.ToString());
                         break;
-                    case ParamType.Path:
+                    case ParameterTypeEnum.Path:
                         var predicates = new Stack<IPredicate>();
                         var compiler = new PathCompiler(parameter.ToString(), predicates);
                         param = new Parameter(compiler.Compile());

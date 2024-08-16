@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Extensions;
 using XavierJefferson.JsonPathParser.Interfaces;
@@ -166,11 +168,51 @@ public abstract class AbstractJsonProvider : IJsonProvider
         return obj;
     }
 
-    public abstract object? Parse(string json);
-    public abstract object? Parse(Stream jsonStream, Encoding charset);
-    public abstract string ToJson(object? obj);
-    public abstract object? CreateArray();
-    public abstract object? CreateMap();
+    public abstract T Deserialize<T>(string obj);
+    public abstract string Serialize(object? obj);
+
+    protected abstract object? Cleanup(object? obj);
+    public object? Parse(string json)
+    {
+        try
+        {
+            var json1 = StringExtensions.Beautify(json);
+            return Cleanup(Deserialize<object>(json));
+        }
+        catch (Exception e)
+        {
+            throw new InvalidJsonException(e);
+        }
+    }
+    public object? Parse(Stream jsonStream, Encoding encoding)
+    {
+        try
+        {
+            using (var sr = new StreamReader(jsonStream, encoding))
+            {
+                return Parse(sr.ReadToEnd());
+            }
+        }
+        catch (Exception e)
+        {
+            throw new InvalidJsonException(e);
+        }
+    }
+
+    public string ToJson(object? obj)
+    {
+        return Serialize(obj);
+    }
+    public object? CreateArray()
+    {
+        return new List<object?>();
+    }
+
+
+    public object? CreateMap()
+    {
+        return new Dictionary<string, object?>();
+    }
 
     private static bool TryConvertToIList(object? obj, out IList list)
     {
@@ -195,4 +237,8 @@ public abstract class AbstractJsonProvider : IJsonProvider
         if (value == null) return "null";
         return value.GetType().FullName;
     }
+
+
+
+    public abstract object? Deserialize(string obj, Type type);
 }

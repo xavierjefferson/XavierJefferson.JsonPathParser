@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Function;
 using XavierJefferson.JsonPathParser.Interfaces;
@@ -85,7 +86,7 @@ public class CompiledPath : IPath
                 // Now generate a new parameter from our path
                 var parameter = new Parameter();
                 parameter.Path = new CompiledPath(path, true);
-                parameter.ParameterType = ParamType.Path;
+                parameter.ParameterType = ParameterTypeEnum.Path;
                 functionPathToken.Parameters = new SerializingList<Parameter> { parameter };
                 var functionRoot = new RootPathToken('$');
                 functionRoot.SetTail(token);

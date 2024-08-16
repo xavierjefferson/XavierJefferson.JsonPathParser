@@ -6,14 +6,23 @@ using XavierJefferson.JsonPathParser.Extensions;
 
 namespace XavierJefferson.JsonPathParser.Provider;
 
-public class SystemTextJsonProvider : ConvertingJsonProviderBase
+public class SystemTextJsonProvider : AbstractJsonProvider
 {
-    public override string ToJson(object? obj)
+
+    public override T Deserialize<T>(string obj)
     {
-        return JsonSerializer.Serialize(obj);
+        return JsonSerializer.Deserialize<T>(obj, _options);
+    }
+    public override object? Deserialize(string obj, Type type)
+    {
+        return JsonSerializer.Deserialize(obj, type, _options); 
+    }
+    public override string Serialize(object? obj)
+    {
+        return JsonSerializer.Serialize(obj, _options);
     }
 
-    private object? Cleanup(object? value)
+    protected override object? Cleanup(object? value)
     {
         if (value == null) return null;
 
@@ -82,19 +91,16 @@ public class SystemTextJsonProvider : ConvertingJsonProviderBase
         throw new NotImplementedException();
     }
 
-    public override object? Parse(string json)
+    JsonSerializerOptions _options = new JsonSerializerOptions { AllowTrailingCommas = true, PropertyNameCaseInsensitive=true };
+    public SystemTextJsonProvider()
     {
-        try
-        {
-            var json1 = StringExtensions.Beautify(json);
-            return Cleanup(JsonSerializer.Deserialize<object>(json1,
-                new JsonSerializerOptions() { AllowTrailingCommas = true, PropertyNameCaseInsensitive = true }));
-            //return Cleanup(JsonNode.Parse(json1, new JsonNodeOptions {   PropertyNameCaseInsensitive = true }));
-            ;
-        }
-        catch (Exception e)
-        {
-            throw new InvalidJsonException(e);
-        }
+
     }
+    public SystemTextJsonProvider(JsonSerializerOptions options)
+    {
+        _options = options;
+    }
+
+
+    
 }

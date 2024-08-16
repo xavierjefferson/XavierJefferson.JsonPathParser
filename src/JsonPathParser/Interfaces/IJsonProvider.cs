@@ -5,6 +5,9 @@ namespace XavierJefferson.JsonPathParser.Interfaces;
 
 public interface IJsonProvider
 {
+    T Deserialize<T>(string obj);
+    string Serialize(object? obj);
+    object? Deserialize(string obj, Type type);
     static readonly object Undefined = new();
 
     /// <summary>

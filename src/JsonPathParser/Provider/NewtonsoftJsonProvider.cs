@@ -5,36 +5,36 @@ using XavierJefferson.JsonPathParser.Extensions;
 
 namespace XavierJefferson.JsonPathParser.Provider;
 
-public class NewtonsoftJsonProvider : ConvertingJsonProviderBase
+public class NewtonsoftJsonProvider : AbstractJsonProvider
 {
-    private static readonly JsonSerializerSettings Settings = GetSettings();
-
-    private static JsonSerializerSettings GetSettings()
+    public override T Deserialize<T>(string obj)
     {
-        var settings = new JsonSerializerSettings { Formatting = Formatting.None };
-        return settings;
+        return JsonConvert.DeserializeObject<T>(obj, _settings);
+    }
+    public override string Serialize(object? obj)
+    {
+        return JsonConvert.SerializeObject(obj, _settings);
+    }
+    private JsonSerializerSettings _settings = new JsonSerializerSettings { };
+    public NewtonsoftJsonProvider()
+    {
+
+    }
+    public NewtonsoftJsonProvider(JsonSerializerSettings settings)
+    {
+        _settings = settings;
     }
 
-    public override string ToJson(object? obj)
+    
+
+
+
+    public override object? Deserialize(string obj, Type type)
     {
-        return JsonConvert.SerializeObject(obj, Settings);
+        return JsonConvert.DeserializeObject(obj, type, _settings);
     }
 
-    public override object? Parse(string json)
-    {
-        try
-        {
-            var beauty = StringExtensions.Beautify(json);
-            return Cleanup(JsonConvert.DeserializeObject(beauty, Settings));
-        }
-        catch (Exception e)
-        {
-            throw new InvalidJsonException(e);
-        }
-    }
-
-
-    private object? Cleanup(object? value)
+    protected override object? Cleanup(object? value)
     {
         if (value == null) return null;
 

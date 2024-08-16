@@ -40,8 +40,8 @@ public abstract class MappingProviderBase : IMappingProvider
         {
             try
             {
-                var a = Serialize(source);
-                var b = Deserialize(a, targetType);
+                var a = configuration.JsonProvider.Serialize(source);
+                var b = configuration.JsonProvider.Deserialize(a, targetType);
                 return b;
             }
             catch (Exception ey)
@@ -60,7 +60,4 @@ public abstract class MappingProviderBase : IMappingProvider
     }
 
     protected abstract object? MapToObject(object? source);
-
-    protected abstract string Serialize(object? source);
-    protected abstract object? Deserialize(string s, Type t);
 }

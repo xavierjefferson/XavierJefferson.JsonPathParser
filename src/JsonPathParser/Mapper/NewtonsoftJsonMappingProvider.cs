@@ -5,10 +5,7 @@ namespace XavierJefferson.JsonPathParser.Mapper;
 
 public class NewtonsoftJsonMappingProvider : MappingProviderBase
 {
-    protected override object? Deserialize(string s, Type t)
-    {
-        return JsonConvert.DeserializeObject(s, t);
-    }
+    
 
     protected override object? MapToObject(object? source)
     {
@@ -27,8 +24,5 @@ public class NewtonsoftJsonMappingProvider : MappingProviderBase
         return source;
     }
 
-    protected override string Serialize(object? source)
-    {
-        return JsonConvert.SerializeObject(source);
-    }
+    
 }
