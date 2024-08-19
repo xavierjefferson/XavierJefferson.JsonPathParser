@@ -69,131 +69,141 @@ public class Criteria : IPredicate
     /// <summary>
     ///     Static factory method to create a Criteria using the provided key
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="key">filed name</param>
     /// <returns> the new criteria</returns>
-    public static Criteria Where(string key)
+    public static Criteria Where(IJsonProvider jsonProvider, string key)
     {
-        return new Criteria(ValueNode.ToValueNode(PrefixPath(key)));
+        return new Criteria(ValueNode.ToValueNode(jsonProvider, PrefixPath(key)));
     }
 
     /// <summary>
     ///     Static factory method to create a Criteria using the provided key
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="key">ads new filed to criteria</param>
     /// <returns> the criteria builder</returns>
-    public Criteria And(string key)
+    public Criteria And(IJsonProvider jsonProvider, string key)
     {
         CheckComplete();
-        return new Criteria(_criteriaChain, ValueNode.ToValueNode(PrefixPath(key)));
+        return new Criteria(_criteriaChain, ValueNode.ToValueNode(jsonProvider, PrefixPath(key)));
     }
 
     /// <summary>
     ///     Creates a criterion using equality
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">
     ///     ///
     /// </param>
     /// <returns> the criteria</returns>
-    public Criteria Is(object? o)
+    public Criteria Is(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Eq;
-        _right = ValueNode.ToValueNode(o);
+        _right = ValueNode.ToValueNode(jsonProvider, o);
         return this;
     }
 
     /// <summary>
     ///     Creates a criterion using equality
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">
     ///     ///
     /// </param>
     /// <returns> the criteria</returns>
-    public Criteria Eq(object? o)
+    public Criteria Eq(IJsonProvider jsonProvider, object? o)
     {
-        return Is(o);
+        return Is(jsonProvider, o);
     }
 
     /// <summary>
     ///     Creates a criterion using the <b>!=</b> operator
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">
     ///     ///
     /// </param>
     /// <returns> the criteria</returns>
-    public Criteria Ne(object? o)
+    public Criteria Ne(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Ne;
-        _right = ValueNode.ToValueNode(o);
+        _right = ValueNode.ToValueNode(jsonProvider, o);
         return this;
     }
 
     /// <summary>
     ///     Creates a criterion using the <b>&lt;</b> operator
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">
     ///     ///
     /// </param>
     /// <returns> the criteria</returns>
-    public Criteria Lt(object? o)
+    public Criteria Lt(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Lt;
-        _right = ValueNode.ToValueNode(o);
+        _right = ValueNode.ToValueNode(jsonProvider, o);
         return this;
     }
 
     /// <summary>
     ///     Creates a criterion using the <b>&lt;=</b> operator
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">
     /// </param>
     /// <returns> the criteria</returns>
-    public Criteria Lte(object? o)
+    public Criteria Lte(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Lte;
-        _right = ValueNode.ToValueNode(o);
+        _right = ValueNode.ToValueNode(jsonProvider, o);
         return this;
     }
 
     /// <summary>
     ///     Creates a criterion using the <b>&gt;</b> operator
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">
     /// </param>
     /// ///
     /// <returns> the criteria</returns>
-    public Criteria Gt(object? o)
+    public Criteria Gt(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Gt;
-        _right = ValueNode.ToValueNode(o);
+        _right = ValueNode.ToValueNode(jsonProvider, o);
         return this;
     }
 
     /// <summary>
     ///     Creates a criterion using the <b>&gt;=</b> operator
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">
     ///     ///
     ///     <returns> the criteria</returns>
     /// </param>
-    public Criteria Gte(object? o)
+    public Criteria Gte(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Gte;
-        _right = ValueNode.ToValueNode(o);
+        _right = ValueNode.ToValueNode(jsonProvider, o);
         return this;
     }
 
     /// <summary>
     ///     Creates a criterion using a Regex
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="pattern">
     ///     ///
     ///     <returns> the criteria</returns>
     /// </param>
-    public Criteria Regex(Regex pattern)
+    public Criteria Regex(IJsonProvider jsonProvider, Regex pattern)
     {
         ArgumentNullException.ThrowIfNull(pattern);
         _criteriaType = RelationalOperator.Regex;
-        _right = ValueNode.ToValueNode(pattern);
+        _right = ValueNode.ToValueNode(jsonProvider, pattern);
         return this;
     }
 
@@ -201,11 +211,12 @@ public class Criteria : IPredicate
     ///     The <code>in</code> operator is analogous to the SQL IN modifier, allowing you
     ///     to specify an array of possible matches.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">the values to match against</param>
     /// <returns> the criteria</returns>
-    public Criteria In(params object?[] o)
+    public Criteria In(IJsonProvider jsonProvider, params object?[] o)
     {
-        return In(o.ToSerializingList());
+        return In(o.ToSerializingList(), jsonProvider);
     }
 
     /// <summary>
@@ -213,13 +224,14 @@ public class Criteria : IPredicate
     ///     to specify an array of possible matches.
     /// </summary>
     /// <param name="collection">the collection containing the values to match against</param>
+    /// <param name="jsonProvider"></param>
     /// <returns> the criteria</returns>
-    public Criteria In(ICollection<object?> collection)
+    public Criteria In(ICollection<object?> collection, IJsonProvider jsonProvider)
     {
-        
+
         ArgumentNullException.ThrowIfNull(collection);
         _criteriaType = RelationalOperator.In;
-        _right = new ValueListNode(collection);
+        _right = new ValueListNode(collection, jsonProvider);
         return this;
     }
 
@@ -227,12 +239,13 @@ public class Criteria : IPredicate
     ///     The <code>contains</code> operator asserts that the provided object is contained
     ///     in the result. The object that should contain the input can be either an object or a string.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">that should exists in given collection or</param>
     /// <returns> the criteria</returns>
-    public Criteria Contains(object? o)
+    public Criteria Contains(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Contains;
-        _right = ValueNode.ToValueNode(o);
+        _right = ValueNode.ToValueNode(jsonProvider, o);
         return this;
     }
 
@@ -240,24 +253,26 @@ public class Criteria : IPredicate
     ///     The <code>nin</code> operator is similar to $in except that it selects objects for
     ///     which the specified field does not have any value in the specified array.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">the values to match against</param>
     /// <returns> the criteria</returns>
-    public Criteria Nin(params object?[] o)
+    public Criteria Nin(IJsonProvider jsonProvider, params object?[] o)
     {
-        return Nin(o.ToSerializingList());
+        return Nin((IJsonProvider)jsonProvider, o.ToSerializingList());
     }
 
     /// <summary>
     ///     The <code>nin</code> operator is similar to $in except that it selects objects for
     ///     which the specified field does not have any value in the specified array.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="collection">the values to match against</param>
     /// <returns> the criteria</returns>
-    public Criteria Nin(ICollection<object?> collection)
+    public Criteria Nin(IJsonProvider jsonProvider, ICollection<object?> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
         _criteriaType = RelationalOperator.Nin;
-        _right = new ValueListNode(collection);
+        _right = new ValueListNode(collection, jsonProvider);
         return this;
     }
 
@@ -266,11 +281,12 @@ public class Criteria : IPredicate
     ///     an array whose elements comprise a subset of the set comprised by the elements of
     ///     the specified array.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">the values to match against</param>
     /// <returns> the criteria</returns>
-    public Criteria SubsetOf(params object?[]? o)
+    public Criteria SubsetOf(IJsonProvider jsonProvider, params object?[]? o)
     {
-        return SubsetOf(o.ToSerializingList());
+        return SubsetOf((IJsonProvider)jsonProvider, o.ToSerializingList());
     }
 
     /// <summary>
@@ -278,13 +294,14 @@ public class Criteria : IPredicate
     ///     an array whose elements comprise a subset of the set comprised by the elements of
     ///     the specified array.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="c">the values to match against</param>
     /// <returns> the criteria</returns>
-    public Criteria SubsetOf(ICollection<object?>? c)
+    public Criteria SubsetOf(IJsonProvider jsonProvider, ICollection<object?>? c)
     {
         ArgumentNullException.ThrowIfNull(c);
         _criteriaType = RelationalOperator.SubsetOf;
-        _right = new ValueListNode(c ?? new List<object?>());
+        _right = new ValueListNode(c ?? new List<object?>(), jsonProvider);
         return this;
     }
 
@@ -292,24 +309,26 @@ public class Criteria : IPredicate
     ///     The <code>anyof</code> operator selects objects for which the specified field is
     ///     an array that contain at least an element in the specified array.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">the values to match against</param>
     /// <returns> the criteria</returns>
-    public Criteria AnyOf(params object?[] o)
+    public Criteria AnyOf(IJsonProvider jsonProvider, params object?[] o)
     {
-        return AnyOf(o.ToSerializingList());
+        return AnyOf((IJsonProvider)jsonProvider, o.ToSerializingList());
     }
 
     /// <summary>
     ///     The <code>anyof</code> operator selects objects for which the specified field is
     ///     an array that contain at least an element in the specified array.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="c">the values to match against</param>
     /// <returns> the criteria</returns>
-    public Criteria AnyOf<T>(IEnumerable<T> c)
+    public Criteria AnyOf<T>(IJsonProvider jsonProvider, IEnumerable<T> c)
     {
         ArgumentNullException.ThrowIfNull(c);
         _criteriaType = RelationalOperator.AnyOf;
-        _right = new ValueListNode(c.Cast<object?>().ToSerializingList());
+        _right = new ValueListNode(c.Cast<object?>().ToSerializingList(), jsonProvider);
         return this;
     }
 
@@ -317,24 +336,26 @@ public class Criteria : IPredicate
     ///     The <code>noneof</code> operator selects objects for which the specified field is
     ///     an array that does not contain any of the elements of the specified array.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o">the values to match against</param>
     /// <returns> the criteria</returns>
-    public Criteria NoneOf(params object?[] o)
+    public Criteria NoneOf(IJsonProvider jsonProvider, params object?[] o)
     {
-        return NoneOf(o.ToSerializingList());
+        return NoneOf((IJsonProvider)jsonProvider, o.ToSerializingList());
     }
 
     /// <summary>
     ///     The <code>noneof</code> operator selects objects for which the specified field is
     ///     an array that does not contain any of the elements of the specified array.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="c">the values to match against</param>
     /// <returns> the criteria</returns>
-    public Criteria NoneOf(ICollection<object?> c)
+    public Criteria NoneOf(IJsonProvider jsonProvider, ICollection<object?> c)
     {
         ArgumentNullException.ThrowIfNull(c);
         _criteriaType = RelationalOperator.NoneOf;
-        _right = new ValueListNode(c ?? new List<object?>());
+        _right = new ValueListNode(c ?? new List<object?>(), jsonProvider);
         return this;
     }
 
@@ -342,26 +363,28 @@ public class Criteria : IPredicate
     ///     The <code>all</code> operator is similar to $in, but instead of matching any value
     ///     in the specified array all values in the array must be matched.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="o"></param>
     /// <returns> the criteria</returns>
-    public Criteria All(params object?[] o)
+    public Criteria All(IJsonProvider jsonProvider, params object?[] o)
     {
-        return All(o.ToSerializingList());
+        return All(jsonProvider, o.ToSerializingList());
     }
 
     /// <summary>
     ///     The <code>all</code> operator is similar to $in, but instead of matching any value
     ///     in the specified array all values in the array must be matched.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="collection">
     ///     ///
     ///     <returns> the criteria</returns>
     /// </param>
-    public Criteria All(ICollection<object?> collection)
+    public Criteria All(IJsonProvider jsonProvider, ICollection<object?> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
         _criteriaType = RelationalOperator.All;
-        _right = new ValueListNode(collection);
+        _right = new ValueListNode(collection, jsonProvider);
         return this;
     }
 
@@ -373,14 +396,15 @@ public class Criteria : IPredicate
     ///         <li>string with given length.</li>
     ///     </ol>
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="size">
     ///     ///
     ///     <returns> the criteria</returns>
     /// </param>
-    public Criteria Size(int size)
+    public Criteria Size(IJsonProvider jsonProvider, int size)
     {
         _criteriaType = RelationalOperator.Size;
-        _right = ValueNode.ToValueNode(size);
+        _right = ValueNode.ToValueNode(jsonProvider, size);
         return this;
     }
 
@@ -409,14 +433,15 @@ public class Criteria : IPredicate
     /// <summary>
     ///     Check for existence (or lack thereof) of a field.
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="shouldExist">
     ///     ///
     ///     <returns> the criteria</returns>
     /// </param>
-    public Criteria Exists(bool shouldExist)
+    public Criteria Exists(IJsonProvider jsonProvider, bool shouldExist)
     {
         _criteriaType = RelationalOperator.Exists;
-        _right = ValueNode.ToValueNode(shouldExist);
+        _right = ValueNode.ToValueNode(jsonProvider, shouldExist);
         _left = _left.AsPathNode().AsExistsCheck(shouldExist);
         return this;
     }
@@ -460,33 +485,35 @@ public class Criteria : IPredicate
     /// <summary>
     ///     Parse the provided criteria
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="criteria"></param>
     /// <returns> a criteria</returns>
     [Obsolete]
-    public static Criteria Parse(string criteria)
+    public static Criteria Parse(IJsonProvider jsonProvider, string criteria)
     {
         if (criteria == null) throw new InvalidPathException("Criteria can not be null");
         var split = criteria.Trim().Split(" ");
         if (split.Length == 3)
-            return Create(split[0], split[1], split[2]);
+            return Create(jsonProvider, split[0], split[1], split[2]);
         if (split.Length == 1)
-            return Create(split[0], nameof(RelationalOperator.Exists), "true");
+            return Create(jsonProvider, split[0], nameof(RelationalOperator.Exists), "true");
         throw new InvalidPathException("Could not Parse criteria");
     }
 
     /// <summary>
     ///     Creates a new criteria
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="left">path to evaluate in criteria</param>
     /// <param name="operator">operator</param>
     /// <param name="right">expected value</param>
     /// <returns> a new Criteria</returns>
     [Obsolete]
-    public static Criteria Create(string left, string @operator, string right)
+    public static Criteria Create(IJsonProvider jsonProvider, string left, string @operator, string right)
     {
-        var criteria = new Criteria(ValueNode.ToValueNode(left));
+        var criteria = new Criteria(ValueNode.ToValueNode(jsonProvider, left));
         criteria._criteriaType = RelationalOperator.FromName(@operator);
-        criteria._right = ValueNode.ToValueNode(right);
+        criteria._right = ValueNode.ToValueNode(jsonProvider, right);
         return criteria;
     }
 

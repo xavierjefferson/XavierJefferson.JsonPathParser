@@ -1,10 +1,14 @@
+using XavierJefferson.JsonPathParser.UnitTests.TestData;
+
 namespace XavierJefferson.JsonPathParser.UnitTests;
 
 public class Issue_973
 {
-    [Fact]
-    public void shouldNotCauseStackOverflow()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void shouldNotCauseStackOverflow(IProviderTypeTestCase testCase)
     {
-        var _ = Criteria.Parse("@[\"\",/\\");
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        var _ = Criteria.Parse(jsonProvider, "@[\"\",/\\");
     }
 }

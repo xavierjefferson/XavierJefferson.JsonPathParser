@@ -29,6 +29,24 @@ using System.Text.RegularExpressions;
 
 namespace XavierJefferson.JsonPathParser.Jsbeautifier;
 
+public enum FlagModeEnum
+{
+    ExpressionInBrackets,
+    IndentedExpressionInBrackets,
+    ExpressionInParentheses,
+    ForExpressionInParentheses,
+    CondExpressionInParentheses,
+    DoBlock,
+    Object,
+    Block
+}
+
+public enum PrefixTypeEnum
+{
+    NONE,
+    NEWLINE,
+    SPACE
+}
 public class Beautifier
 {
     public Beautifier()
@@ -44,7 +62,7 @@ public class Beautifier
 
     public BeautifierOptions Opts { get; set; }
 
-    public BeautifierFlags Flags { get; set; }
+    public BeautifierFlags? Flags { get; set; }
 
     private List<BeautifierFlags> FlagStore { get; set; }
 
@@ -66,7 +84,7 @@ public class Beautifier
 
     private string LastLastText { get; set; }
 
-    private string Input { get; set; }
+    private string? Input { get; set; }
 
     private List<string> Output { get; set; }
 
@@ -87,7 +105,7 @@ public class Beautifier
     private void BlankState()
     {
         // internal flags
-        Flags = new BeautifierFlags("BLOCK");
+        Flags = new BeautifierFlags(FlagModeEnum.Block);
         FlagStore = new List<BeautifierFlags>();
         WantedNewline = false;
         JustAddedNewline = false;
@@ -114,13 +132,13 @@ public class Beautifier
 
         // Words which always should start on a new line
         LineStarters = "continue,try,throw,return,var,if,switch,case,default,for,while,break,function".Split(',');
-        SetMode("BLOCK");
+        SetMode(FlagModeEnum.Block);
         ParserPos = 0;
     }
 
-    private void SetMode(string mode)
+    private void SetMode(FlagModeEnum mode)
     {
-        var prev = new BeautifierFlags("BLOCK");
+        var prev = new BeautifierFlags(FlagModeEnum.Block);
 
         if (Flags != null)
         {
@@ -217,18 +235,18 @@ public class Beautifier
         return s == "case" || s == "return" || s == "do" || s == "if" || s == "throw" || s == "else";
     }
 
-    private bool IsArray(string mode)
+    private bool IsArray(FlagModeEnum mode)
     {
-        return mode == "[EXPRESSION]" || mode == "[INDENTED-EXPRESSION]";
+        return mode == FlagModeEnum.ExpressionInBrackets || mode == FlagModeEnum.IndentedExpressionInBrackets;
     }
 
-    private bool IsExpression(string mode)
+    private bool IsExpression(FlagModeEnum mode)
     {
-        return mode == "[EXPRESSION]" ||
-               mode == "[INDENTED-EXPRESSION]" ||
-               mode == "(EXPRESSION)" ||
-               mode == "(FOR-EXPRESSION)" ||
-               mode == "(COND-EXPRESSION)";
+        return mode == FlagModeEnum.ExpressionInBrackets ||
+               mode == FlagModeEnum.IndentedExpressionInBrackets ||
+               mode == FlagModeEnum.ExpressionInParentheses ||
+               mode == FlagModeEnum.ForExpressionInParentheses ||
+               mode == FlagModeEnum.CondExpressionInParentheses;
     }
 
     private void AllowWrapOrPreservedNewline(string tokenText, bool forceLinwrap = false)
@@ -324,7 +342,7 @@ public class Beautifier
 
     private void Indent()
     {
-        Flags.IndentationLevel = Flags.IndentationLevel + 1;
+        Flags.IndentationLevel++;
     }
 
     private void RemoveIndent()
@@ -337,7 +355,7 @@ public class Beautifier
 
     private void RestoreMode()
     {
-        DoBlockJustClosed = Flags.Mode == "DO_BLOCK";
+        DoBlockJustClosed = Flags.Mode == FlagModeEnum.DoBlock;
 
         if (FlagStore.Count > 0)
         {
@@ -365,23 +383,22 @@ public class Beautifier
 
             while (Whitespace.Contains(c))
             {
-                if (c == '\n')
+                switch (c)
                 {
-                    TrimOutput();
-                    Output.Add("\n");
-                    JustAddedNewline = true;
-                    whitespaceCount = 0;
-                }
-                else if (c == '\t')
-                {
-                    whitespaceCount += 4;
-                }
-                else if (c == '\r')
-                {
-                }
-                else
-                {
-                    whitespaceCount += 1;
+                    case '\n':
+                        TrimOutput();
+                        Output.Add("\n");
+                        JustAddedNewline = true;
+                        whitespaceCount = 0;
+                        break;
+                    case '\t':
+                        whitespaceCount += 4;
+                        break;
+                    case '\r':
+                        break;
+                    default:
+                        whitespaceCount += 1;
+                        break;
                 }
 
                 if (ParserPos >= Input.Length) return new Tkval("", TokenTypeEnum.TkEof);
@@ -462,64 +479,69 @@ public class Beautifier
 
         if (")]".Contains(c)) return new Tkval(c.ToString(), TokenTypeEnum.TkEndExpr);
 
-        if (c == '{') return new Tkval(c.ToString(), TokenTypeEnum.TkStartBlock);
-
-        if (c == '}') return new Tkval(c.ToString(), TokenTypeEnum.TkEndBlock);
-
-        if (c == ';') return new Tkval(c.ToString(), TokenTypeEnum.TkSemicolon);
-
-        if (c == '/')
+        switch (c)
         {
-            var comment = "";
-            var inlineComment = true;
-
-            if (Input[ParserPos] == '*') // peek /* .. */ comment
+            case '{':
+                return new Tkval(c.ToString(), TokenTypeEnum.TkStartBlock);
+            case '}':
+                return new Tkval(c.ToString(), TokenTypeEnum.TkEndBlock);
+            case ';':
+                return new Tkval(c.ToString(), TokenTypeEnum.TkSemicolon);
+            case '/':
             {
-                ParserPos += 1;
-                if (ParserPos < Input.Length)
-                    while (!(Input[ParserPos] == '*' && ParserPos + 1 < Input.Length && Input[ParserPos + 1] == '/') &&
-                           ParserPos < Input.Length)
+                var comment = "";
+                var inlineComment = true;
+
+                if (Input[ParserPos] == '*') // peek /* .. */ comment
+                {
+                    ParserPos += 1;
+                    if (ParserPos < Input.Length)
+                        while (!(Input[ParserPos] == '*' && ParserPos + 1 < Input.Length && Input[ParserPos + 1] == '/') &&
+                               ParserPos < Input.Length)
+                        {
+                            c = Input[ParserPos];
+                            comment += c;
+
+                            if ("\r\n".Contains(c)) inlineComment = false;
+
+                            ParserPos += 1;
+
+                            if (ParserPos >= Input.Length) break;
+                        }
+
+                    ParserPos += 2;
+
+                    if (inlineComment && NNewlines == 0)
+                        return new Tkval($"/*{comment}*/", TokenTypeEnum.TkInlineComment);
+
+                    return new Tkval($"/*{comment}*/", TokenTypeEnum.TkBlockComment);
+                }
+
+                if (Input[ParserPos] == '/') // peek // comment
+                {
+                    comment = c.ToString();
+                    while (!"\r\n".Contains(Input[ParserPos]))
                     {
-                        c = Input[ParserPos];
-                        comment += c;
-
-                        if ("\r\n".Contains(c)) inlineComment = false;
-
+                        comment += Input[ParserPos];
                         ParserPos += 1;
 
                         if (ParserPos >= Input.Length) break;
                     }
 
-                ParserPos += 2;
+                    if (WantedNewline) AppendNewline();
 
-                if (inlineComment && NNewlines == 0)
-                    return new Tkval($"/*{comment}*/", TokenTypeEnum.TkInlineComment);
-
-                return new Tkval($"/*{comment}*/", TokenTypeEnum.TkBlockComment);
-            }
-
-            if (Input[ParserPos] == '/') // peek // comment
-            {
-                comment = c.ToString();
-                while (!"\r\n".Contains(Input[ParserPos]))
-                {
-                    comment += Input[ParserPos];
-                    ParserPos += 1;
-
-                    if (ParserPos >= Input.Length) break;
+                    return new Tkval(comment, TokenTypeEnum.TkComment);
                 }
 
-                if (WantedNewline) AppendNewline();
-
-                return new Tkval(comment, TokenTypeEnum.TkComment);
+                break;
             }
         }
 
         if (c == '\'' || c == '"' ||
             (c == '/' &&
              ((LastType == TokenTypeEnum.TkWord && IsSpecialWord(LastText)) ||
-              (LastType == TokenTypeEnum.TkEndExpr && (Flags.PreviousMode == "(FOR-EXPRESSION)" ||
-                                                       Flags.PreviousMode == "(COND-EXPRESSION)")) ||
+              (LastType == TokenTypeEnum.TkEndExpr && (Flags.PreviousMode == FlagModeEnum.ForExpressionInParentheses ||
+                                                       Flags.PreviousMode == FlagModeEnum.CondExpressionInParentheses)) ||
               new[]
               {
                   TokenTypeEnum.TkComment, TokenTypeEnum.TkStartExpr, TokenTypeEnum.TkStartBlock,
@@ -612,7 +634,7 @@ public class Beautifier
                             esc = Input[ParserPos] == '\\';
                         else
                             esc = false;
-                        // TODO
+                        // jsonProvider
                         //if (/*this.Opts.UnescapeStrings*/false)
                         /*{
                                 if (this.Input[this.ParserPos] == 'x')
@@ -756,57 +778,62 @@ public class Beautifier
             {
                 if (LineStarters.Contains(LastText)) Append(" ");
 
-                SetMode("(EXPRESSION)");
+                SetMode(FlagModeEnum.ExpressionInParentheses);
                 Append(tokenText);
                 return;
             }
 
-            if (Flags.Mode == "[EXPRESSION]" || Flags.Mode == "[INDENTED-EXPRESSION]")
+            switch (Flags.Mode)
             {
-                if (LastLastText == "]" && LastText == ",")
+                case FlagModeEnum.ExpressionInBrackets:
+                case FlagModeEnum.IndentedExpressionInBrackets:
                 {
-                    // # ], [ goes to a new line
-                    if (Flags.Mode == "[EXPRESSION]")
+                    if (LastLastText == "]" && LastText == ",")
                     {
-                        Flags.Mode = "[INDENTED-EXPRESSION]";
-                        if (!Opts.KeepArrayIndentation) Indent();
+                        // # ], [ goes to a new line
+                        if (Flags.Mode == FlagModeEnum.ExpressionInBrackets)
+                        {
+                            Flags.Mode = FlagModeEnum.IndentedExpressionInBrackets;
+                            if (!Opts.KeepArrayIndentation) Indent();
+                        }
+
+                        SetMode(FlagModeEnum.ExpressionInBrackets);
+
+                        if (!Opts.KeepArrayIndentation) AppendNewline();
+                    }
+                    else if (LastText == "[")
+                    {
+                        if (Flags.Mode == FlagModeEnum.ExpressionInBrackets)
+                        {
+                            Flags.Mode = FlagModeEnum.IndentedExpressionInBrackets;
+
+                            if (!Opts.KeepArrayIndentation) Indent();
+                        }
+
+                        SetMode(FlagModeEnum.ExpressionInBrackets);
+
+                        if (!Opts.KeepArrayIndentation) AppendNewline();
+                    }
+                    else
+                    {
+                        SetMode(FlagModeEnum.ExpressionInBrackets);
                     }
 
-                    SetMode("[EXPRESSION]");
-
-                    if (!Opts.KeepArrayIndentation) AppendNewline();
+                    break;
                 }
-                else if (LastText == "[")
-                {
-                    if (Flags.Mode == "[EXPRESSION]")
-                    {
-                        Flags.Mode = "[INDENTED-EXPRESSION]";
-
-                        if (!Opts.KeepArrayIndentation) Indent();
-                    }
-
-                    SetMode("[EXPRESSION]");
-
-                    if (!Opts.KeepArrayIndentation) AppendNewline();
-                }
-                else
-                {
-                    SetMode("[EXPRESSION]");
-                }
-            }
-            else
-            {
-                SetMode("[EXPRESSION]");
+                default:
+                    SetMode(FlagModeEnum.ExpressionInBrackets);
+                    break;
             }
         }
         else
         {
             if (LastText == "for")
-                SetMode("(FOR-EXPRESSION)");
+                SetMode(FlagModeEnum.ForExpressionInParentheses);
             else if (LastText == "if" || LastText == "while")
-                SetMode("(COND-EXPRESSION)");
+                SetMode(FlagModeEnum.CondExpressionInParentheses);
             else
-                SetMode("(EXPRESSION)");
+                SetMode(FlagModeEnum.ExpressionInParentheses);
         }
 
         if (LastText == ";" || LastType == TokenTypeEnum.TkStartBlock)
@@ -835,7 +862,7 @@ public class Beautifier
 
         if (LastType == TokenTypeEnum.TkEquals ||
             LastType == TokenTypeEnum.TkOperator)
-            if (Flags.Mode != "OJBECT")
+            if (Flags.Mode != FlagModeEnum.Object)
                 AllowWrapOrPreservedNewline(tokenText);
 
         Append(tokenText);
@@ -855,7 +882,7 @@ public class Beautifier
                     return;
                 }
             }
-            else if (Flags.Mode == "[INDENTED-EXPRESSION]")
+            else if (Flags.Mode == FlagModeEnum.IndentedExpressionInBrackets)
             {
                 if (LastText == "]")
                 {
@@ -874,9 +901,9 @@ public class Beautifier
     private void HandleStartBlock(string tokenText)
     {
         if (LastWord == "do")
-            SetMode("DO_BLOCK");
+            SetMode(FlagModeEnum.DoBlock);
         else
-            SetMode("BLOCK");
+            SetMode(FlagModeEnum.Block);
 
         if (Opts.BraceStyle == BraceStyle.Expand)
         {
@@ -894,23 +921,28 @@ public class Beautifier
         }
         else
         {
-            if (LastType != TokenTypeEnum.TkOperator && LastType != TokenTypeEnum.TkStartExpr)
+            switch (LastType)
             {
-                if (LastType == TokenTypeEnum.TkStartBlock)
-                    AppendNewline();
-                else
-                    Append(" ");
-            }
-            else
-            {
-                // if TK_OPERATOR or TK_START_EXPR
-                if (IsArray(Flags.PreviousMode) && LastText == ",")
+                case TokenTypeEnum.TkOperator:
+                case TokenTypeEnum.TkStartExpr:
                 {
-                    if (LastLastText == "}")
-                        Append(" ");
-                    else
-                        AppendNewline();
+                    // if TK_OPERATOR or TK_START_EXPR
+                    if (IsArray(Flags.PreviousMode) && LastText == ",")
+                    {
+                        if (LastLastText == "}")
+                            Append(" ");
+                        else
+                            AppendNewline();
+                    }
+
+                    break;
                 }
+                case TokenTypeEnum.TkStartBlock:
+                    AppendNewline();
+                    break;
+                default:
+                    Append(" ");
+                    break;
             }
 
             Indent();
@@ -1025,38 +1057,38 @@ public class Beautifier
             return;
         }
 
-        var prefix = "NONE";
+        var prefix = PrefixTypeEnum.NONE;
 
         if (LastType == TokenTypeEnum.TkEndBlock)
         {
             if (tokenText != "else" && tokenText != "catch" && tokenText != "finally")
             {
-                prefix = "NEWLINE";
+                prefix = PrefixTypeEnum.NEWLINE;
             }
             else
             {
                 if (Opts.BraceStyle == BraceStyle.Expand || Opts.BraceStyle == BraceStyle.EndExpand)
                 {
-                    prefix = "NEWLINE";
+                    prefix = PrefixTypeEnum.NEWLINE;
                 }
                 else
                 {
-                    prefix = "SPACE";
+                    prefix = PrefixTypeEnum.SPACE;
                     Append(" ");
                 }
             }
         }
-        else if (LastType == TokenTypeEnum.TkSemicolon && (Flags.Mode == "BLOCK" || Flags.Mode == "DO_BLOCK"))
+        else if (LastType == TokenTypeEnum.TkSemicolon && (Flags.Mode == FlagModeEnum.Block || Flags.Mode == FlagModeEnum.DoBlock))
         {
-            prefix = "NEWLINE";
+            prefix = PrefixTypeEnum.NEWLINE;
         }
         else if (LastType == TokenTypeEnum.TkSemicolon && IsExpression(Flags.Mode))
         {
-            prefix = "SPACE";
+            prefix = PrefixTypeEnum.SPACE;
         }
         else if (LastType == TokenTypeEnum.TkString)
         {
-            prefix = "NEWLINE";
+            prefix = PrefixTypeEnum.NEWLINE;
         }
         else if (LastType == TokenTypeEnum.TkWord)
         {
@@ -1064,16 +1096,16 @@ public class Beautifier
                 // eat newlines between ...else *** some_op...
                 // won't preserve extra newlines in this place (if any), but don't care that much
                 TrimOutput(true);
-            prefix = "SPACE";
+            prefix = PrefixTypeEnum.SPACE;
         }
         else if (LastType == TokenTypeEnum.TkStartBlock)
         {
-            prefix = "NEWLINE";
+            prefix = PrefixTypeEnum.NEWLINE;
         }
         else if (LastType == TokenTypeEnum.TkEndExpr)
         {
             Append(" ");
-            prefix = "NEWLINE";
+            prefix = PrefixTypeEnum.NEWLINE;
         }
 
         if (Flags.IfLine && LastType == TokenTypeEnum.TkEndExpr) Flags.IfLine = false;
@@ -1082,15 +1114,15 @@ public class Beautifier
             LastType == TokenTypeEnum.TkStartExpr ||
             LastType == TokenTypeEnum.TkEquals ||
             LastType == TokenTypeEnum.TkOperator)
-            if (Flags.Mode != "OBJECT")
+            if (Flags.Mode != FlagModeEnum.Object)
                 AllowWrapOrPreservedNewline(tokenText);
 
         if (LineStarters.Contains(tokenText))
         {
             if (LastText == "else")
-                prefix = "SPACE";
+                prefix = PrefixTypeEnum.SPACE;
             else
-                prefix = "NEWLINE";
+                prefix = PrefixTypeEnum.NEWLINE;
         }
 
         if (tokenText == "else" || tokenText == "catch" || tokenText == "finally")
@@ -1106,7 +1138,7 @@ public class Beautifier
                 Append(" ");
             }
         }
-        else if (prefix == "NEWLINE")
+        else if (prefix == PrefixTypeEnum.NEWLINE)
         {
             if (IsSpecialWord(LastText))
             {
@@ -1144,7 +1176,7 @@ public class Beautifier
         {
             AppendNewline(); //}, in lists get a newline
         }
-        else if (prefix == "SPACE")
+        else if (prefix == PrefixTypeEnum.SPACE)
         {
             Append(" ");
         }
@@ -1172,15 +1204,15 @@ public class Beautifier
         Append(tokenText);
         Flags.VarLine = false;
         Flags.VarLineReindented = false;
-        if (Flags.Mode == "OBJECT")
+        if (Flags.Mode == FlagModeEnum.Object)
             // OBJECT mode is weird and doesn't get reset too well.
-            Flags.Mode = "BLOCK";
+            Flags.Mode = FlagModeEnum.Block;
     }
 
     private void HandleString(string tokenText)
     {
         if (LastType == TokenTypeEnum.TkEndExpr &&
-            (Flags.PreviousMode == "(COND-EXPRESSION)" || Flags.PreviousMode == "(FOR-EXPRESSION)"))
+            (Flags.PreviousMode == FlagModeEnum.CondExpressionInParentheses || Flags.PreviousMode == FlagModeEnum.ForExpressionInParentheses))
         {
             Append(" ");
         }
@@ -1193,7 +1225,7 @@ public class Beautifier
                  LastType == TokenTypeEnum.TkEquals ||
                  LastType == TokenTypeEnum.TkOperator)
         {
-            if (Flags.Mode != "OBJECT") AllowWrapOrPreservedNewline(tokenText);
+            if (Flags.Mode != FlagModeEnum.Object) AllowWrapOrPreservedNewline(tokenText);
         }
         else
         {
@@ -1239,17 +1271,17 @@ public class Beautifier
             return;
         }
 
-        if (LastType == TokenTypeEnum.TkEndBlock && Flags.Mode != "(EXPRESSION)")
+        if (LastType == TokenTypeEnum.TkEndBlock && Flags.Mode != FlagModeEnum.ExpressionInParentheses)
         {
             Append(tokenText);
-            if (Flags.Mode == "OBJECT" && LastText == "}")
+            if (Flags.Mode == FlagModeEnum.Object && LastText == "}")
                 AppendNewline();
             else
                 Append(" ");
         }
         else
         {
-            if (Flags.Mode == "OBJECT")
+            if (Flags.Mode == FlagModeEnum.Object)
             {
                 Append(tokenText);
                 AppendNewline();
@@ -1300,44 +1332,47 @@ public class Beautifier
             return;
         }
 
-        if (tokenText == "++" || tokenText == "--" || tokenText == "!" || ((tokenText == "+" || tokenText == "-") &&
-                                                                           (LastType == TokenTypeEnum.TkStartBlock ||
-                                                                            LastType == TokenTypeEnum.TkStartExpr ||
-                                                                            LastType == TokenTypeEnum.TkEquals ||
-                                                                            LastType == TokenTypeEnum.TkOperator ||
-                                                                            LineStarters.Contains(LastText) ||
-                                                                            LastText == ",")))
+        switch (tokenText)
         {
-            spaceBefore = false;
-            spaceAfter = false;
+            case "++":
+            case "--":
+            case "!":
+            case "+" or "-" when
+                (LastType == TokenTypeEnum.TkStartBlock ||
+                 LastType == TokenTypeEnum.TkStartExpr ||
+                 LastType == TokenTypeEnum.TkEquals ||
+                 LastType == TokenTypeEnum.TkOperator ||
+                 LineStarters.Contains(LastText) ||
+                 LastText == ","):
+                {
+                    spaceBefore = false;
+                    spaceAfter = false;
 
-            if (LastText == ";" && IsExpression(Flags.Mode))
-                // for (;; ++i)
-                // ^^
-                spaceBefore = true;
+                    if (LastText == ";" && IsExpression(Flags.Mode))
+                        // for (;; ++i)
+                        // ^^
+                        spaceBefore = true;
 
-            if (LastType == TokenTypeEnum.TkWord && LineStarters.Contains(LastText)) spaceBefore = true;
+                    if (LastType == TokenTypeEnum.TkWord && LineStarters.Contains(LastText)) spaceBefore = true;
 
-            if (Flags.Mode == "BLOCK" && (LastText == ";" || LastText == "{"))
-                // { foo: --i }
-                // foo(): --bar
-                AppendNewline();
-        }
-        else if (tokenText == ":")
-        {
-            if (Flags.TernaryDepth == 0)
-            {
-                if (Flags.Mode == "BLOCK") Flags.Mode = "OBJECT";
-                spaceBefore = false;
-            }
-            else
-            {
+                    if (Flags.Mode == FlagModeEnum.Block && (LastText == ";" || LastText == "{"))
+                        // { foo: --i }
+                        // foo(): --bar
+                        AppendNewline();
+                    break;
+                }
+            case ":" when Flags.TernaryDepth == 0:
+                {
+                    if (Flags.Mode == FlagModeEnum.Block) Flags.Mode = FlagModeEnum.Object;
+                    spaceBefore = false;
+                    break;
+                }
+            case ":":
                 Flags.TernaryDepth -= 1;
-            }
-        }
-        else if (tokenText == "?")
-        {
-            Flags.TernaryDepth += 1;
+                break;
+            case "?":
+                Flags.TernaryDepth += 1;
+                break;
         }
 
         if (spaceBefore) Append(" ");

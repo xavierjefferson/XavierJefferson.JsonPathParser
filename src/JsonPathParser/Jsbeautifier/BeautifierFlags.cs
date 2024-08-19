@@ -28,9 +28,9 @@ namespace XavierJefferson.JsonPathParser.Jsbeautifier;
 
 public class BeautifierFlags
 {
-    public BeautifierFlags(string mode)
+    public BeautifierFlags(FlagModeEnum mode)
     {
-        PreviousMode = "BLOCK";
+        PreviousMode = FlagModeEnum.Block;
         Mode = mode;
         VarLine = false;
         VarLineTainted = false;
@@ -45,9 +45,9 @@ public class BeautifierFlags
         TernaryDepth = 0;
     }
 
-    public string PreviousMode { get; set; }
+    public FlagModeEnum PreviousMode { get; set; }
 
-    public string Mode { get; set; }
+    public FlagModeEnum Mode { get; set; }
 
     public bool VarLine { get; set; }
 

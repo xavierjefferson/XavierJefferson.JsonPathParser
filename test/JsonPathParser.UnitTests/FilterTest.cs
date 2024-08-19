@@ -37,9 +37,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void int_eq_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("int-key").Eq(1))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Eq(jsonProvider, 1))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("int-key").Eq(666))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Eq(jsonProvider, 666))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -47,9 +48,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void int_eq_string_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("int-key").Eq("1"))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Eq(jsonProvider, "1"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("int-key").Eq("666"))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Eq(jsonProvider, "666"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
 
 
@@ -66,9 +68,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void long_eq_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("long-key").Eq(3000000000L))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "long-key").Eq(jsonProvider, 3000000000L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("long-key").Eq(666L))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "long-key").Eq(jsonProvider, 666L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -76,11 +79,12 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void double_eq_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("double-key").Eq(10.1D))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "double-key").Eq(jsonProvider, 10.1D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("double-key").Eq(10.10D))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "double-key").Eq(jsonProvider, 10.10D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("double-key").Eq(10.11D))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "double-key").Eq(jsonProvider, 10.11D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -88,9 +92,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void string_eq_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("string-key").Eq("string"))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Eq(jsonProvider, "string"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-key").Eq("666"))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").Eq(jsonProvider, "666"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -98,9 +103,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void boolean_eq_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("bool-key").Eq(true))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "bool-key").Eq(jsonProvider, true))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("bool-key").Eq(false))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "bool-key").Eq(jsonProvider, false))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -108,11 +114,12 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void null_eq_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("null-key").Eq(null))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "null-key").Eq(jsonProvider, null))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("null-key").Eq("666"))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "null-key").Eq(jsonProvider, "666"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-key").Eq(null))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").Eq(jsonProvider, null))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -120,13 +127,14 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void arr_eq_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("arr-empty").Eq("[]"))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "arr-empty").Eq(jsonProvider, "[]"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("int-arr").Eq("[0,1,2,3,4]"))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-arr").Eq(jsonProvider, "[0,1,2,3,4]"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("int-arr").Eq("[0,1,2,3]"))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-arr").Eq(jsonProvider, "[0,1,2,3]"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("int-arr").Eq("[0,1,2,3,4,5]"))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-arr").Eq(jsonProvider, "[0,1,2,3,4,5]"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -139,9 +147,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void int_ne_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("int-key").Ne(1))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Ne(jsonProvider, 1))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("int-key").Ne(666))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Ne(jsonProvider, 666))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -149,9 +158,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void long_ne_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("long-key").Ne(3000000000L))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "long-key").Ne(jsonProvider, 3000000000L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("long-key").Ne(666L))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "long-key").Ne(jsonProvider, 666L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -159,11 +169,12 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void double_ne_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("double-key").Ne(10.1D))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "double-key").Ne(jsonProvider, 10.1D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("double-key").Ne(10.10D))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "double-key").Ne(jsonProvider, 10.10D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("double-key").Ne(10.11D))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "double-key").Ne(jsonProvider, 10.11D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -171,9 +182,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void string_ne_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("string-key").Ne("string"))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").Ne(jsonProvider, "string"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("string-key").Ne("666"))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Ne(jsonProvider, "666"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -181,9 +193,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void boolean_ne_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("bool-key").Ne(true))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "bool-key").Ne(jsonProvider, true))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("bool-key").Ne(false))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "bool-key").Ne(jsonProvider, false))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -191,11 +204,12 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void null_ne_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("null-key").Ne(null))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "null-key").Ne(jsonProvider, null))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("null-key").Ne("666"))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "null-key").Ne(jsonProvider, "666"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("string-key").Ne(null))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Ne(jsonProvider, null))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -208,9 +222,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void int_lt_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("int-key").Lt(10))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Lt(jsonProvider, 10))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("int-key").Lt(0))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Lt(jsonProvider, 0))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -218,9 +233,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void long_lt_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("long-key").Lt(4000000000L))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "long-key").Lt(jsonProvider, 4000000000L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("long-key").Lt(666L))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "long-key").Lt(jsonProvider, 666L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -228,9 +244,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void double_lt_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("double-key").Lt(100.1D))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "double-key").Lt(jsonProvider, 100.1D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("double-key").Lt(1.1D))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "double-key").Lt(jsonProvider, 1.1D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -238,9 +255,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void string_lt_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("char-key").Lt("x"))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "char-key").Lt(jsonProvider, "x"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("char-key").Lt("a"))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "char-key").Lt(jsonProvider, "a"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -253,11 +271,12 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void int_lte_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("int-key").Lte(10))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Lte(jsonProvider, 10))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("int-key").Lte(1))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Lte(jsonProvider, 1))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("int-key").Lte(0))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Lte(jsonProvider, 0))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -265,11 +284,12 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void long_lte_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("long-key").Lte(4000000000L))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "long-key").Lte(jsonProvider, 4000000000L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("long-key").Lte(3000000000L))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "long-key").Lte(jsonProvider, 3000000000L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("long-key").Lte(666L))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "long-key").Lte(jsonProvider, 666L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -277,11 +297,12 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void double_lte_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("double-key").Lte(100.1D))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "double-key").Lte(jsonProvider, 100.1D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("double-key").Lte(10.1D))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "double-key").Lte(jsonProvider, 10.1D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("double-key").Lte(1.1D))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "double-key").Lte(jsonProvider, 1.1D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -294,9 +315,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void int_gt_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("int-key").Gt(10))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Gt(jsonProvider, 10))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("int-key").Gt(0))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Gt(jsonProvider, 0))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -304,9 +326,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void long_gt_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("long-key").Gt(4000000000L))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "long-key").Gt(jsonProvider, 4000000000L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("long-key").Gt(666L))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "long-key").Gt(jsonProvider, 666L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -314,9 +337,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void double_gt_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("double-key").Gt(100.1D))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "double-key").Gt(jsonProvider, 100.1D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("double-key").Gt(1.1D))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "double-key").Gt(jsonProvider, 1.1D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -324,9 +348,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void string_gt_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("char-key").Gt("x"))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "char-key").Gt(jsonProvider, "x"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("char-key").Gt("a"))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "char-key").Gt(jsonProvider, "a"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -339,11 +364,12 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void int_gte_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("int-key").Gte(10))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Gte(jsonProvider, 10))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("int-key").Gte(1))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Gte(jsonProvider, 1))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("int-key").Gte(0))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Gte(jsonProvider, 0))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -351,11 +377,12 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void long_gte_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("long-key").Gte(4000000000L))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "long-key").Gte(jsonProvider, 4000000000L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("long-key").Gte(3000000000L))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "long-key").Gte(jsonProvider, 3000000000L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("long-key").Gte(666L))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "long-key").Gte(jsonProvider, 666L))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -363,11 +390,12 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void double_gte_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("double-key").Gte(100.1D))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "double-key").Gte(jsonProvider, 100.1D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("double-key").Gte(10.1D))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "double-key").Gte(jsonProvider, 10.1D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("double-key").Gte(1.1D))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "double-key").Gte(jsonProvider, 1.1D))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -380,13 +408,14 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void string_regex_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("string-key").Regex(new Regex("^string$")))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Regex(jsonProvider, new Regex("^string$")))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-key").Regex(new Regex("^tring$")))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").Regex(jsonProvider, new Regex("^tring$")))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("null-key").Regex(new Regex("^string$")))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "null-key").Regex(jsonProvider, new Regex("^string$")))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("int-key").Regex(new Regex("^string$")))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Regex(jsonProvider, new Regex("^string$")))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -394,9 +423,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void list_regex_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("string-arr").Regex(new Regex("^d$")))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-arr").Regex(jsonProvider, new Regex("^d$")))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-arr").Regex(new Regex("^q$")))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-arr").Regex(jsonProvider, new Regex("^q$")))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -404,7 +434,8 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void obj_regex_doesnt_break(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("obj").Regex(new Regex("^foo$")))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "obj").Regex(jsonProvider, new Regex("^foo$")))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -440,15 +471,16 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void string_in_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("string-key").In("a", null, "string"))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").In(jsonProvider, "a", null, "string"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-key").In("a", null))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").In(jsonProvider, "a", null))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("null-key").In("a", null))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "null-key").In(jsonProvider, "a", null))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("null-key").In("a", "b"))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "null-key").In(jsonProvider, "a", "b"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-arr").In("a"))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-arr").In(jsonProvider, "a"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -461,15 +493,16 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void string_nin_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("string-key").Nin("a", null, "string"))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").Nin(jsonProvider, "a", null, "string"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("string-key").Nin("a", null))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Nin(jsonProvider, "a", null))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("null-key").Nin("a", null))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "null-key").Nin(jsonProvider, "a", null))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("null-key").Nin("a", "b"))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "null-key").Nin(jsonProvider, "a", "b"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("string-arr").Nin("a"))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-arr").Nin(jsonProvider, "a"))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -482,9 +515,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void int_all_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("int-arr").All(new List<object?> { 0, 1 }))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-arr").All(jsonProvider, new List<object?> { 0, 1 }))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("int-arr").All(new List<object?> { 0, 7 }))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-arr").All(jsonProvider, new List<object?> { 0, 7 }))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -492,9 +526,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void string_all_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("string-arr").All(new List<object?> { "a", "b" }))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-arr").All(jsonProvider, new List<object?> { "a", "b" }))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-arr").All(new List<object?> { "a", "x" }))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-arr").All(jsonProvider, new List<object?> { "a", "x" }))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -502,7 +537,8 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void not_array_all_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("string-key").All(new List<object?> { "a", "b" }))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").All(jsonProvider, new List<object?> { "a", "b" }))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -515,9 +551,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void array_size_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("string-arr").Size(5))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-arr").Size(jsonProvider, 5))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-arr").Size(7))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-arr").Size(jsonProvider, 7))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -525,9 +562,10 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void string_size_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("string-key").Size(6))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Size(jsonProvider, 6))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-key").Size(7))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").Size(jsonProvider, 7))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -535,7 +573,8 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void other_size_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("int-key").Size(6))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Size(jsonProvider, 6))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -543,7 +582,8 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void null_size_evals(IProviderTypeTestCase testCase)
     {
-        Assert.False(Filter.Create(Criteria.Where("null-key").Size(6))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "null-key").Size(jsonProvider, 6))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -556,17 +596,18 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void array_subsetof_evals(IProviderTypeTestCase testCase)
     {
+        var jsonProvider = testCase.Configuration.JsonProvider;
         // list is a superset
         var list = new ObjectList("a", "b", "c", "d", "e", "f", "g");
-        Assert.True(Filter.Create(Criteria.Where("string-arr").SubsetOf(list))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-arr").SubsetOf((IJsonProvider)jsonProvider, list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
         // list is exactly the same set (but in a different order)
         list = new ObjectList("e", "d", "b", "c", "a");
-        Assert.True(Filter.Create(Criteria.Where("string-arr").SubsetOf(list))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-arr").SubsetOf((IJsonProvider)jsonProvider, list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
         // list is missing one element
         list = new ObjectList("a", "b", "c", "d");
-        Assert.False(Filter.Create(Criteria.Where("string-arr").SubsetOf(list))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-arr").SubsetOf((IJsonProvider)jsonProvider, list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -579,14 +620,15 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void array_anyof_evals(IProviderTypeTestCase testCase)
     {
+        var jsonProvider = testCase.Configuration.JsonProvider;
         var list = new ObjectList("a", "z");
-        Assert.True(Filter.Create(Criteria.Where("string-arr").AnyOf(list))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-arr").AnyOf((IJsonProvider)jsonProvider, list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
         list = new ObjectList("z", "b", "a");
-        Assert.True(Filter.Create(Criteria.Where("string-arr").AnyOf(list))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-arr").AnyOf((IJsonProvider)jsonProvider, list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
         list = new ObjectList("x", "y", "z");
-        Assert.False(Filter.Create(Criteria.Where("string-arr").AnyOf(list))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-arr").AnyOf((IJsonProvider)jsonProvider, list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -595,18 +637,18 @@ public class FilterTest : TestUtils
     // NONEOF
     //
     //----------------------------------------------------------------------------
-    [Theory]
-    [ClassData(typeof(ProviderTypeTestCases))]
+    [Theory] [ClassData(typeof(ProviderTypeTestCases))]
     public void array_noneof_evals(IProviderTypeTestCase testCase)
     {
+        var jsonProvider = testCase.Configuration.JsonProvider;
         var list = new ObjectList("a", "z");
-        Assert.False(Filter.Create(Criteria.Where("string-arr").NoneOf(list))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-arr").NoneOf((IJsonProvider)jsonProvider, list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
         list = new ObjectList("z", "b", "a");
-        Assert.False(Filter.Create(Criteria.Where("string-arr").NoneOf(list))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-arr").NoneOf((IJsonProvider)jsonProvider, list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
         list = new ObjectList("x", "y", "z");
-        Assert.True(Filter.Create(Criteria.Where("string-arr").NoneOf(list))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-arr").NoneOf((IJsonProvider)jsonProvider, list))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -619,14 +661,15 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void exists_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("string-key").Exists(true))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Exists(jsonProvider, true))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-key").Exists(false))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").Exists(jsonProvider, false))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
 
-        Assert.False(Filter.Create(Criteria.Where("missing-key").Exists(true))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "missing-key").Exists(jsonProvider, true))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.True(Filter.Create(Criteria.Where("missing-key").Exists(false))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "missing-key").Exists(jsonProvider, false))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -645,8 +688,9 @@ public class FilterTest : TestUtils
     [Theory]
     public void type_evals(bool expectedValue, string where, Type type)
     {
-        var testCase = ProviderTypeTestCases.Cases.First().Value;
-        var tmp = Filter.Create(Criteria.Where(where).Type(type))
+        var testCase = ProviderTypeTestCases.Cases.First().Value; 
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        var tmp = Filter.Create(Criteria.Where(jsonProvider, where).Type(type))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase));
         Assert.Equal(expectedValue, tmp);
     }
@@ -660,17 +704,18 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void not_empty_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("string-key").Empty(false))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Empty(false))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-key-empty").Empty(false))
-            .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-
-        Assert.True(Filter.Create(Criteria.Where("int-arr").Empty(false))
-            .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("arr-empty").Empty(false))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key-empty").Empty(false))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
 
-        Assert.False(Filter.Create(Criteria.Where("null-key").Empty(false))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-arr").Empty(false))
+            .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "arr-empty").Empty(false))
+            .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
+
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "null-key").Empty(false))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -683,29 +728,30 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void empty_evals(IProviderTypeTestCase testCase)
     {
-        Assert.True(Filter.Create(Criteria.Where("string-key").Empty(false))
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Empty(false))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-key").Empty(true))
-            .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-
-        Assert.True(Filter.Create(Criteria.Where("string-key-empty").Empty(true))
-            .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("string-key-empty").Empty(false))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").Empty(true))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
 
-        Assert.True(Filter.Create(Criteria.Where("int-arr").Empty(false))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key-empty").Empty(true))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("int-arr").Empty(true))
-            .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-
-        Assert.True(Filter.Create(Criteria.Where("arr-empty").Empty(true))
-            .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("arr-empty").Empty(false))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key-empty").Empty(false))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
 
-        Assert.False(Filter.Create(Criteria.Where("null-key").Empty(true))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-arr").Empty(false))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
-        Assert.False(Filter.Create(Criteria.Where("null-key").Empty(false))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-arr").Empty(true))
+            .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
+
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "arr-empty").Empty(true))
+            .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "arr-empty").Empty(false))
+            .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
+
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "null-key").Empty(true))
+            .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "null-key").Empty(false))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -720,6 +766,7 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void matches_evals(IProviderTypeTestCase testCase)
     {
+        var jsonProvider = testCase.Configuration.JsonProvider;
         var mockPredicate = new Mock<IPredicate>();
         mockPredicate.Setup(i => i.Apply(It.IsAny<IPredicateContext>())).Returns(
             (IPredicateContext context) =>
@@ -729,8 +776,8 @@ public class FilterTest : TestUtils
 
                 return i == 1;
             });
-        Assert.True(Filter.Create(Criteria.Where("string-key").Eq("string")
-                .And("$").Matches(mockPredicate.Object))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Eq(jsonProvider, "string")
+                .And(jsonProvider, "$").Matches(mockPredicate.Object))
             .Apply(CreatePredicateContext(GetJson(testCase), testCase)));
     }
 
@@ -743,15 +790,16 @@ public class FilterTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void or_and_filters_evaluates(IProviderTypeTestCase testCase)
     {
+        var jsonProvider = testCase.Configuration.JsonProvider;
         var model = new Dictionary<string, object?> { { "foo", true }, { "bar", false } };
 
 
-        var isFoo = Filter.Create(Criteria.Where("foo").Is(true));
-        var isBar = Filter.Create(Criteria.Where("bar").Is(true));
+        var isFoo = Filter.Create(Criteria.Where(jsonProvider, "foo").Is(jsonProvider, true));
+        var isBar = Filter.Create(Criteria.Where(jsonProvider, "bar").Is(jsonProvider, true));
 
 
-        var fooOrBar = Filter.Create(Criteria.Where("foo").Is(true)).Or(Criteria.Where("bar").Is(true));
-        var fooAndBar = Filter.Create(Criteria.Where("foo").Is(true)).And(Criteria.Where("bar").Is(true));
+        var fooOrBar = Filter.Create(Criteria.Where(jsonProvider, "foo").Is(jsonProvider, true)).Or(Criteria.Where(jsonProvider, "bar").Is(jsonProvider, true));
+        var fooAndBar = Filter.Create(Criteria.Where(jsonProvider, "foo").Is(jsonProvider, true)).And(Criteria.Where(jsonProvider, "bar").Is(jsonProvider, true));
 
         Assert.True(isFoo.Or(isBar).Apply(CreatePredicateContext(model, testCase)));
         Assert.False(isFoo.And(isBar).Apply(CreatePredicateContext(model, testCase)));

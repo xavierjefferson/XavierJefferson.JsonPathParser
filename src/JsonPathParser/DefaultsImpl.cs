@@ -13,11 +13,11 @@ public class DefaultsImpl : IDefaults
     }
 
 
-    public IJsonProvider JsonProvider => new NewtonsoftJsonProvider();
+    public IJsonProvider JsonProvider => new SystemTextJsonProvider();
 
 
     public HashSet<Option> Options => new();
 
 
-    public IMappingProvider MappingProvider { get; } = new NewtonsoftJsonMappingProvider();
+    public IMappingProvider MappingProvider { get; } = new SystemTextJsonMappingProvider();
 }

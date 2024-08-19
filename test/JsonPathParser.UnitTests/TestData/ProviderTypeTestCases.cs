@@ -1,5 +1,5 @@
 ﻿using XavierJefferson.JsonPathParser.Mapper;
-using XavierJefferson.JsonPathParser.Provider;
+using XavierJefferson.JsonPathParser.Provider; 
 using XavierJefferson.JsonPathParser.UnitTests.Enums;
 
 namespace XavierJefferson.JsonPathParser.UnitTests.TestData;
@@ -9,7 +9,9 @@ internal class ProviderTypeTestCases : TheoryData<ProviderTypeTestCase>
     public static Dictionary<ProviderTypeEnum, Configuration> RootData = new()
     {
         {
-            ProviderTypeEnum.NewtonsoftJson, Configuration.DefaultConfiguration()
+            ProviderTypeEnum.NewtonsoftJson,
+            Configuration.DefaultConfiguration().SetJsonProvider<NewtonsoftJsonProvider>()
+                .SetMappingProvider<NewtonsoftJsonMappingProvider>()
         },
         {
             ProviderTypeEnum.SystemTextJson, Configuration.DefaultConfiguration()

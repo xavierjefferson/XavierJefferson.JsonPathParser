@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.Path;
@@ -74,10 +73,10 @@ public abstract class ValueNode
         throw new InvalidPathException($"Expected {nameof(DateTimeOffsetNode)}");
     }
 
-    private static bool TryCreatePath(object? o, out IPath? path)
+    private static bool TryCreatePath(object? instance, out IPath? path)
     {
-        path = null;
-        if (o != null && o is string stringValue)
+        path = default(IPath);
+        if (instance is string stringValue)
         {
             var str = stringValue.Trim();
             if (str.Length <= 0) return false;
@@ -97,9 +96,10 @@ public abstract class ValueNode
         return false;
     }
 
-    private static bool IsJson(object? o)
+    static bool TryCreateJsonNode(object? instance, IJsonProvider jsonProvider, out JsonNode? jsonNode)
     {
-        if (o != null && o is string stringValue)
+        jsonNode = default(JsonNode);
+        if (instance is string stringValue)
         {
             var str = stringValue.Trim();
             if (str.Length <= 1) return false;
@@ -108,10 +108,11 @@ public abstract class ValueNode
             if ((c0 == '[' && c1 == ']') || (c0 == '{' && c1 == '}'))
                 try
                 {
-                    JsonConvert.DeserializeObject(str);
+                    var tmp = jsonProvider.Parse(str);
+                    jsonNode = new JsonNode(tmp);
                     return true;
                 }
-                catch (Exception e)
+                catch
                 {
                     return false;
                 }
@@ -119,6 +120,28 @@ public abstract class ValueNode
 
         return false;
     }
+    //private static bool IsJson(object? o)
+    //{
+    //    if (o != null && o is string stringValue)
+    //    {
+    //        var str = stringValue.Trim();
+    //        if (str.Length <= 1) return false;
+    //        var c0 = str.First();
+    //        var c1 = str.Last();
+    //        if ((c0 == '[' && c1 == ']') || (c0 == '{' && c1 == '}'))
+    //            try
+    //            {
+    //                System.Text.Json.JsonSerializer.Deserialize<object>(str);
+    //                return true;
+    //            }
+    //            catch 
+    //            {
+    //                return false;
+    //            }
+    //    }
+
+    //    return false;
+    //}
 
     public static bool IsNumeric(object? o)
     {
@@ -130,27 +153,12 @@ public abstract class ValueNode
     // Factory methods
     //
     //----------------------------------------------------
-    public static ValueNode ToValueNode(object? o)
+    public static ValueNode ToValueNode(IJsonProvider jsonProvider, object? o)
     {
         if (o == null) return ValueNodeConstants.NullNode;
         if (o is ValueNode) return (ValueNode)o;
-        if (o is ICollection<object?> z) return new ValueListNode(z);
+        if (o is ICollection<object?> z) return new ValueListNode(z, jsonProvider);
         if (o is Type) return CreateClassNode((Type)o);
-
-        if (TryCreatePath(o, out var newPath)) return new PathNode(newPath);
-
-        if (IsJson(o)) return CreateJsonNode(o.ToString());
-
-        if (o is string stringValue) return CreateStringNode(stringValue, true);
-
-        if (o is char) return CreateStringNode(o.ToString(), false);
-
-        if (IsNumeric(o))
-        {
-            if (o is double nn) return new NumberNode(nn);
-            return new NumberNode(Convert.ToDouble(o));
-        }
-
         if (o is bool booleanValue)
             return CreateBooleanNode(booleanValue);
         if (o is Regex regexValue)
@@ -158,6 +166,24 @@ public abstract class ValueNode
         if (o is DateTimeOffset dx)
             return CreateDateTimeOffsetNode(
                 dx); //workaround for issue: https://github.com/json-path/JsonPath/issues/613
+        if (o is char charInstance) return CreateStringNode(charInstance.ToString(), false);
+
+        if (TryCreatePath(o, out var newPath)) return new PathNode(newPath);
+
+        if (TryCreateJsonNode(o, jsonProvider, out var jsonNode))
+        {
+            return jsonNode;
+        }
+
+        if (o is string stringValue) return CreateStringNode(stringValue, true);
+
+ 
+        if (IsNumeric(o))
+        {
+            if (o is double nn) return new NumberNode(nn);
+            return new NumberNode(Convert.ToDouble(o));
+        }
+
         throw new JsonPathException("Could not determine value type");
     }
 

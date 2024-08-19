@@ -4,11 +4,13 @@ namespace XavierJefferson.JsonPathParser.UnitTests.Internal;
 
 public class JsonContextTest : TestUtils
 {
-    [Fact]
-    public void cached_path_with_predicates()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void cached_path_with_predicates(IProviderTypeTestCase testCase)
     {
-        var feq = Filter.Create(Criteria.Where("category").Eq("reference"));
-        var fne = Filter.Create(Criteria.Where("category").Ne("reference"));
+        var jsonProvider = testCase.Configuration.JsonProvider;
+        var feq = Filter.Create(Criteria.Where(jsonProvider, "category").Eq(jsonProvider, "reference"));
+        var fne = Filter.Create(Criteria.Where(jsonProvider, "category").Ne(jsonProvider, "reference"));
 
         var jsonDoc = JsonPath.Parse(JsonTestData.JsonDocument);
 

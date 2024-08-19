@@ -49,7 +49,7 @@ public class JsonNode : TypedValueNode<object?>
     {
         if (!IsArray(context))
             return ValueNodeConstants.Undefined;
-        return new ValueListNode(Parse(context) as ICollection<object?>);
+        return new ValueListNode(Parse(context) as ICollection<object?>, context.Configuration.JsonProvider);
     }
 
     public object? Parse(IPredicateContext context)
@@ -110,8 +110,8 @@ public class JsonNode : TypedValueNode<object?>
                 if (leftList.Count != rightList.Count) return false;
                 for (var i = 0; i < leftList.Count; i++)
                 {                   
-                    var left = leftList[i] as ValueNode ?? ToValueNode(leftList[i]);
-                    var right = rightList[i] as ValueNode ?? ToValueNode(rightList[i]);
+                    var left = leftList[i] as ValueNode ?? ToValueNode(context.Configuration.JsonProvider, leftList[i]);
+                    var right = rightList[i] as ValueNode ?? ToValueNode(context.Configuration.JsonProvider, rightList[i]);
 
                     if (!left.Equals(right)) return false;
                 }

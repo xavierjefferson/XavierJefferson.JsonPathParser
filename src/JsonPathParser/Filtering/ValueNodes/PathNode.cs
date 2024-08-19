@@ -105,8 +105,8 @@ public class PathNode : TypedValueNode<IPath>
             if (res.TryConvertDouble(out var test))
                 return CreateNumberNode(test);
             if (IsNumeric(res)) return CreateNumberNode(res.ToString());
-            if (res is string) return CreateStringNode(res.ToString(), false);
-            if (res is bool) return CreateBooleanNode(res.ToString());
+            if (res is string stringInstance) return CreateStringNode(stringInstance, false);
+            if (res is bool boolInstance) return CreateBooleanNode(boolInstance);
             if (res is DateTimeOffset d1)
                 return CreateDateTimeOffsetNode(
                     d1); //workaround for issue: https://github.com/json-path/JsonPath/issues/613

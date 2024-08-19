@@ -34,7 +34,7 @@ public class ComplianceTest : TestUtils
 
         var res = JsonPath.Read(json, "$[-1:]").AsList();
 
-        Assert.True(res[0] == null);
+        Assert.Null(res[0]);
     }
 
     [Fact]

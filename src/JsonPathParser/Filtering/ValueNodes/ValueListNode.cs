@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
+using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
@@ -7,9 +8,9 @@ public class ValueListNode : TypedValueNode<ICollection<ValueNode>>, IEnumerable
 {
     private readonly SerializingList<ValueNode> _nodes = new();
 
-    public ValueListNode(ICollection<object?>? values)
+    public ValueListNode(ICollection<object?>? values, IJsonProvider jsonProvider)
     {
-        foreach (var value in values) _nodes.Add(ToValueNode(value));
+        foreach (var value in values) _nodes.Add(ToValueNode(jsonProvider, value));
     }
 
     public override ICollection<ValueNode> Value => new ReadOnlyCollection<ValueNode>(_nodes);

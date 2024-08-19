@@ -344,14 +344,16 @@ public class IssuesTest : TestUtils
         Assert.Equal("atext2", result[0]["a"]);
     }
 
-    [Fact]
-    public void issue_29_b()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void issue_29_b(IProviderTypeTestCase testCase)
     {
+        var jsonProvider = testCase.Configuration.JsonProvider;
         var json =
             "{\"list\": [ { \"a\":\"atext\", \"b\":{ \"b-a\":\"batext\", \"b-b\":\"bbtext\" } }, { \"a\":\"atext2\", \"b\":{ \"b-a\":\"batext2\", \"b-b\":\"bbtext2\" } } ] }";
-        var result = JsonPath.Read(json, "$.list[?]", Filter.Create(Criteria.Where("b.b-a").Eq("batext2"))).AsList();
+        var result = JsonPath.Read(json, "$.list[?]", Filter.Create(Criteria.Where(jsonProvider, "b.b-a").Eq(jsonProvider, "batext2"))).AsList();
 
-        Assert.True(result.Count() == 1);
+        Assert.Single(result);
     }
 
     [Fact]
@@ -562,9 +564,11 @@ public class IssuesTest : TestUtils
     }
 
     //http://stackoverflow.com/questions/28596324/jsonpath-filtering-api
-    [Fact]
-    public void stack_overflow_question_1()
+    [Theory]
+    [ClassData(typeof(ProviderTypeTestCases))]
+    public void stack_overflow_question_1(IProviderTypeTestCase testCase)
     {
+        var jsonProvider = testCase.Configuration.JsonProvider;
         var json = "{\n" +
                    "\"store\": {\n" +
                    "    \"book\": [\n" +
@@ -599,7 +603,7 @@ public class IssuesTest : TestUtils
                    "}";
 
 
-        var filter = Filter.Create(Criteria.Where("authors[*].lastName").Contains("Waugh"));
+        var filter = Filter.Create(Criteria.Where(jsonProvider, "authors[*].lastName").Contains(jsonProvider, "Waugh"));
 
         var read = JsonPath.Parse(json).Read("$.store.book[?]", filter);
     }
@@ -712,6 +716,7 @@ public class IssuesTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void issue_129(IProviderTypeTestCase testCase)
     {
+        var jsonProvider = testCase.Configuration.JsonProvider;
         var match = new Dictionary<string, object?>();
         match["a"] = 1;
         match["b"] = 2;
@@ -720,7 +725,7 @@ public class IssuesTest : TestUtils
         noMatch["a"] = -1;
         noMatch["b"] = -2;
 
-        var orig = Filter.Create(Criteria.Where("a").Eq(1).And("b").Eq(2));
+        var orig = Filter.Create(Criteria.Where(jsonProvider, "a").Eq(jsonProvider, 1).And(jsonProvider, "b").Eq(jsonProvider, 2));
 
         var filterAsString = orig.ToString();
 

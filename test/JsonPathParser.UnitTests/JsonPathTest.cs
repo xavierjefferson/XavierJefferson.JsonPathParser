@@ -245,7 +245,7 @@ public class JsonPathTest : TestUtils
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[0,1].author"), "Nigel Rees",
             "Evelyn Waugh");
-        Assert.True(JsonPath.Read<List<object?>>(Document, "$.store.book[0,1].author").Count() == 2);
+        Assert.Equal(2, JsonPath.Read<List<object?>>(Document, "$.store.book[0,1].author").Count());
     }
 
     [Fact]
@@ -253,7 +253,7 @@ public class JsonPathTest : TestUtils
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[:2].author"), "Nigel Rees",
             "Evelyn Waugh");
-        Assert.True(JsonPath.Read<List<object?>>(Document, "$.store.book[:2].author").Count() == 2);
+        Assert.Equal(2, JsonPath.Read<List<object?>>(Document, "$.store.book[:2].author").Count());
     }
 
 
@@ -262,8 +262,8 @@ public class JsonPathTest : TestUtils
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[?(@.isbn)].isbn"), "0-553-21311-3",
             "0-395-19395-8");
-        Assert.True(JsonPath.Read<List<object?>>(Document, "$.store.book[?(@.isbn)].isbn").Count() == 2);
-        Assert.True(JsonPath.Read<List<object?>>(Document, "$.store.book[?(@['isbn'])].isbn").Count() == 2);
+        Assert.Equal(2, JsonPath.Read<List<object?>>(Document, "$.store.book[?(@.isbn)].isbn").Count());
+        Assert.Equal(2, JsonPath.Read<List<object?>>(Document, "$.store.book[?(@['isbn'])].isbn").Count());
     }
 
     [Fact]
@@ -329,17 +329,6 @@ public class JsonPathTest : TestUtils
     {
         foreach (var path in new[] { "$.", "$.results[?" })
             Assert.Throws<InvalidPathException>(() => { JsonPath.Compile(path); });
-        //try
-        //{
-        //}
-        //catch (InvalidPathException e)
-        //{
-        //    // that's expected
-        //}
-        //catch (Exception e)
-        //{
-        //    fail("Expected an InvalidPathException trying to compile '" + path + "', but got a " + e.getClass().getName());
-        //}
     }
 
     [Fact]
