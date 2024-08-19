@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using XavierJefferson.JsonPathParser.Exceptions;
-using XavierJefferson.JsonPathParser.Extensions;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.Logging;
 using XavierJefferson.JsonPathParser.Path;
@@ -102,17 +101,14 @@ public class PathNode : TypedValueNode<IPath>
             }
 
             res = context.Configuration.JsonProvider.Unwrap(res);
-            if (res.TryConvertDouble(out var test))
-                return CreateNumberNode(test);
-            if (IsNumeric(res)) return CreateNumberNode(res.ToString());
-            if (res is string stringInstance) return CreateStringNode(stringInstance, false);
-            if (res is bool boolInstance) return CreateBooleanNode(boolInstance);
-            if (res is DateTimeOffset d1)
-                return CreateDateTimeOffsetNode(
-                    d1); //workaround for issue: https://github.com/json-path/JsonPath/issues/613
+
+            if (TryQuickCastNode(res, false, null, out var valueNode)) return valueNode;
+
+
             if (res == null) return ValueNodeConstants.NullNode;
             if (context.Configuration.JsonProvider.IsArray(res))
-                return CreateJsonNode(context.Configuration.MappingProvider.Map(res, typeof(IList), context.Configuration));
+                return CreateJsonNode(
+                    context.Configuration.MappingProvider.Map(res, typeof(IList), context.Configuration));
             if (context.Configuration.JsonProvider.IsMap(res))
                 return CreateJsonNode(
                     context.Configuration.MappingProvider.Map(res, typeof(IDictionary), context.Configuration));

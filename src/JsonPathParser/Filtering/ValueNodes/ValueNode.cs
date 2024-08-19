@@ -75,7 +75,7 @@ public abstract class ValueNode
 
     private static bool TryCreatePath(object? instance, out IPath? path)
     {
-        path = default(IPath);
+        path = default;
         if (instance is string stringValue)
         {
             var str = stringValue.Trim();
@@ -96,9 +96,9 @@ public abstract class ValueNode
         return false;
     }
 
-    static bool TryCreateJsonNode(object? instance, IJsonProvider jsonProvider, out JsonNode? jsonNode)
+    private static bool TryCreateJsonNode(object? instance, IJsonProvider jsonProvider, out JsonNode? jsonNode)
     {
-        jsonNode = default(JsonNode);
+        jsonNode = default;
         if (instance is string stringValue)
         {
             var str = stringValue.Trim();
@@ -120,32 +120,50 @@ public abstract class ValueNode
 
         return false;
     }
-    //private static bool IsJson(object? o)
-    //{
-    //    if (o != null && o is string stringValue)
-    //    {
-    //        var str = stringValue.Trim();
-    //        if (str.Length <= 1) return false;
-    //        var c0 = str.First();
-    //        var c1 = str.Last();
-    //        if ((c0 == '[' && c1 == ']') || (c0 == '{' && c1 == '}'))
-    //            try
-    //            {
-    //                System.Text.Json.JsonSerializer.Deserialize<object>(str);
-    //                return true;
-    //            }
-    //            catch 
-    //            {
-    //                return false;
-    //            }
-    //    }
 
-    //    return false;
-    //}
-
-    public static bool IsNumeric(object? o)
+    protected static bool TryQuickCastNode(object? instance, bool willEscapeStringInstance,
+        Func<string, ValueNode?>? stringHandler, out ValueNode? valueNode)
     {
-        return o is int || o is byte || o is float || o is decimal || o is double || o is long;
+        valueNode = default;
+        switch (instance)
+        {
+            case bool booleanInstance:
+                valueNode = CreateBooleanNode(booleanInstance);
+                return true;
+            case Regex regexInstance:
+                valueNode = CreatePatternNode(regexInstance);
+                return true;
+            case DateTimeOffset dateTimeOffsetInstance:
+                //workaround for issue: https://github.com/json-path/JsonPath/issues/613
+                valueNode = CreateDateTimeOffsetNode(dateTimeOffsetInstance);
+                return true;
+            case char charInstance:
+                valueNode = CreateStringNode(charInstance.ToString(), false);
+                return true;
+            case double nn:
+                valueNode = new NumberNode(nn);
+                return true;
+            case int:
+            case byte:
+            case float:
+            case decimal:
+            case long:
+                valueNode = new NumberNode(Convert.ToDouble(instance));
+                return true;
+            case string stringInstance:
+            {
+                if (stringHandler != null)
+                {
+                    valueNode = stringHandler(stringInstance);
+                    if (valueNode != null) return true;
+                }
+
+                valueNode = CreateStringNode(stringInstance, willEscapeStringInstance);
+                return true;
+            }
+            default:
+                return false;
+        }
     }
 
     //----------------------------------------------------
@@ -155,34 +173,29 @@ public abstract class ValueNode
     //----------------------------------------------------
     public static ValueNode ToValueNode(IJsonProvider jsonProvider, object? o)
     {
-        if (o == null) return ValueNodeConstants.NullNode;
-        if (o is ValueNode) return (ValueNode)o;
-        if (o is ICollection<object?> z) return new ValueListNode(z, jsonProvider);
-        if (o is Type) return CreateClassNode((Type)o);
-        if (o is bool booleanValue)
-            return CreateBooleanNode(booleanValue);
-        if (o is Regex regexValue)
-            return CreatePatternNode(regexValue);
-        if (o is DateTimeOffset dx)
-            return CreateDateTimeOffsetNode(
-                dx); //workaround for issue: https://github.com/json-path/JsonPath/issues/613
-        if (o is char charInstance) return CreateStringNode(charInstance.ToString(), false);
-
-        if (TryCreatePath(o, out var newPath)) return new PathNode(newPath);
-
-        if (TryCreateJsonNode(o, jsonProvider, out var jsonNode))
+        ValueNode StringHandler(string stringValue)
         {
-            return jsonNode;
+            if (TryCreatePath(stringValue, out var newPath)) return new PathNode(newPath);
+
+            if (TryCreateJsonNode(stringValue, jsonProvider, out var jsonNode)) return jsonNode;
+
+            return null;
         }
 
-        if (o is string stringValue) return CreateStringNode(stringValue, true);
-
- 
-        if (IsNumeric(o))
+        switch (o)
         {
-            if (o is double nn) return new NumberNode(nn);
-            return new NumberNode(Convert.ToDouble(o));
+            case null:
+                return ValueNodeConstants.NullNode;
+            case ValueNode valueNodeInstance:
+                return valueNodeInstance;
+            case ICollection<object?> objectCollectionInstance:
+                return new ValueListNode(objectCollectionInstance, jsonProvider);
+            case Type typeInstance:
+                return CreateClassNode(typeInstance);
         }
+
+
+        if (TryQuickCastNode(o, true, StringHandler, out var result)) return result;
 
         throw new JsonPathException("Could not determine value type");
     }
