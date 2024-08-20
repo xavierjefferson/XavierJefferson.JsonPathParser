@@ -9,7 +9,7 @@ namespace XavierJefferson.JsonPathParser.Function;
 /// </summary>
 public class Parameter
 {
-    private string _json;
+    public string Json { get;  set; }
 
     public Parameter()
     {
@@ -17,7 +17,7 @@ public class Parameter
 
     public Parameter(string json)
     {
-        _json = json;
+        Json = json;
         ParameterType = ParameterTypeEnum.Json;
     }
 
@@ -37,28 +37,13 @@ public class Parameter
         return LateBinding.Get();
     }
 
-    public string GetJson()
-    {
-        return _json;
-    }
-
-    public void SetJson(string json)
-    {
-        _json = json;
-    }
-
     /// <summary>
     ///     Translate the collection of parameters into a collection of values of type T.
     /// </summary>
-    /// <param name="type">      The type to translate the collection into.</param>
+    /// <typeparam name="T">The type to translate the collection into.</typeparam>
     /// <param name="context">      Context.</param>
     /// <param name="parameters">      ICollection of parameters.</param>
-
-
-
-    ///     ">      Type T returned as a List of T.</param>
-    ///     <returns>List of T either empty or containing contents.</returns>
-    ///     </summary>
+    /// <returns>List of T either empty or containing contents.</returns>
     public static IList<T> ToList<T>(IEvaluationContext context, IEnumerable<Parameter>? parameters)
     {
         var values = new List<T>();
@@ -72,7 +57,7 @@ public class Parameter
     ///     Either consume the object as an array and.Add each element to the collection, or alternatively add each element
     /// </summary>
     /// <typeparam name="T">
-    ///          the expected class type to consume, if null or not of this type the element is not
+    ///     the expected class type to consume, if null or not of this type the element is not
     ///     added to the array.
     /// </typeparam>
     /// <param name="context">      the JSON context to determine if this is an array or value.</param>
@@ -90,8 +75,8 @@ public class Parameter
         foreach (var o in toAdd.Where(i => i != null))
             if (o is T instance)
                 collection.Add(instance);
-            else if (o != null && expectedType == typeof(double) && o.TryConvertDouble(out var number))
+            else if (expectedType == typeof(double) && o.TryConvertDouble(out var number))
                 collection.Add((T)(object)number);
-            else if (o != null && expectedType == typeof(string)) collection.Add((T)(object)o.ToString());
+            else if (expectedType == typeof(string)) collection.Add((T)(object)o.ToString());
     }
 }

@@ -151,7 +151,8 @@ public class JsonPath
             if (optAsPathList || optAlwaysReturnList)
             {
                 if (optSuppressExceptions) return _path.IsDefinite() ? null : configuration.JsonProvider.CreateArray();
-                throw new JsonPathException("Options " + ConfigurationOptionEnum.AsPathList + " and " + ConfigurationOptionEnum.AlwaysReturnList +
+                throw new JsonPathException("Options " + ConfigurationOptionEnum.AsPathList + " and " +
+                                            ConfigurationOptionEnum.AlwaysReturnList +
                                             " are not allowed when using path functions!");
             }
 
@@ -325,7 +326,6 @@ public class JsonPath
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         var optSuppressExceptions = configuration.ContainsOption(ConfigurationOptionEnum.SuppressExceptions);
         foreach (var updateOperation in evaluationContext.UpdateOperations)
-        {
             try
             {
                 updateOperation.RenameKey(oldKeyName, newKeyName, configuration);
@@ -334,12 +334,8 @@ public class JsonPath
             {
                 // With option SUPPRESS_EXCEPTIONS,
                 // the PathNotFoundException should be ignored and the other updateOperation should be continued.
-                if (!optSuppressExceptions)
-                {
-                    throw;
-                }
+                if (!optSuppressExceptions) throw;
             }
-        }
 
         return ResultByConfiguration(jsonObject, configuration, evaluationContext);
     }

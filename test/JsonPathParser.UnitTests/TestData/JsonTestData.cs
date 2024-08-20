@@ -1,6 +1,3 @@
-using XavierJefferson.JsonPathParser.Filtering.ValueNodes;
-using XavierJefferson.JsonPathParser.Path;
-
 namespace XavierJefferson.JsonPathParser.UnitTests.TestData;
 
 public static class JsonTestData

@@ -46,10 +46,7 @@ public class JsonEntityPathFunctionTest : BaseFunctionTest
                                                "}";
 
 
-     
-
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestLengthOfTextArray(IProviderTypeTestCase testCase)
     {
@@ -59,7 +56,6 @@ public class JsonEntityPathFunctionTest : BaseFunctionTest
     }
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestLengthOfNumberArray(IProviderTypeTestCase testCase)
     {
@@ -70,7 +66,6 @@ public class JsonEntityPathFunctionTest : BaseFunctionTest
 
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestLengthOfStructure(IProviderTypeTestCase testCase)
     {
@@ -88,7 +83,6 @@ public class JsonEntityPathFunctionTest : BaseFunctionTest
      * Its completely contrived example, however, this test exercises functions within predicates.
      */
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestPredicateWithFunctionCallSingleMatch(IProviderTypeTestCase testCase)
     {
@@ -101,7 +95,6 @@ public class JsonEntityPathFunctionTest : BaseFunctionTest
     }
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestPredicateWithFunctionCallTwoMatches(IProviderTypeTestCase testCase)
     {

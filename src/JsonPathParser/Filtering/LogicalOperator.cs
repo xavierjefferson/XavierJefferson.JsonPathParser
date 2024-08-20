@@ -12,9 +12,6 @@ public class LogicalOperator
     {
         OperatorString = operatorString;
     }
-    //AND("&&"),
-    //NOT("!"),
-    //OR("||");
 
     public string OperatorString { get; }
 

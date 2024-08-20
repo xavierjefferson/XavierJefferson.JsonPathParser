@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using XavierJefferson.JsonPathParser.Filtering;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;
 
@@ -10,6 +9,6 @@ public class PatternFlagTest : TestUtils
     [ClassData(typeof(PatternFlagTestCases))]
     public void TestParseFlags(PatternFlagTestCase testCase)
     {
-        Assert.Equal(testCase.RegexOptions, PatternFlag.ParseFlags(testCase.Pattern));
+        Assert.Equal(testCase.RegexOptions, RegexFlag.ParseFlags(testCase.Pattern));
     }
 }

@@ -274,7 +274,8 @@ public class FilterParseTest
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.Equal("[?(@['a'] =~ /.*?/i)]",
-            Filter.Create(Criteria.Where(jsonProvider, "a").Regex(new Regex(".*?", RegexOptions.IgnoreCase))).ToString());
+            Filter.Create(Criteria.Where(jsonProvider, "a").Regex(new Regex(".*?", RegexOptions.IgnoreCase)))
+                .ToString());
     }
 
     [Theory]

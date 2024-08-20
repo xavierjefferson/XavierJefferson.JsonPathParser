@@ -5,10 +5,10 @@ namespace XavierJefferson.JsonPathParser.Interfaces;
 
 public interface IJsonProvider
 {
+    static readonly object Undefined = new();
     T Deserialize<T>(string obj);
     string Serialize(object? obj);
     object? Deserialize(string obj, Type type);
-    static readonly object Undefined = new();
 
     /// <summary>
     ///     Parse the given json string
@@ -63,7 +63,7 @@ public interface IJsonProvider
     int Length(object? obj);
 
     /// <summary>
-    ///     Converts given array to an <see cref="IEnumerable"/>
+    ///     Converts given array to an <see cref="IEnumerable" />
     /// </summary>
     /// <param name="obj">an array</param>
     /// <returns> an IEnumerable that iterates over the entries of an array</returns>

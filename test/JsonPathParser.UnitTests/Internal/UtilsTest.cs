@@ -5,8 +5,6 @@ namespace XavierJefferson.JsonPathParser.UnitTests.Internal;
 
 public class UtilsTest
 {
-   
-
     [Fact]
     public void TestEscape()
     {

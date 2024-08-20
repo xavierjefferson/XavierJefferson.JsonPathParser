@@ -313,7 +313,8 @@ public class PathCompiler
                     type = ParameterTypeEnum.Json;
                 else if
                     (IsPathContext(c))
-                    type = ParameterTypeEnum.Path; // read until we reach a terminating comma and we've reset grouping to zero
+                    type = ParameterTypeEnum
+                        .Path; // read until we reach a terminating comma and we've reset grouping to zero
             }
 
             switch (c)

@@ -32,6 +32,4 @@ public class AndFilter : Filter
     {
         return string.Join(" && ", _predicates.Select(i => i.ToUnenclosedString()));
     }
-
-
 }

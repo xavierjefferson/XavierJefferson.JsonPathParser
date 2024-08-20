@@ -3,7 +3,6 @@ using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser.Filtering.Evaluation;
 
-
 public class NoneOfEvaluator : IEvaluator
 {
     public bool Evaluate(ValueNode left, ValueNode right, IPredicateContext context)

@@ -28,7 +28,7 @@ public class RegexTestCases : TheoryData<RegexTestCase>
         //new RegexTestCase("/.*test.*/", ValueNode.CreateStringNode("my\rtest", true), false),
         new RegexTestCase("/.*tEst.*/is", ValueNode.CreateStringNode("test\ntest", true), true),
         //new RegexTestCase("/.*tEst.*/i", ValueNode.CreateStringNode("test\ntest", true), false),
-        new RegexTestCase("/^\\w+$/U", ValueNode.CreateStringNode("\u00fe", true), true),
+        new RegexTestCase("/^\\w+$/U", ValueNode.CreateStringNode("\u00fe", true), true)
         //new RegexTestCase("/^\\w+$/", ValueNode.CreateStringNode("\u00fe", true), false)
     };
 

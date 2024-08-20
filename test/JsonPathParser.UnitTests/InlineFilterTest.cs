@@ -95,7 +95,8 @@ public class InlineFilterTest : TestUtils
     public void simple_inline_or_statement_evaluates(IProviderTypeTestCase testCase)
     {
         var a = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
-            .Read("store.book[ ?(@.author == 'Nigel Rees' || @.author == 'Evelyn Waugh') ].author", TypeConstants.ListType)
+            .Read("store.book[ ?(@.author == 'Nigel Rees' || @.author == 'Evelyn Waugh') ].author",
+                TypeConstants.ListType)
             .AsList();
         MyAssert.ContainsExactly(a, "Nigel Rees", "Evelyn Waugh");
 

@@ -1,5 +1,4 @@
 using XavierJefferson.JsonPathParser.Exceptions;
-using XavierJefferson.JsonPathParser.Extensions;
 using XavierJefferson.JsonPathParser.Function.Numeric;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.PathRefs;

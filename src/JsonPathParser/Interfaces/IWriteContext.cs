@@ -27,7 +27,7 @@ public interface IWriteContext : IJsonContainer
     IDocumentContext Set(JsonPath path, object? newValue);
 
     /// <summary>
-    ///     Replaces the value on the given path with the result of the <see cref="MapFunction"/>.
+    ///     Replaces the value on the given path with the result of the <see cref="MapFunction" />.
     /// </summary>
     /// <param name="path">path to be converted set</param>
     /// <param name="mapFunction">Converter object to be invoked</param>
@@ -36,7 +36,7 @@ public interface IWriteContext : IJsonContainer
     IDocumentContext Map(string path, MapDelegate mapFunction, params IPredicate[] filters);
 
     /// <summary>
-    ///     Replaces the value on the given path with the result of the <see cref="MapFunction"/>.
+    ///     Replaces the value on the given path with the result of the <see cref="MapFunction" />.
     /// </summary>
     /// <param name="path">path to be converted set</param>
     /// <param name="mapFunction">Converter object to be invoked (or lambda:))</param>

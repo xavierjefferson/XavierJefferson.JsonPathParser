@@ -11,7 +11,8 @@ public class Configuration
 {
     private static IDefaults? _defaults;
 
-    internal Configuration(IJsonProvider jsonProvider, IMappingProvider mappingProvider, ReadOnlySet<ConfigurationOptionEnum> options,
+    internal Configuration(IJsonProvider jsonProvider, IMappingProvider mappingProvider,
+        ReadOnlySet<ConfigurationOptionEnum> options,
         IEnumerable<EvaluationCallback> evaluationCallbacks)
     {
         ArgumentNullException.ThrowIfNull(evaluationCallbacks);
@@ -75,8 +76,8 @@ public class Configuration
     /// <summary>
     ///     Creates a new Configuration with the provided evaluation listeners
     /// </summary>
-    ///     <param name="evaluationListener">listeners</param>
-    ///     <returns> a new configuration</returns>
+    /// <param name="evaluationListener">listeners</param>
+    /// <returns> a new configuration</returns>
     public Configuration SetEvaluationCallbacks(params EvaluationCallback[] evaluationListener)
     {
         return CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(MappingProvider).WithOptions(Options)
@@ -85,10 +86,10 @@ public class Configuration
 
 
     /// <summary>
-    ///     Creates a new Configuration based on the given <see cref="IJsonProvider"/>
+    ///     Creates a new Configuration based on the given <see cref="IJsonProvider" />
     /// </summary>
-    ///     <param name="newJsonProvider">json provider to use in new configuration</param>
-    ///     <returns> a new configuration</returns>
+    /// <param name="newJsonProvider">json provider to use in new configuration</param>
+    /// <returns> a new configuration</returns>
     public Configuration SetJsonProvider(IJsonProvider newJsonProvider)
     {
         return CreateBuilder().WithJsonProvider(newJsonProvider).WithMappingProvider(MappingProvider)
@@ -102,10 +103,10 @@ public class Configuration
     }
 
     /// <summary>
-    ///     Creates a new Configuration based on the given <see cref="IMappingProvider"/>
+    ///     Creates a new Configuration based on the given <see cref="IMappingProvider" />
     ///     <param name="newMappingProvider">mapping provider to use in new configuration</param>
     /// </summary>
-    ///     <returns> a new configuration</returns>
+    /// <returns> a new configuration</returns>
     public Configuration SetMappingProvider(IMappingProvider newMappingProvider)
     {
         return CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(newMappingProvider)
@@ -121,8 +122,8 @@ public class Configuration
     /// <summary>
     ///     Creates a new configuration by adding the new options to the options used in this configuration.
     /// </summary>
-    ///     <param name="options">options to.Add</param>
-    ///     <returns> a new configuration</returns>
+    /// <param name="options">options to.Add</param>
+    /// <returns> a new configuration</returns>
     public Configuration AddOptions(params ConfigurationOptionEnum[] options)
     {
         var opts = Options.Union(options);
@@ -133,7 +134,7 @@ public class Configuration
     /// <summary>
     ///     Creates a new configuration with the provided options. Options in this configuration are discarded.
     /// </summary>
-    ///     <param name="options">></param>
+    /// <param name="options">></param>
     //////<returns> the new configuration instance</returns>
     public Configuration SetOptions(params ConfigurationOptionEnum[] options)
     {
@@ -145,8 +146,8 @@ public class Configuration
     /// <summary>
     ///     Check if this configuration contains the given option
     /// </summary>
-    ///     <param name="configurationOption">option to check</param>
-    ///     <returns> true if configurations contains option</returns>
+    /// <param name="configurationOption">option to check</param>
+    /// <returns> true if configurations contains option</returns>
     public bool ContainsOption(ConfigurationOptionEnum configurationOption)
     {
         return Options.Contains(configurationOption);
@@ -155,7 +156,7 @@ public class Configuration
     /// <summary>
     ///     Creates a new configuration based on default values
     /// </summary>
-    ///     <returns> a new configuration based on defaults</returns>
+    /// <returns> a new configuration based on defaults</returns>
     public static Configuration DefaultConfiguration()
     {
         var defaults = GetEffectiveDefaults();

@@ -1,32 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XavierJefferson.JsonPathParser.Interfaces;
+﻿using XavierJefferson.JsonPathParser.Interfaces;
 
-namespace XavierJefferson.JsonPathParser.Filtering
+namespace XavierJefferson.JsonPathParser.Filtering;
+
+public class SimplePredicate : IPredicate
 {
-    public class SimplePredicate : IPredicate
+    private Func<IPredicateContext, bool> _func;
+
+    private SimplePredicate()
     {
-        private Func<IPredicateContext, bool> _func;
+    }
 
-        private SimplePredicate()
-        {
+    public bool Apply(IPredicateContext context)
+    {
+        return _func(context);
+    }
 
-        }
-        public static SimplePredicate Create(Func<IPredicateContext, Boolean> func)
-        {
-            return new SimplePredicate() { _func = func };
-        }
-        public bool Apply(IPredicateContext context)
-        {
-            return _func(context);
-        }
+    public string ToUnenclosedString()
+    {
+        return _func.ToString();
+    }
 
-        public string ToUnenclosedString()
-        {
-            return _func.ToString();
-        }
+    public static SimplePredicate Create(Func<IPredicateContext, bool> func)
+    {
+        return new SimplePredicate { _func = func };
     }
 }

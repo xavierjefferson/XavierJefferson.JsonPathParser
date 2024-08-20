@@ -6,8 +6,8 @@ namespace XavierJefferson.JsonPathParser.Filtering;
 ///     */
 public abstract class Filter : IPredicate
 {
-    
     public abstract bool Apply(IPredicateContext context);
+    public abstract string ToUnenclosedString();
 
     /// <summary>
     ///     Creates a new Filter based on given criteria
@@ -49,7 +49,6 @@ public abstract class Filter : IPredicate
     {
         return FilterCompiler.Compile(filter);
     }
-    public abstract string ToUnenclosedString();
 
     public override string ToString()
     {

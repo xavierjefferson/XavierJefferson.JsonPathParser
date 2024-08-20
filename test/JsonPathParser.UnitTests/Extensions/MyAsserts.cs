@@ -35,9 +35,7 @@ public static class MyAsserts
             if (m[i] == null && toFind[i] == null) continue;
             if (m[i] == null || toFind[i] == null) return false;
             if (m[i] is IDictionary<string, object?> a && toFind[i] is IDictionary<string, object?> b)
-            {
                 return a.DeepEquals(b);
-            }
             if (!m[i].Equals(toFind[i])) return false;
         }
 

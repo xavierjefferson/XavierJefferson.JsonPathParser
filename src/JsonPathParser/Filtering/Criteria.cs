@@ -1,6 +1,5 @@
 using System.Text.RegularExpressions;
 using XavierJefferson.JsonPathParser.Exceptions;
-using XavierJefferson.JsonPathParser.Extensions;
 using XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 using XavierJefferson.JsonPathParser.Interfaces;
 
@@ -190,15 +189,15 @@ public class Criteria : IPredicate
     /// <summary>
     ///     Creates a criterion using a Regex
     /// </summary>
-    /// <param name="pattern">
+    /// <param name="regex">
     ///     ///
     ///     <returns> the criteria</returns>
     /// </param>
-    public Criteria Regex(Regex pattern)
+    public Criteria Regex(Regex regex)
     {
-        ArgumentNullException.ThrowIfNull(pattern);
+        ArgumentNullException.ThrowIfNull(regex);
         _criteriaType = RelationalOperator.Regex;
-        _right = ValueNode.ToValueNode(JsonProvider, pattern);
+        _right = ValueNode.ToValueNode(JsonProvider, regex);
         return this;
     }
 
@@ -307,13 +306,13 @@ public class Criteria : IPredicate
     ///     The <code>anyof</code> operator selects objects for which the specified field is
     ///     an array that contain at least an element in the specified array.
     /// </summary>
-    /// <param name="c">the values to match against</param>
+    /// <param name="list">the values to match against</param>
     /// <returns> the criteria</returns>
-    public Criteria AnyOf<T>(IEnumerable<T> c)
+    public Criteria AnyOf<T>(IEnumerable<T> list)
     {
-        ArgumentNullException.ThrowIfNull(c);
+        ArgumentNullException.ThrowIfNull(list);
         _criteriaType = RelationalOperator.AnyOf;
-        _right = new ValueListNode(JsonProvider, c.Cast<object?>().ToList());
+        _right = new ValueListNode(JsonProvider, list.Cast<object?>().ToList());
         return this;
     }
 

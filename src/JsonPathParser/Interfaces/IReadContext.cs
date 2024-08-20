@@ -14,11 +14,9 @@ public interface IReadContext : IJsonContainer
     /// </summary>
     /// <param name="path">path to read</param>
     /// <param name="filters">filters</param>
-
-
-
-    ///     ">///
-    ///     <returns> result</returns></param>
+    /// ">///
+    /// <returns> result</returns>
+    /// </param>
     object? Read(string path, params IPredicate[] filters);
 
     /// <summary>
@@ -27,11 +25,9 @@ public interface IReadContext : IJsonContainer
     /// <param name="path">path to read</param>
     /// <param name="type">expected return type (will try to map)</param>
     /// <param name="filters">filters</param>
-
-
-
-    ///     ">///
-    ///     <returns> result</returns></param>
+    /// ">///
+    /// <returns> result</returns>
+    /// </param>
     object? Read(string path, Type type, params IPredicate[] filters);
 
     T? Read<T>(string path, params IPredicate[] filters);
@@ -40,11 +36,9 @@ public interface IReadContext : IJsonContainer
     ///     Reads the given path from this context
     /// </summary>
     /// <param name="path">path to apply</param>
-
-
-
-    ///     ">///
-    ///     <returns> result</returns></param>
+    /// ">///
+    /// <returns> result</returns>
+    /// </param>
     object? Read(JsonPath path);
 
     /// <summary>
@@ -52,11 +46,9 @@ public interface IReadContext : IJsonContainer
     /// </summary>
     /// <param name="path">path to apply</param>
     /// <param name="type">expected return type (will try to map)</param>
-
-
-
-    ///     ">///
-    ///     <returns> result</returns></param>
+    /// ">///
+    /// <returns> result</returns>
+    /// </param>
     object? Read(JsonPath path, Type type);
 
     /// <summary>
@@ -69,11 +61,9 @@ public interface IReadContext : IJsonContainer
     /// </summary>
     /// <param name="path">path to apply</param>
     /// <param name="typeRef">expected return type (will try to map)</param>
-
-
-
-    ///     ">///
-    ///     <returns> result</returns></param>
+    /// ">///
+    /// <returns> result</returns>
+    /// </param>
     T? Read<T>(JsonPath path);
 
     /// <summary>
@@ -86,11 +76,9 @@ public interface IReadContext : IJsonContainer
     /// </summary>
     /// <param name="path">path to apply</param>
     /// <param name="typeRef">expected return type (will try to map)</param>
-
-
-
-    ///     ">///
-    ///     <returns> result</returns></param>
+    /// ">///
+    /// <returns> result</returns>
+    /// </param>
     T? Read<T>(string path);
 
     /// <summary>

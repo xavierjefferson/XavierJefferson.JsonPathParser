@@ -11,7 +11,8 @@ public class TestInternal3 : TestBase
     public void a_root_object_can_be_evaluated(IProviderTypeTestCase testCase)
     {
         var result =
-            PathCompiler.Compile("$").Evaluate(Doc(testCase), Doc(testCase), Conf(testCase)).GetValue() as IDictionary<string, object?>;
+            PathCompiler.Compile("$").Evaluate(Doc(testCase), Doc(testCase), Conf(testCase)).GetValue() as
+                IDictionary<string, object?>;
 
         MyAssert.ContainsKey(result, "store");
         Assert.Single(result);

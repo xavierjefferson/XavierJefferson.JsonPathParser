@@ -5,7 +5,6 @@ using XavierJefferson.JsonPathParser.PathRefs;
 
 namespace XavierJefferson.JsonPathParser.Path;
 
-
 public class ScanPathToken : PathToken
 {
     private static readonly IPredicate FalsePredicate = new FalsePredicateImpl();
@@ -18,7 +17,8 @@ public class ScanPathToken : PathToken
         Walk(pt, currentPath, parent, model, context, CreateScanPredicate(pt, context));
     }
 
-    public static void Walk(PathToken pt, string currentPath, PathRef parent, object? model, EvaluationContextImpl context,
+    public static void Walk(PathToken pt, string currentPath, PathRef parent, object? model,
+        EvaluationContextImpl context,
         IPredicate predicate)
     {
         if (context.JsonProvider.IsMap(model))

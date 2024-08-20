@@ -1,7 +1,5 @@
 using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
-using XavierJefferson.JsonPathParser.Mapper;
-using XavierJefferson.JsonPathParser.Provider;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;
 
@@ -219,7 +217,8 @@ public class SystemTextJsonProviderTest : TestUtils
     // https://github.com/json-path/JsonPath/issues/351
     public void no_error_when_mapping_null(IProviderTypeTestCase testCase)
     {
-        var configuration = testCase.Configuration.SetOptions(ConfigurationOptionEnum.DefaultPathLeafToNull, ConfigurationOptionEnum.SuppressExceptions);
+        var configuration = testCase.Configuration.SetOptions(ConfigurationOptionEnum.DefaultPathLeafToNull,
+            ConfigurationOptionEnum.SuppressExceptions);
 
         var json = "{\"M\":[]}";
 

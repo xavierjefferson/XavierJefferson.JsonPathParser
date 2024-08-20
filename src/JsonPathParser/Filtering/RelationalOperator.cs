@@ -5,37 +5,37 @@ namespace XavierJefferson.JsonPathParser.Filtering;
 
 public class RelationalOperator
 {
-    public static RelationalOperator Gte = new(">=");
-    public static RelationalOperator Lte = new("<=");
-    public static RelationalOperator Eq = new("==");
+    public static readonly RelationalOperator Gte = new(">=");
+    public static readonly RelationalOperator Lte = new("<=");
+    public static readonly RelationalOperator Eq = new("==");
 
     /// <summary>
     ///     Type safe equals
     /// </summary>
-    public static RelationalOperator Tseq = new("===");
+    public static readonly RelationalOperator Tseq = new("===");
 
-    public static RelationalOperator Ne = new("!=");
+    public static readonly RelationalOperator Ne = new("!=");
 
     /// <summary>
     ///     Type safe not equals
     /// </summary>
-    public static RelationalOperator Tsne = new("!==");
+    public static readonly RelationalOperator Tsne = new("!==");
 
-    public static RelationalOperator Lt = new("<");
-    public static RelationalOperator Gt = new(">");
-    public static RelationalOperator Regex = new("=~");
-    public static RelationalOperator Nin = new("NIN");
-    public static RelationalOperator In = new("IN");
-    public static RelationalOperator Contains = new("CONTAINS");
-    public static RelationalOperator All = new("ALL");
-    public static RelationalOperator Size = new("SIZE");
-    public static RelationalOperator Exists = new("EXISTS");
-    public static RelationalOperator Type = new("TYPE");
-    public static RelationalOperator Matches = new("MATCHES");
-    public static RelationalOperator Empty = new("EMPTY");
-    public static RelationalOperator SubsetOf = new("SUBSETOF");
-    public static RelationalOperator AnyOf = new("ANYOF");
-    public static RelationalOperator NoneOf = new("NONEOF");
+    public static readonly RelationalOperator Lt = new("<");
+    public static readonly RelationalOperator Gt = new(">");
+    public static readonly RelationalOperator Regex = new("=~");
+    public static readonly RelationalOperator Nin = new("NIN");
+    public static readonly RelationalOperator In = new("IN");
+    public static readonly RelationalOperator Contains = new("CONTAINS");
+    public static readonly RelationalOperator All = new("ALL");
+    public static readonly RelationalOperator Size = new("SIZE");
+    public static readonly RelationalOperator Exists = new("EXISTS");
+    public static readonly RelationalOperator Type = new("TYPE");
+    public static readonly RelationalOperator Matches = new("MATCHES");
+    public static readonly RelationalOperator Empty = new("EMPTY");
+    public static readonly RelationalOperator SubsetOf = new("SUBSETOF");
+    public static readonly RelationalOperator AnyOf = new("ANYOF");
+    public static readonly RelationalOperator NoneOf = new("NONEOF");
 
     private static readonly List<RelationalOperator> Values = new()
     {

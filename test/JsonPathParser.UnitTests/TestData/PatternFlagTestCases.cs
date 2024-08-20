@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -6,6 +5,11 @@ namespace XavierJefferson.JsonPathParser.UnitTests.TestData;
 
 public class PatternFlagTestCases : TheoryData<PatternFlagTestCase>
 {
+    public PatternFlagTestCases()
+    {
+        foreach (var m in LazyTestEntries.Value) Add(m);
+    }
+
     public static Lazy<List<PatternFlagTestCase>> LazyTestEntries { get; } = new(() =>
     {
         var options = new List<Tuple<RegexOptions, string>>
@@ -35,12 +39,4 @@ public class PatternFlagTestCases : TheoryData<PatternFlagTestCase>
 
         return testEntries;
     });
-
-    public PatternFlagTestCases()
-    {
-        foreach (var m in LazyTestEntries.Value)
-        {
-            this.Add(m);
-        }
-    }
 }

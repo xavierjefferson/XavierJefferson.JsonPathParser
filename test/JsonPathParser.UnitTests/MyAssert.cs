@@ -1,5 +1,4 @@
 ﻿using XavierJefferson.JsonPathParser.UnitTests.Extensions;
-using XavierJefferson.JsonPathParser.UnitTests.TestData;
 using Xunit.Sdk;
 
 namespace XavierJefferson.JsonPathParser.UnitTests;

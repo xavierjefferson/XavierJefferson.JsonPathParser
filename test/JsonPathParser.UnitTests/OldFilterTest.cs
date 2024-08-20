@@ -1,7 +1,5 @@
 using System.Text.RegularExpressions;
-using Moq;
 using XavierJefferson.JsonPathParser.Filtering;
-using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;
 
@@ -53,10 +51,14 @@ public class OldFilterTest : TestUtils
         check["foo"] = "foo";
         check["bar"] = null;
 
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "bar").Is(null)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Is("foo")).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Is("xxx")).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "bar").Is("xxx")).Apply(CreatePredicateContext(check, testCase)));
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "bar").Is(null))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Is("foo"))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Is("xxx"))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "bar").Is("xxx"))
+            .Apply(CreatePredicateContext(check, testCase)));
     }
 
 
@@ -69,10 +71,14 @@ public class OldFilterTest : TestUtils
         check["foo"] = "foo";
         check["bar"] = null;
 
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Ne(null)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Ne("not foo")).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Ne("foo")).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "bar").Ne(null)).Apply(CreatePredicateContext(check, testCase)));
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Ne(null))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Ne("not foo"))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Ne("foo"))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "bar").Ne(null))
+            .Apply(CreatePredicateContext(check, testCase)));
     }
 
     [Theory]
@@ -87,7 +93,8 @@ public class OldFilterTest : TestUtils
         var check = new Dictionary<string, object?>();
         check["foo"] = 12.5D;
         check["foo_null"] = null;
-        var tmp = Filter.Create(Criteria.Where(jsonProvider, where).Gt(toCompare)).Apply(CreatePredicateContext(check, testCase));
+        var tmp = Filter.Create(Criteria.Where(jsonProvider, where).Gt(toCompare))
+            .Apply(CreatePredicateContext(check, testCase));
         Assert.Equal(isTrue, tmp);
     }
 
@@ -100,11 +107,16 @@ public class OldFilterTest : TestUtils
         check["foo"] = 12.5D;
         check["foo_null"] = null;
 
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Gte(12D)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Gte(12.5D)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Gte(null)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Gte(20D)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo_null").Gte(20D)).Apply(CreatePredicateContext(check, testCase)));
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Gte(12D))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Gte(12.5D))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Gte(null))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Gte(20D))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo_null").Gte(20D))
+            .Apply(CreatePredicateContext(check, testCase)));
     }
 
     [Theory]
@@ -117,7 +129,8 @@ public class OldFilterTest : TestUtils
         check["foo_null"] = null;
 
         //Assert.True(Filter.filter(Criteria.where("foo").lt(12D)).Apply(createPredicateContext(check)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Lt(null)).Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Lt(null))
+            .Apply(CreatePredicateContext(check, testCase)));
         //Assert.False(Filter.filter(Criteria.where("foo").lt(5D)).Apply(createPredicateContext(check)));
         //Assert.False(Filter.filter(Criteria.where("foo_null").lt(5D)).Apply(createPredicateContext(check)));
     }
@@ -131,10 +144,14 @@ public class OldFilterTest : TestUtils
         check["foo"] = 12.5D;
         check["foo_null"] = null;
 
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Lte(13D)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Lte(null)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Lte(5D)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo_null").Lte(5D)).Apply(CreatePredicateContext(check, testCase)));
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Lte(13D))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Lte(null))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Lte(5D))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo_null").Lte(5D))
+            .Apply(CreatePredicateContext(check, testCase)));
     }
 
     [Theory]
@@ -146,15 +163,17 @@ public class OldFilterTest : TestUtils
         check["item"] = 3;
         check["null_item"] = null;
 
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "item").In(1, 2, 3)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "item").In((ICollection<object?>)AsList(1, 2, 3)))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "item").In(1, 2, 3))
             .Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "item").In(4, 5, 6)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "item").In((ICollection<object?>)AsList(4, 5, 6)))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "item").In(AsList(1, 2, 3)))
             .Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "item").In((ICollection<object?>)AsList('A')))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "item").In(4, 5, 6))
             .Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "item").In((ICollection<object?>)AsList((object)null)))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "item").In(AsList(4, 5, 6)))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "item").In(AsList('A')))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "item").In(AsList((object)null)))
             .Apply(CreatePredicateContext(check, testCase)));
 
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "null_item").In((object)null))
@@ -172,7 +191,8 @@ public class OldFilterTest : TestUtils
         check["item"] = 3;
         check["null_item"] = null;
 
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "item").Nin(4, 5)).Apply(CreatePredicateContext(check, testCase)));
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "item").Nin(4, 5))
+            .Apply(CreatePredicateContext(check, testCase)));
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "item").Nin(AsList(4, 5)))
             .Apply(CreatePredicateContext(check, testCase)));
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "item").Nin(AsList('A')))
@@ -182,9 +202,11 @@ public class OldFilterTest : TestUtils
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "item").Nin(AsList((object?)null)))
             .Apply(CreatePredicateContext(check, testCase)));
 
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "item").Nin(3)).Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "item").Nin(3))
+            .Apply(CreatePredicateContext(check, testCase)));
         Assert.False(
-            Filter.Create(Criteria.Where(jsonProvider, "item").Nin(AsList(3))).Apply(CreatePredicateContext(check, testCase)));
+            Filter.Create(Criteria.Where(jsonProvider, "item").Nin(AsList(3)))
+                .Apply(CreatePredicateContext(check, testCase)));
     }
 
     [Theory]
@@ -210,10 +232,12 @@ public class OldFilterTest : TestUtils
         check.Add("items", AsList(1, 2, 3));
         check.Add("items_empty", AsList());
 
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "items").Size(3)).Apply(CreatePredicateContext(check, testCase)));
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "items").Size(3))
+            .Apply(CreatePredicateContext(check, testCase)));
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "items_empty").Size(0))
             .Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "items").Size(2)).Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "items").Size(2))
+            .Apply(CreatePredicateContext(check, testCase)));
     }
 
     [Theory]
@@ -225,16 +249,20 @@ public class OldFilterTest : TestUtils
         check["foo"] = "foo";
         check["foo_null"] = null;
 
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Exists(true)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Exists(false)).Apply(CreatePredicateContext(check, testCase)));
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo").Exists(true))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo").Exists(false))
+            .Apply(CreatePredicateContext(check, testCase)));
 
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "foo_null").Exists(true))
             .Apply(CreatePredicateContext(check, testCase)));
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "foo_null").Exists(false))
             .Apply(CreatePredicateContext(check, testCase)));
 
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "bar").Exists(false)).Apply(CreatePredicateContext(check, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "bar").Exists(true)).Apply(CreatePredicateContext(check, testCase)));
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "bar").Exists(false))
+            .Apply(CreatePredicateContext(check, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "bar").Exists(true))
+            .Apply(CreatePredicateContext(check, testCase)));
     }
 
     [Theory]
@@ -298,7 +326,8 @@ public class OldFilterTest : TestUtils
                 .Apply(CreatePredicateContext(check, testCase)));
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "name").Regex(new Regex("KALLE")))
             .Apply(CreatePredicateContext(check, testCase)));
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "name").Regex(new Regex("KALLE", RegexOptions.IgnoreCase)))
+        Assert.True(Filter
+            .Create(Criteria.Where(jsonProvider, "name").Regex(new Regex("KALLE", RegexOptions.IgnoreCase)))
             .Apply(CreatePredicateContext(check, testCase)));
     }
 
@@ -374,57 +403,70 @@ public class OldFilterTest : TestUtils
     public void arrays_of_maps_can_be_filtered(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
-        var rootGrandChildA = new Dictionary<string, object?>();
-        rootGrandChildA["name"] = "rootGrandChild_A";
+        var rootGrandChildA = new Dictionary<string, object?>
+        {
+            ["name"] = "rootGrandChild_A"
+        };
 
-        var rootGrandChildB = new Dictionary<string, object?>();
-        rootGrandChildB["name"] = "rootGrandChild_B";
+        var rootGrandChildB = new Dictionary<string, object?>
+        {
+            ["name"] = "rootGrandChild_B"
+        };
 
-        var rootGrandChildC = new Dictionary<string, object?>();
-        rootGrandChildC["name"] = "rootGrandChild_C";
+        var rootGrandChildC = new Dictionary<string, object?>
+        {
+            ["name"] = "rootGrandChild_C"
+        };
 
 
-        var rootChildA = new Dictionary<string, object?>();
-        rootChildA["name"] = "rootChild_A";
+        var rootChildA = new Dictionary<string, object?>
+        {
+            ["name"] = "rootChild_A"
+        };
         rootChildA.Add("children", AsList(rootGrandChildA, rootGrandChildB, rootGrandChildC));
 
-        var rootChildB = new Dictionary<string, object?>();
-        rootChildB["name"] = "rootChild_B";
+        var rootChildB = new Dictionary<string, object?>
+        {
+            ["name"] = "rootChild_B"
+        };
         rootChildB.Add("children", AsList(rootGrandChildA, rootGrandChildB, rootGrandChildC));
 
-        var rootChildC = new Dictionary<string, object?>();
-        rootChildC["name"] = "rootChild_C";
+        var rootChildC = new Dictionary<string, object?>
+        {
+            ["name"] = "rootChild_C"
+        };
         rootChildC.Add("children", AsList(rootGrandChildA, rootGrandChildB, rootGrandChildC));
 
-        var root = new Dictionary<string, object?>();
-        root.Add("children", AsList(rootChildA, rootChildB, rootChildC));
+        var root = new Dictionary<string, object?> { { "children", AsList(rootChildA, rootChildB, rootChildC) } };
 
 
-        var customFilter = SimplePredicate.Create(context =>
+        var predicate = SimplePredicate.Create(context =>
         {
-            if (context.Configuration.JsonProvider.GetMapValue(context.Item, "name").Equals("rootGrandChild_A")) return true;
-            return false;
+            return context.Configuration.JsonProvider.GetMapValue(context.Item, "name").Equals("rootGrandChild_A");
         });
 
 
         var rootChildFilter = Filter.Create(Criteria.Where(jsonProvider, "name").Regex(new Regex("rootChild_[A|B]")));
-        var rootGrandChildFilter = Filter.Create(Criteria.Where(jsonProvider, "name").Regex(new Regex("rootGrandChild_[A|B]")));
+        var rootGrandChildFilter =
+            Filter.Create(Criteria.Where(jsonProvider, "name").Regex(new Regex("rootGrandChild_[A|B]")));
 
         var read = JsonPath
-            .Read(root, "children[?].children[?, ?]", rootChildFilter, rootGrandChildFilter, customFilter).AsList();
+            .Read(root, "children[?].children[?, ?]", rootChildFilter, rootGrandChildFilter, predicate).AsList();
     }
 
 
     [Fact]
     public void arrays_of_objects_can_be_filtered()
     {
-        var doc = new Dictionary<string, object?>();
-        doc["items"] = new object[] { 1d, 2d, 3d };
+        var doc = new Dictionary<string, object?>
+        {
+            ["items"] = new object[] { 1d, 2d, 3d }
+        };
 
-        var customFilter = SimplePredicate.Create(context => { return 1.0d.Equals(context.Item); });
+        var predicate = SimplePredicate.Create(context => 1d.Equals(context.Item));
 
 
-        var res = JsonPath.Read(doc, "$.items[?]", customFilter).AsList();
+        var res = JsonPath.Read(doc, "$.items[?]", predicate).AsList();
 
         Assert.Equal(1d, res[0]);
     }
@@ -470,11 +512,13 @@ public class OldFilterTest : TestUtils
 
         var doc = testCase.Configuration.JsonProvider.Parse(json);
 
-        var result = JsonPath.Read(doc, "$.fields[?]", Filter.Create(Criteria.Where(jsonProvider, "errors").Empty(false)))
+        var result = JsonPath
+            .Read(doc, "$.fields[?]", Filter.Create(Criteria.Where(jsonProvider, "errors").Empty(false)))
             .AsListOfMap();
         Assert.Single(result);
 
-        var result2 = JsonPath.Read(doc, "$.fields[?]", Filter.Create(Criteria.Where(jsonProvider, "name").Empty(false)))
+        var result2 = JsonPath
+            .Read(doc, "$.fields[?]", Filter.Create(Criteria.Where(jsonProvider, "name").Empty(false)))
             .AsListOfMap();
         Assert.Equal(2, result2.Count());
     }

@@ -50,22 +50,22 @@ public class SystemTextJsonProvider : AbstractJsonProvider
 
                 case JsonValueKind.False:
                     return false;
-    
+
                 case JsonValueKind.Null:
                     return null;
-            
+
                 case JsonValueKind.Object:
                     return jsonElement.EnumerateObject().ToDictionary(i => i.Name, i => Cleanup(i.Value));
-                  
+
                 case JsonValueKind.Number:
                     return jsonElement.GetDouble();
-                
+
                 case JsonValueKind.String:
                     return jsonElement.GetString();
-                 
+
                 case JsonValueKind.True:
                     return true;
-               
+
                 default:
                     throw new NotImplementedException();
             }

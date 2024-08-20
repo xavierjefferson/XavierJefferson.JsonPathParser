@@ -7,18 +7,6 @@ namespace XavierJefferson.JsonPathParser.UnitTests;
 
 public class PathCompilerTest : TestUtils
 {
-    [Fact(Skip = "Backward compatibility <= 2.0.0")]
-    public void a_path_must_start_with_dollarsign_or_at()
-    {
-        Assert.Throws<InvalidPathException>(() => PathCompiler.Compile("x"));
-    }
-
-    [Fact(Skip = "Backward compatibility <= 2.0.0")]
-    public void a_square_bracket_may_not_follow_a_period()
-    {
-        Assert.Throws<InvalidPathException>(() => PathCompiler.Compile("$.["));
-    }
-
     [Fact]
     public void a_root_path_must_be_followed_by_period_or_bracket()
     {
@@ -136,10 +124,10 @@ public class PathCompilerTest : TestUtils
     [Fact]
     public void a_placeholder_criteria_can_be_parsed()
     {
-        var p = SimplePredicate.Create(_ => { return false; });
-        Assert.Equal("$[?]", PathCompiler.Compile("$[?]", p).ToString());
-        Assert.Equal("$[?,?]", PathCompiler.Compile("$[?,?]", p, p).ToString());
-        Assert.Equal("$[?,?,?]", PathCompiler.Compile("$[?,?,?]", p, p, p).ToString());
+        var predicate = SimplePredicate.Create(_ => false);
+        Assert.Equal("$[?]", PathCompiler.Compile("$[?]", predicate).ToString());
+        Assert.Equal("$[?,?]", PathCompiler.Compile("$[?,?]", predicate, predicate).ToString());
+        Assert.Equal("$[?,?,?]", PathCompiler.Compile("$[?,?,?]", predicate, predicate, predicate).ToString());
     }
 
     [Fact]

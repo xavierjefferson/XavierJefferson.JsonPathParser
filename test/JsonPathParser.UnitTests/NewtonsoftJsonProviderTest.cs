@@ -8,9 +8,7 @@ namespace XavierJefferson.JsonPathParser.UnitTests;
 public class NewtonsoftJsonProviderTest : TestUtils
 {
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
- 
     public void an_object_can_be_read(IProviderTypeTestCase testCase)
     {
         var book = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
@@ -20,7 +18,6 @@ public class NewtonsoftJsonProviderTest : TestUtils
     }
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void a_property_can_be_read(IProviderTypeTestCase testCase)
     {
@@ -31,7 +28,6 @@ public class NewtonsoftJsonProviderTest : TestUtils
     }
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void a_filter_can_be_applied(IProviderTypeTestCase testCase)
     {
@@ -42,7 +38,6 @@ public class NewtonsoftJsonProviderTest : TestUtils
     }
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void result_can_be_mapped_to_object(IProviderTypeTestCase testCase)
     {
@@ -53,7 +48,6 @@ public class NewtonsoftJsonProviderTest : TestUtils
     }
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void read_books_with_isb(IProviderTypeTestCase testCase)
     {

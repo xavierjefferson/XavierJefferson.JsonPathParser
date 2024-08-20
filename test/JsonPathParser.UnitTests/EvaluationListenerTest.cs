@@ -21,7 +21,8 @@ public class EvaluationListenerTest : TestUtils
     {
         var configuration = testCase.Configuration.SetEvaluationCallbacks(_ => EvaluationContinuationEnum.Abort);
 
-        var title = JsonPath.Using(configuration).Parse(JsonTestData.JsonDocument).Read("$..title", TypeConstants.ListType)
+        var title = JsonPath.Using(configuration).Parse(JsonTestData.JsonDocument)
+            .Read("$..title", TypeConstants.ListType)
             .AsList();
         MyAssert.ContainsExactly(title, "Sayings of the Century");
     }

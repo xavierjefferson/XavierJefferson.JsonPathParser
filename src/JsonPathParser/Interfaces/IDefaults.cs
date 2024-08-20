@@ -5,7 +5,7 @@ namespace XavierJefferson.JsonPathParser.Interfaces;
 public interface IDefaults
 {
     /// <summary>
-    ///     Returns the default <see cref="json."/>
+    ///     Returns the default <see cref="json." />
     ///     <returns> default json provider</returns>
     IJsonProvider JsonProvider { get; }
 
@@ -15,7 +15,7 @@ public interface IDefaults
     HashSet<ConfigurationOptionEnum> Options { get; }
 
     /// <summary>
-    ///     Returns the default <see cref="MappingProvider"/>
+    ///     Returns the default <see cref="MappingProvider" />
     /// </summary>
     /// <returns> default mapping provider</returns>
     IMappingProvider MappingProvider { get; }

@@ -8,9 +8,7 @@ namespace XavierJefferson.JsonPathParser.UnitTests.Function;
  */
 public class KeySetFunctionTest : BaseFunctionTest
 {
-
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestKeySet(IProviderTypeTestCase testCase)
     {

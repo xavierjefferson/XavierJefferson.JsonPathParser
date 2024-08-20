@@ -42,6 +42,9 @@ public class FilterCompiler
     private const char IgnoreCase = 'i';
     private static readonly ILog Logger = LoggerFactory.GetLogger(typeof(FilterCompiler));
 
+    private static readonly HashSet<char> LogicalOperatorChars = new() { And, Or };
+    private static readonly HashSet<char> RelationalOperatorChars = new() { Lt, Gt, Eq, Tilde, Not };
+
     private readonly CharacterIndex _filter;
 
     private FilterCompiler(string filterString)
@@ -232,7 +235,7 @@ public class FilterCompiler
         var begin = _filter.SkipBlanks().Position;
         var end = begin + 1;
 
-        if (!_filter.InBounds(end)) throw new InvalidPathException("Expected bool literal");
+        if (!_filter.InBounds(end)) throw new InvalidPathException("Expected boolean literal");
         var logicalOperator = _filter.Subsequence(begin, end + 1);
         if (!logicalOperator.Equals("||") && !logicalOperator.Equals("&&"))
             throw new InvalidPathException("Expected logical operator");
@@ -301,7 +304,7 @@ public class FilterCompiler
         while (_filter.InBounds(endIndex))
         {
             currentChar[0] = _filter[endIndex];
-            if (PatternFlag.ParseFlags(currentChar) > 0)
+            if (RegexFlag.ParseFlags(currentChar) > 0)
             {
                 endIndex++;
                 continue;
@@ -433,37 +436,11 @@ public class FilterCompiler
 
     private bool IsLogicalOperatorChar(char c)
     {
-        return c == And || c == Or;
+        return LogicalOperatorChars.Contains(c);
     }
 
     private bool IsRelationalOperatorChar(char c)
     {
-        return c == Lt || c == Gt || c == Eq || c == Tilde || c == Not;
-    }
-
-    public class CompiledFilter : Filter
-    {
-        private readonly IPredicate _predicate;
-
-        public CompiledFilter(IPredicate predicate)
-        {
-            _predicate = predicate;
-        }
-
-
-        public override bool Apply(IPredicateContext context)
-        {
-            return _predicate.Apply(context);
-        }
-
-        public override string ToUnenclosedString()
-        {
-            return _predicate.ToUnenclosedString();
-        }
-
-        public override string ToString()
-        {
-            return $"[?({ToUnenclosedString()})]";
-        }
+        return RelationalOperatorChars.Contains(c);
     }
 }

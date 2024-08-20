@@ -308,7 +308,6 @@ public class WriteTest : TestUtils
     }
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void object_can_be_mapped(IProviderTypeTestCase testCase)
     {

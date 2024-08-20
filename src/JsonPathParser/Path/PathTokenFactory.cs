@@ -12,7 +12,7 @@ public class PathTokenFactory
 
     public static PathToken CreateSinglePropertyPathToken(string property, char stringDelimiter)
     {
-        return new PropertyPathToken(new  List<string?> { property }, stringDelimiter);
+        return new PropertyPathToken(new List<string?> { property }, stringDelimiter);
     }
 
     public static PathToken CreatePropertyPathToken(IList<string?> properties, char stringDelimiter)

@@ -11,19 +11,14 @@ public class RegexEvaluator : IEvaluator
 
         if (left is PatternNode leftPatternNode)
         {
-            if (right is ValueListNode rightValueListNode)
-            {
-                return MatchesAny(leftPatternNode, rightValueListNode);
-            }
+            if (right is ValueListNode rightValueListNode) return MatchesAny(leftPatternNode, rightValueListNode);
 
             if (right is JsonNode rightJsonNode && rightJsonNode.IsArray(context))
                 return MatchesAny(leftPatternNode, rightJsonNode.AsValueListNode(context));
             return Matches(leftPatternNode, GetInput(right));
         }
-        if (left is ValueListNode leftValueListNode)
-        {
-            return MatchesAny(right.AsPatternNode(), leftValueListNode);
-        }
+
+        if (left is ValueListNode leftValueListNode) return MatchesAny(right.AsPatternNode(), leftValueListNode);
 
         if (left is JsonNode leftJsonNode && leftJsonNode.IsArray(context))
             return MatchesAny(right.AsPatternNode(), leftJsonNode.AsValueListNode(context));
@@ -56,7 +51,7 @@ public class RegexEvaluator : IEvaluator
     private string GetInput(ValueNode valueNode)
     {
         var input = "";
-        
+
         if (valueNode is StringNode || valueNode is NumberNode)
             input = valueNode.AsStringNode().Value;
         else if (valueNode is BooleanNode booleanNode) input = booleanNode.ToString();

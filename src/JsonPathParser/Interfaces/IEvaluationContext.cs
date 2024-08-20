@@ -22,22 +22,14 @@ public interface IEvaluationContext
     ///     if the
     ///     configuration contains the {@link com.jayway.jsonpath.Option#ALWAYS_RETURN_LIST}
     /// </summary>
-
-
-
-   
-    ///     <returns> evaluation result</returns>
+    /// <returns> evaluation result</returns>
     object? GetValue();
 
     /// <summary>
     ///     See {@link com.jayway.jsonpath.@public.EvaluationContext#getValue()}
     /// </summary>
     /// <param name="unwrap">tells th underlying json provider if primitives should be unwrapped</param>
-
-
-
-   
-    ///     <returns> evaluation result</returns>
+    /// <returns> evaluation result</returns>
     object? GetValue(bool unwrap);
 
     /// <summary>
@@ -45,8 +37,10 @@ public interface IEvaluationContext
     ///     <param name="
     ///     
     ///     
-    ///         ">///
-    ///         <returns> list of paths</returns></param>
+    ///         ">
+    ///         ///
+    ///         <returns> list of paths</returns>
+    ///     </param>
     T? GetPath<T>();
 
 

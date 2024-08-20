@@ -4,9 +4,6 @@ namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public class NullNode : ValueNode
 {
-    //private NullNode() { }
-
-
     public override Type Type(IPredicateContext context)
     {
         return typeof(void);
@@ -32,8 +29,6 @@ public class NullNode : ValueNode
     public override bool Equals(object? o)
     {
         if (this == o) return true;
-        if (!(o is NullNode)) return false;
-
-        return true;
+        return o is NullNode;
     }
 }

@@ -149,7 +149,7 @@ public abstract class AbstractJsonProvider : IJsonProvider
     }
 
     /// <summary>
-    ///     Converts given array to an <see cref=""/>
+    ///     Converts given array to an <see cref="" />
     /// </summary>
     /// <param name="obj">an array</param>
     /// <returns> an IEnumerable that iterates over the entries of an array</returns>

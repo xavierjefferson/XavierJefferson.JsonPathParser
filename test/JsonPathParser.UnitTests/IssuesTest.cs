@@ -2,8 +2,6 @@ using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Filtering;
 using XavierJefferson.JsonPathParser.Interfaces;
-using XavierJefferson.JsonPathParser.Mapper;
-using XavierJefferson.JsonPathParser.Provider;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;
 
@@ -353,7 +351,8 @@ public class IssuesTest : TestUtils
         var jsonProvider = testCase.Configuration.JsonProvider;
         var json =
             "{\"list\": [ { \"a\":\"atext\", \"b\":{ \"b-a\":\"batext\", \"b-b\":\"bbtext\" } }, { \"a\":\"atext2\", \"b\":{ \"b-a\":\"batext2\", \"b-b\":\"bbtext2\" } } ] }";
-        var result = JsonPath.Read(json, "$.list[?]", Filter.Create(Criteria.Where(jsonProvider, "b.b-a").Eq("batext2"))).AsList();
+        var result = JsonPath
+            .Read(json, "$.list[?]", Filter.Create(Criteria.Where(jsonProvider, "b.b-a").Eq("batext2"))).AsList();
 
         Assert.Single(result);
     }
@@ -661,6 +660,7 @@ public class IssuesTest : TestUtils
 
         MyAssert.ContainsExactly(res, "url5");
     }
+
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
     public void issue_97(IProviderTypeTestCase testCase)
@@ -868,7 +868,6 @@ public class IssuesTest : TestUtils
     //}
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void issue_170(IProviderTypeTestCase testCase)
     {

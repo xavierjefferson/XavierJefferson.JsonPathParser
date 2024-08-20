@@ -1,5 +1,5 @@
 ﻿using XavierJefferson.JsonPathParser.Mapper;
-using XavierJefferson.JsonPathParser.Provider; 
+using XavierJefferson.JsonPathParser.Provider;
 using XavierJefferson.JsonPathParser.UnitTests.Enums;
 
 namespace XavierJefferson.JsonPathParser.UnitTests.TestData;

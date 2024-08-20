@@ -44,8 +44,10 @@ public class Issue721 : TestBase
         //System.out.println(ans);
         Assert.Equal(3, ans.Count());
         Assert.True(ans[0].DeepEquals(GetSingletonMap("top", GetSingletonMap("middle", null))));
-        Assert.True(ans[1].DeepEquals(GetSingletonMap("top", GetSingletonMap("middle", new Dictionary<string, object?>()))));
-        Assert.True(ans[2].DeepEquals(GetSingletonMap("top", GetSingletonMap("middle", new Dictionary<string, object?>()))));
+        Assert.True(ans[1]
+            .DeepEquals(GetSingletonMap("top", GetSingletonMap("middle", new Dictionary<string, object?>()))));
+        Assert.True(ans[2]
+            .DeepEquals(GetSingletonMap("top", GetSingletonMap("middle", new Dictionary<string, object?>()))));
         //Assert.Equal("[{\"top\":{\"middle\":null},{\"top\":{\"middle\":{}},{\"top\":{\"middle\":{}}]", ans.ToString());
     }
 }

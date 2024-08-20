@@ -1,12 +1,9 @@
-using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace XavierJefferson.JsonPathParser.Mapper;
 
 public class SystemTextJsonMappingProvider : MappingProviderBase
 {
-     
-
     protected override object? MapToObject(object? source)
     {
         if (source is JsonArray array) return array.Select(MapToObject).ToList();
@@ -22,5 +19,4 @@ public class SystemTextJsonMappingProvider : MappingProviderBase
             return null;
         return source;
     }
- 
 }

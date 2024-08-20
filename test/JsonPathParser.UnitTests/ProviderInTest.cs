@@ -14,10 +14,8 @@ public class ProviderInTest
     private static readonly string SingleQuotesEqualsFilter = string.Format(EqualsFilter, SingleQuotes);
     private static readonly string SingleQuotesInFilter = string.Format(InFilter, SingleQuotes);
 
- 
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestJsonPathQuotes(IProviderTypeTestCase testCase)
     {

@@ -9,7 +9,8 @@ public abstract class CompareEvaluator : IEvaluator
 
     public virtual bool Evaluate(ValueNode left, ValueNode right, IPredicateContext context)
     {
-        if (left is JsonNode leftJsonNode && right is JsonNode rightJsonNode) return leftJsonNode.Equals(rightJsonNode, context);
+        if (left is JsonNode leftJsonNode && right is JsonNode rightJsonNode)
+            return leftJsonNode.Equals(rightJsonNode, context);
 
         if (left is NumberNode leftNumberNode && right is NumberNode rightNumberNode)
             return CompareValues.Contains(leftNumberNode.Value
@@ -17,6 +18,9 @@ public abstract class CompareEvaluator : IEvaluator
         if (left is StringNode leftStringNode && right is StringNode rightStringNode)
             return CompareValues.Contains(leftStringNode.Value
                 .CompareTo(rightStringNode.Value));
+        if (left is DateTimeNode leftDateTimeNode && right is DateTimeNode rightDateTimeNode)
+            return CompareValues.Contains(leftDateTimeNode.Value
+                .CompareTo(rightDateTimeNode.Value));
         if (left is DateTimeOffsetNode leftDateTimeOffsetNode && right is DateTimeOffsetNode rightDateTimeOffsetNode)
             //workaround for issue: https://github.com/json-path/JsonPath/issues/613
             return CompareValues.Contains(leftDateTimeOffsetNode.Value

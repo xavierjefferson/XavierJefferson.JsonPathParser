@@ -11,7 +11,8 @@ public class KeySetFunction : IPathFunction
     public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
         IList<Parameter>? parameters)
     {
-        if (context.Configuration.JsonProvider.IsMap(model)) return context.Configuration.JsonProvider.GetPropertyKeys(model);
+        if (context.Configuration.JsonProvider.IsMap(model))
+            return context.Configuration.JsonProvider.GetPropertyKeys(model);
         return null;
     }
 }

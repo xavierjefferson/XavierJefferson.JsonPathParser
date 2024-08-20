@@ -13,10 +13,7 @@ namespace XavierJefferson.JsonPathParser.UnitTests.Function;
  */
 public class SequentialPathFunctionTest : BaseFunctionTest
 {
-    
-
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestFirstOfNumbers(IProviderTypeTestCase testCase)
     {
@@ -24,7 +21,6 @@ public class SequentialPathFunctionTest : BaseFunctionTest
     }
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestLastOfNumbers(IProviderTypeTestCase testCase)
     {
@@ -33,7 +29,6 @@ public class SequentialPathFunctionTest : BaseFunctionTest
 
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestIndexOfNumbers(IProviderTypeTestCase testCase)
     {
@@ -44,7 +39,6 @@ public class SequentialPathFunctionTest : BaseFunctionTest
 
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestFirstOfText(IProviderTypeTestCase testCase)
     {
@@ -53,7 +47,6 @@ public class SequentialPathFunctionTest : BaseFunctionTest
 
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestLastOfText(IProviderTypeTestCase testCase)
     {
@@ -62,7 +55,6 @@ public class SequentialPathFunctionTest : BaseFunctionTest
 
 
     [Theory]
-
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestIndexOfTex(IProviderTypeTestCase testCase)
     {

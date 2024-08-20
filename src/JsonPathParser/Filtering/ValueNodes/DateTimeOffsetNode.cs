@@ -2,37 +2,41 @@
 
 public class DateTimeOffsetNode : TypedValueNode<DateTimeOffset>
 {
-    private readonly DateTimeOffset _dateTime;
+    private readonly DateTimeOffset _dateTimeOffset;
 
-    public DateTimeOffsetNode(DateTimeOffset dateTime)
+    public DateTimeOffsetNode(DateTimeOffset dateTimeOffset)
     {
-        _dateTime = dateTime;
+        _dateTimeOffset = dateTimeOffset;
     }
 
     public DateTimeOffsetNode(string date)
     {
-        _dateTime = DateTimeOffset.Parse(date);
+        _dateTimeOffset = DateTimeOffset.Parse(date);
     }
 
-    public override DateTimeOffset Value => _dateTime;
+    public override DateTimeOffset Value => _dateTimeOffset;
 
     public override int GetHashCode()
     {
-        return _dateTime.GetHashCode();
+        return _dateTimeOffset.GetHashCode();
     }
 
 
     public override StringNode AsStringNode()
     {
-        return new StringNode(_dateTime.ToString(), false);
+        return new StringNode(_dateTimeOffset.ToString(), false);
     }
 
     [Obsolete]
     public DateTimeOffset GetDate()
     {
-        return _dateTime;
+        return _dateTimeOffset;
     }
 
+    public override DateTimeNode AsDateTimeNode()
+    {
+        return new DateTimeNode(_dateTimeOffset.DateTime);
+    }
 
     public override DateTimeOffsetNode AsDateTimeOffsetNode()
     {
@@ -42,15 +46,19 @@ public class DateTimeOffsetNode : TypedValueNode<DateTimeOffset>
 
     public override string ToString()
     {
-        return _dateTime.ToString();
+        return _dateTimeOffset.ToString();
     }
 
 
     public override bool Equals(object? o)
     {
         if (this == o) return true;
-        if (!(o is DateTimeOffsetNode) && !(o is StringNode)) return false;
-        var that = ((ValueNode)o).AsDateTimeOffsetNode();
-        return _dateTime.CompareTo(that._dateTime) == 0;
+        if (o is DateTimeOffsetNode || o is StringNode)
+        {
+            var that = ((ValueNode)o).AsDateTimeOffsetNode();
+            return _dateTimeOffset.CompareTo(that._dateTimeOffset) == 0;
+        }
+
+        return false;
     }
 }

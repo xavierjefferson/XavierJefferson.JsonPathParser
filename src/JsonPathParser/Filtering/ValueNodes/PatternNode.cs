@@ -6,7 +6,7 @@ namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public class PatternNode : TypedValueNode<Regex>
 {
-    private readonly Regex _compiledPattern;
+    private readonly Regex? _compiledPattern;
     private readonly string _flags;
     private readonly string _pattern;
 
@@ -18,14 +18,14 @@ public class PatternNode : TypedValueNode<Regex>
         var flagsIndex = end + 1;
         _flags = charSequence.Length > flagsIndex ? charSequence.Substring(flagsIndex) : "";
         _compiledPattern = new Regex(_pattern,
-            PatternFlag.ParseFlags(_flags.Select(i => i).ToArray()) | RegexOptions.Compiled);
+            RegexFlag.ParseFlags(_flags.Select(i => i).ToArray()) | RegexOptions.Compiled);
     }
 
     public PatternNode(Regex pattern)
     {
         _pattern = pattern.ToString();
         _compiledPattern = pattern;
-        _flags = PatternFlag.ParseFlags(pattern.Options);
+        _flags = RegexFlag.ParseFlags(pattern.Options);
     }
 
     public override Regex Value => _compiledPattern;
@@ -57,12 +57,18 @@ public class PatternNode : TypedValueNode<Regex>
     public override bool Equals(object? o)
     {
         if (this == o) return true;
-        if (!(o is PatternNode)) return false;
+        if (o is PatternNode patternNode)
+        {
+            bool result;
+            if (patternNode._compiledPattern == null && _compiledPattern == null)
+                result = true;
+            else if (patternNode._compiledPattern == null || _compiledPattern == null)
+                result = false;
+            else
+                result = patternNode._compiledPattern.Equals(_compiledPattern);
+            return result;
+        }
 
-        var that = (PatternNode)o;
-
-        return !(_compiledPattern != null
-            ? !_compiledPattern.Equals(that._compiledPattern)
-            : that._compiledPattern != null);
+        return false;
     }
 }

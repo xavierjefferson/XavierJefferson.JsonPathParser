@@ -47,6 +47,7 @@ public enum PrefixTypeEnum
     NEWLINE,
     SPACE
 }
+
 public class Beautifier
 {
     public Beautifier()
@@ -496,7 +497,8 @@ public class Beautifier
                 {
                     ParserPos += 1;
                     if (ParserPos < Input.Length)
-                        while (!(Input[ParserPos] == '*' && ParserPos + 1 < Input.Length && Input[ParserPos + 1] == '/') &&
+                        while (!(Input[ParserPos] == '*' && ParserPos + 1 < Input.Length &&
+                                 Input[ParserPos + 1] == '/') &&
                                ParserPos < Input.Length)
                         {
                             c = Input[ParserPos];
@@ -541,7 +543,8 @@ public class Beautifier
             (c == '/' &&
              ((LastType == TokenTypeEnum.TkWord && IsSpecialWord(LastText)) ||
               (LastType == TokenTypeEnum.TkEndExpr && (Flags.PreviousMode == FlagModeEnum.ForExpressionInParentheses ||
-                                                       Flags.PreviousMode == FlagModeEnum.CondExpressionInParentheses)) ||
+                                                       Flags.PreviousMode ==
+                                                       FlagModeEnum.CondExpressionInParentheses)) ||
               new[]
               {
                   TokenTypeEnum.TkComment, TokenTypeEnum.TkStartExpr, TokenTypeEnum.TkStartBlock,
@@ -1078,7 +1081,8 @@ public class Beautifier
                 }
             }
         }
-        else if (LastType == TokenTypeEnum.TkSemicolon && (Flags.Mode == FlagModeEnum.Block || Flags.Mode == FlagModeEnum.DoBlock))
+        else if (LastType == TokenTypeEnum.TkSemicolon &&
+                 (Flags.Mode == FlagModeEnum.Block || Flags.Mode == FlagModeEnum.DoBlock))
         {
             prefix = PrefixTypeEnum.NEWLINE;
         }
@@ -1212,7 +1216,8 @@ public class Beautifier
     private void HandleString(string tokenText)
     {
         if (LastType == TokenTypeEnum.TkEndExpr &&
-            (Flags.PreviousMode == FlagModeEnum.CondExpressionInParentheses || Flags.PreviousMode == FlagModeEnum.ForExpressionInParentheses))
+            (Flags.PreviousMode == FlagModeEnum.CondExpressionInParentheses ||
+             Flags.PreviousMode == FlagModeEnum.ForExpressionInParentheses))
         {
             Append(" ");
         }
@@ -1338,35 +1343,35 @@ public class Beautifier
             case "--":
             case "!":
             case "+" or "-" when
-                (LastType == TokenTypeEnum.TkStartBlock ||
-                 LastType == TokenTypeEnum.TkStartExpr ||
-                 LastType == TokenTypeEnum.TkEquals ||
-                 LastType == TokenTypeEnum.TkOperator ||
-                 LineStarters.Contains(LastText) ||
-                 LastText == ","):
-                {
-                    spaceBefore = false;
-                    spaceAfter = false;
+                LastType == TokenTypeEnum.TkStartBlock ||
+                LastType == TokenTypeEnum.TkStartExpr ||
+                LastType == TokenTypeEnum.TkEquals ||
+                LastType == TokenTypeEnum.TkOperator ||
+                LineStarters.Contains(LastText) ||
+                LastText == ",":
+            {
+                spaceBefore = false;
+                spaceAfter = false;
 
-                    if (LastText == ";" && IsExpression(Flags.Mode))
-                        // for (;; ++i)
-                        // ^^
-                        spaceBefore = true;
+                if (LastText == ";" && IsExpression(Flags.Mode))
+                    // for (;; ++i)
+                    // ^^
+                    spaceBefore = true;
 
-                    if (LastType == TokenTypeEnum.TkWord && LineStarters.Contains(LastText)) spaceBefore = true;
+                if (LastType == TokenTypeEnum.TkWord && LineStarters.Contains(LastText)) spaceBefore = true;
 
-                    if (Flags.Mode == FlagModeEnum.Block && (LastText == ";" || LastText == "{"))
-                        // { foo: --i }
-                        // foo(): --bar
-                        AppendNewline();
-                    break;
-                }
+                if (Flags.Mode == FlagModeEnum.Block && (LastText == ";" || LastText == "{"))
+                    // { foo: --i }
+                    // foo(): --bar
+                    AppendNewline();
+                break;
+            }
             case ":" when Flags.TernaryDepth == 0:
-                {
-                    if (Flags.Mode == FlagModeEnum.Block) Flags.Mode = FlagModeEnum.Object;
-                    spaceBefore = false;
-                    break;
-                }
+            {
+                if (Flags.Mode == FlagModeEnum.Block) Flags.Mode = FlagModeEnum.Object;
+                spaceBefore = false;
+                break;
+            }
             case ":":
                 Flags.TernaryDepth -= 1;
                 break;

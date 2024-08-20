@@ -6,11 +6,11 @@ namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public class ValueListNode : TypedValueNode<ICollection<ValueNode>>, IEnumerable<ValueNode>
 {
-    private readonly ReadOnlyCollection<ValueNode> _nodes = new(new ValueNode[]{});
+    private readonly ReadOnlyCollection<ValueNode> _nodes = new(new ValueNode[] { });
 
     public ValueListNode(IJsonProvider jsonProvider, ICollection<object?>? values)
     {
-       _nodes = new ReadOnlyCollection<ValueNode>(values.Select(value=>ToValueNode(jsonProvider, value)).ToArray());
+        _nodes = new ReadOnlyCollection<ValueNode>(values.Select(value => ToValueNode(jsonProvider, value)).ToArray());
     }
 
     public override ICollection<ValueNode> Value => _nodes;
@@ -62,10 +62,7 @@ public class ValueListNode : TypedValueNode<ICollection<ValueNode>>, IEnumerable
     public override bool Equals(object? o)
     {
         if (this == o) return true;
-        if (o is ValueListNode valueListNode)
-        {
-            return _nodes.Equals(valueListNode._nodes);
-        }
+        if (o is ValueListNode valueListNode) return _nodes.Equals(valueListNode._nodes);
 
         return false;
     }

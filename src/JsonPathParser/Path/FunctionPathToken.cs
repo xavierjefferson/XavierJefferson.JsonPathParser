@@ -12,10 +12,6 @@ public class FunctionPathToken : PathToken
 {
     private readonly string? _pathFragment;
 
-    public IList<Parameter>? Parameters { get; set; }
-
-    public string? FunctionName { get; }
-
     public FunctionPathToken(string pathFragment, IList<Parameter>? parameters)
     {
         _pathFragment = $"{pathFragment}{(parameters != null && parameters.Count() > 0 ? "(...)" : "()")}";
@@ -30,6 +26,10 @@ public class FunctionPathToken : PathToken
             Parameters = null;
         }
     }
+
+    public IList<Parameter>? Parameters { get; set; }
+
+    public string? FunctionName { get; }
 
 
     public override void Evaluate(string currentPath, PathRef parent, object? model, EvaluationContextImpl context)
@@ -107,5 +107,4 @@ public class FunctionPathToken : PathToken
     {
         return $".{_pathFragment}";
     }
-     
 }

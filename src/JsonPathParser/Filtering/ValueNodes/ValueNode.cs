@@ -21,6 +21,11 @@ public abstract class ValueNode
         throw new InvalidPathException($"Expected {nameof(PathNode)}");
     }
 
+    public virtual DateTimeNode AsDateTimeNode()
+    {
+        throw new InvalidPathException($"Expected {nameof(DateTimeNode)}");
+    }
+
     public virtual NumberNode AsNumberNode()
     {
         throw new InvalidPathException($"Expected {nameof(NumberNode)}");
@@ -133,6 +138,9 @@ public abstract class ValueNode
             case Regex regexInstance:
                 valueNode = CreatePatternNode(regexInstance);
                 return true;
+            case DateTime dateTimeInstance:
+                valueNode = CreateDateTimeNode(dateTimeInstance);
+                return true;
             case DateTimeOffset dateTimeOffsetInstance:
                 //workaround for issue: https://github.com/json-path/JsonPath/issues/613
                 valueNode = CreateDateTimeOffsetNode(dateTimeOffsetInstance);
@@ -140,9 +148,13 @@ public abstract class ValueNode
             case char charInstance:
                 valueNode = CreateStringNode(charInstance.ToString(), false);
                 return true;
-            case double nn:
-                valueNode = new NumberNode(nn);
+            case double doubleValue:
+                valueNode = new NumberNode(doubleValue);
                 return true;
+            case uint:
+            case ushort:
+            case short:
+            case ulong:
             case int:
             case byte:
             case float:
@@ -264,6 +276,17 @@ public abstract class ValueNode
     public static DateTimeOffsetNode CreateDateTimeOffsetNode(DateTimeOffset charSequence)
     {
         return new DateTimeOffsetNode(charSequence);
+    }
+
+
+    public static DateTimeNode CreateDateTimeNode(string charSequence)
+    {
+        return new DateTimeNode(charSequence);
+    }
+
+    public static DateTimeNode CreateDateTimeNode(DateTime charSequence)
+    {
+        return new DateTimeNode(charSequence);
     }
 
     public static UndefinedNode CreateUndefinedNode()

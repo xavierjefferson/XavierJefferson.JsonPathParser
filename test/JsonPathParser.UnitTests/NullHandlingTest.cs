@@ -61,7 +61,6 @@ public class NullHandlingTest
             .Parse(Document).Read("$.children[*].age").AsList();
 
         MyAssert.ContainsExactly(result, 0d, null);
-
     }
 
     [Fact]

@@ -23,6 +23,6 @@ public class JsonLateBindingValue : ILateBindingValue
     /// <returns> the late value</returns>
     public object? Get()
     {
-        return _jsonProvider.Parse(_jsonParameter.GetJson());
+        return _jsonProvider.Parse(_jsonParameter.Json);
     }
 }

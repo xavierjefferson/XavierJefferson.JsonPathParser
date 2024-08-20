@@ -14,11 +14,9 @@ public class AllEvaluator : IEvaluator
             var valueNode =
                 jsonNode.AsValueListNode(context); //returns UndefinedNode if conversion is not possible
             if (valueNode is ValueListNode valueListNode)
-            {
                 foreach (var required in requiredValues)
                     if (!Enumerable.Contains(valueListNode, required))
                         return false;
-            }
 
             return true;
         }

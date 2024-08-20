@@ -5,6 +5,11 @@ namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public class JsonNode : TypedValueNode<object?>
 {
+    private static readonly HashSet<Type> ReturnedTypes = new()
+    {
+        typeof(string), typeof(double), typeof(DateTime), typeof(DateTimeOffset), typeof(bool)
+    };
+
     private readonly bool _parsed;
     private readonly object? _value;
 
@@ -34,9 +39,8 @@ public class JsonNode : TypedValueNode<object?>
         if (IsMap(context)) return TypeConstants.DictionaryType;
 
         var parsed = Parse(context);
-        if (parsed is double) return typeof(double);
-        if (parsed is string) return typeof(string);
-        if (parsed is bool) return typeof(bool);
+        if (parsed != null && ReturnedTypes.Contains(parsed.GetType())) return parsed.GetType();
+
         return typeof(void);
     }
 
@@ -47,16 +51,16 @@ public class JsonNode : TypedValueNode<object?>
 
     public ValueNode AsValueListNode(IPredicateContext context)
     {
-        if (!IsArray(context))
-            return ValueNodeConstants.Undefined;
-        return new ValueListNode(context.Configuration.JsonProvider, Parse(context) as ICollection<object?>);
+        if (TryCastAsArray(context, out var list))
+            return new ValueListNode(context.Configuration.JsonProvider, list.Cast<object?>().ToList());
+        return ValueNodeConstants.Undefined;
     }
 
     public object? Parse(IPredicateContext context)
     {
         if (_parsed) return _value;
-        var p = context.Configuration.JsonProvider;
-        return p.Parse(_value.ToString());
+        var jsonProvider = context.Configuration.JsonProvider;
+        return jsonProvider.Parse(_value.ToString());
     }
 
     public bool IsParsed()
@@ -72,22 +76,49 @@ public class JsonNode : TypedValueNode<object?>
 
     public bool IsArray(IPredicateContext context)
     {
-        return Parse(context) is IList;
+        return TryCastAsArray(context, out _);
     }
 
     public bool IsMap(IPredicateContext context)
     {
-        return Parse(context) is IDictionary;
+        return TryCastAsDictionary(context, out _);
     }
 
     public int Length(IPredicateContext context)
     {
-        return IsArray(context) ? ((ICollection<object>)Parse(context)).Count() : -1;
+        if (TryCastAsArray(context, out var list)) return list.Count;
+
+        return -1;
+    }
+
+    private bool TryCastAsArray(IPredicateContext context, out IList list)
+    {
+        list = default;
+        if (Parse(context) is IList tmp)
+        {
+            list = tmp;
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool TryCastAsDictionary(IPredicateContext context, out IDictionary dictionary)
+    {
+        dictionary = default;
+        if (Parse(context) is IDictionary tmp)
+        {
+            dictionary = tmp;
+            return true;
+        }
+
+        return false;
     }
 
     public bool IsEmpty(IPredicateContext context)
     {
-        if (IsArray(context) || IsMap(context)) return ((ICollection<object>)Parse(context)).Count() == 0;
+        if (TryCastAsArray(context, out var list)) return list.Count == 0;
+        if (TryCastAsDictionary(context, out var dictionary)) return dictionary.Count == 0;
         if (Parse(context) is string stringInstance) return string.IsNullOrEmpty(stringInstance);
         return true;
     }
@@ -109,9 +140,10 @@ public class JsonNode : TypedValueNode<object?>
             {
                 if (leftList.Count != rightList.Count) return false;
                 for (var i = 0; i < leftList.Count; i++)
-                {                   
+                {
                     var left = leftList[i] as ValueNode ?? ToValueNode(context.Configuration.JsonProvider, leftList[i]);
-                    var right = rightList[i] as ValueNode ?? ToValueNode(context.Configuration.JsonProvider, rightList[i]);
+                    var right = rightList[i] as ValueNode ??
+                                ToValueNode(context.Configuration.JsonProvider, rightList[i]);
 
                     if (!left.Equals(right)) return false;
                 }
@@ -129,8 +161,7 @@ public class JsonNode : TypedValueNode<object?>
     public override bool Equals(object? o)
     {
         if (this == o) return true;
-        if (!(o is JsonNode jsonNode)) return false;
-
-        return _value?.Equals(jsonNode._value) ?? jsonNode._value == null;
+        if (o is JsonNode jsonNode) return _value?.Equals(jsonNode._value) ?? jsonNode._value == null;
+        return false;
     }
 }

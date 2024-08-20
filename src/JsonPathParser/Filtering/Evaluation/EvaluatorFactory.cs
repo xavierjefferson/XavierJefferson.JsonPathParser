@@ -31,7 +31,7 @@ public class EvaluatorFactory
         Evaluators.Add(RelationalOperator.NoneOf, new NoneOfEvaluator());
     }
 
-    public static IEvaluator CreateEvaluator(RelationalOperator @operator)
+    public static IEvaluator? CreateEvaluator(RelationalOperator @operator)
     {
         return Evaluators[@operator];
     }

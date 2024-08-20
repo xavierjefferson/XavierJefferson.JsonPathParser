@@ -28,6 +28,4 @@ public class OrFilter : Filter
     {
         return $"{_left.ToUnenclosedString()} || {_right.ToUnenclosedString()}";
     }
-
-  
 }

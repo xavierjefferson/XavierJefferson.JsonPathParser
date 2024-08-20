@@ -54,16 +54,15 @@ public class NumberNode : TypedValueNode<double>
     public override bool Equals(object? o)
     {
         if (this == o) return true;
-        if (!(o is NumberNode) && !(o is StringNode)) return false;
+        if (o is NumberNode || o is StringNode)
+        {
+            var that = ((ValueNode)o).AsNumberNode();
 
-        var that = ((ValueNode)o).AsNumberNode();
+            if (that == Nan) return false;
 
-        if (that == Nan) return false;
+            return _value.CompareTo(that._value) == 0;
+        }
 
-        //if (_number == null && that._number == null)
-        //    return true;
-        //if (_number == null || that._number == null)
-        //    return false;
-        return _value.CompareTo(that._value) == 0;
+        return false;
     }
 }
