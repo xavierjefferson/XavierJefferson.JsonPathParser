@@ -204,7 +204,7 @@ public class PathCompiler
         if (endPosition == 0) endPosition = _path.Length;
 
 
-        SerializingList<Parameter> functionParameters = null;
+        IList<Parameter>? functionParameters = null;
         if (isFunction)
         {
             var parenthesisCount = 1;
@@ -288,7 +288,7 @@ public class PathCompiler
     ///     an array of values and/or can consume parameters in addition to the values provided from the consumption of
     ///     an array.
     /// </returns>
-    private SerializingList<Parameter> ParseFunctionParameters(string funcName)
+    private IList<Parameter> ParseFunctionParameters(string funcName)
     {
         ParameterTypeEnum? type = null;
 
@@ -297,7 +297,7 @@ public class PathCompiler
         int groupParen = 1, groupBracket = 0, groupBrace = 0, groupQuote = 0;
         var endOfStream = false;
         var priorChar = (char)0;
-        var parameters = new SerializingList<Parameter>();
+        var parameters = new List<Parameter>();
         var parameter = new StringBuilder();
         while (_path.InBounds() && !endOfStream)
         {
@@ -373,7 +373,7 @@ public class PathCompiler
     }
 
     private static void ProcessComma(ref ParameterTypeEnum? type, int groupParen, int groupBracket, int groupBrace,
-        int groupQuote, ref bool endOfStream, SerializingList<Parameter> parameters, StringBuilder parameter, char c)
+        int groupQuote, ref bool endOfStream, IList<Parameter> parameters, StringBuilder parameter, char c)
     {
         // In this state we've reach the end of a function parameter and we can pass along the parameter string
         // to the parser
@@ -434,14 +434,15 @@ public class PathCompiler
             throw new InvalidPathException($"Not enough predicates supplied for filter [{expression}" +
                                            "] at position " + _path.Position);
 
-        ICollection<IPredicate> predicates = new SerializingList<IPredicate>();
+        var predicates = new List<IPredicate>();
         foreach (var token1 in tokens)
         {
             var token = token1;
-            token = token != null ? token.Trim() : null;
-            if (!"?".Equals(token == null ? "" : token))
+            token = token?.Trim();
+            if ("?".Equals(token ?? ""))
+                predicates.Add(_filterStack.Pop());
+            else
                 throw new InvalidPathException("Expected '?' but found " + token);
-            predicates.Add(_filterStack.Pop());
         }
 
         appender(PathTokenFactory.CreatePredicatePathToken(predicates));
@@ -564,7 +565,7 @@ public class PathCompiler
         var potentialStringDelimiter = _path.NextSignificantChar();
         if (potentialStringDelimiter != SingleQuote && potentialStringDelimiter != DoubleQuote) return false;
 
-        var properties = new SerializingList<string>();
+        var properties = new List<string?>();
 
         var startPosition = _path.Position + 1;
         var readPosition = startPosition;

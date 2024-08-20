@@ -49,7 +49,7 @@ public class JsonNode : TypedValueNode<object?>
     {
         if (!IsArray(context))
             return ValueNodeConstants.Undefined;
-        return new ValueListNode(Parse(context) as ICollection<object?>, context.Configuration.JsonProvider);
+        return new ValueListNode(context.Configuration.JsonProvider, Parse(context) as ICollection<object?>);
     }
 
     public object? Parse(IPredicateContext context)

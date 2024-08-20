@@ -31,7 +31,7 @@ public abstract class PathToken
     }
 
     public void HandleObjectProperty(string currentPath, object? model, EvaluationContextImpl context,
-        SerializingList<string> properties)
+        IList<string?> properties)
     {
         if (properties.Count() == 1)
         {

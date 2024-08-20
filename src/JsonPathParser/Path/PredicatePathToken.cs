@@ -13,7 +13,7 @@ public class PredicatePathToken : PathToken
 
     public PredicatePathToken(IPredicate filter)
     {
-        _predicates = new SerializingList<IPredicate> { filter };
+        _predicates = new List<IPredicate> { filter };
     }
 
     public PredicatePathToken(ICollection<IPredicate> predicates)

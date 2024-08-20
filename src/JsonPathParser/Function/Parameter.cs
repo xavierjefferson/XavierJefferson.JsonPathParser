@@ -59,9 +59,9 @@ public class Parameter
     ///     ">      Type T returned as a List of T.</param>
     ///     <returns>List of T either empty or containing contents.</returns>
     ///     </summary>
-    public static SerializingList<T> ToList<T>(IEvaluationContext context, IEnumerable<Parameter>? parameters)
+    public static IList<T> ToList<T>(IEvaluationContext context, IEnumerable<Parameter>? parameters)
     {
-        var values = new SerializingList<T>();
+        var values = new List<T>();
         if (parameters == null) return values;
         foreach (var param in parameters)
             Consume(context, values, param.GetValue());

@@ -12,7 +12,7 @@ public class WildcardPathToken : PathToken
     {
         if (context.JsonProvider.IsMap(model))
             foreach (var property in context.JsonProvider.GetPropertyKeys(model))
-                HandleObjectProperty(currentPath, model, context, new SerializingList<string> { property });
+                HandleObjectProperty(currentPath, model, context, new List<string?> { property });
         else if (context.JsonProvider.IsArray(model))
             for (var idx = 0; idx < context.JsonProvider.Length(model); idx++)
                 try

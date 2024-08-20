@@ -22,5 +22,5 @@ public interface IPathFunction
     /// <param name="parameters">
     //////<returns> result</returns></param>
     object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
-        SerializingList<Parameter>? parameters);
+        IList<Parameter>? parameters);
 }

@@ -9,7 +9,7 @@ namespace XavierJefferson.JsonPathParser.Function.Json;
 public class KeySetFunction : IPathFunction
 {
     public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
-        SerializingList<Parameter>? parameters)
+        IList<Parameter>? parameters)
     {
         if (context.Configuration.JsonProvider.IsMap(model)) return context.Configuration.JsonProvider.GetPropertyKeys(model);
         return null;

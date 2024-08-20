@@ -12,7 +12,7 @@ public class PatternFlag
     private static readonly PatternFlag DotAll = new(RegexOptions.Singleline, 's');
     private static readonly PatternFlag CultureInvariant = new(RegexOptions.CultureInvariant, 'U');
 
-    private static readonly SerializingList<PatternFlag> Values = new()
+    private static readonly List<PatternFlag> Values = new()
     {
         //UNIX_LINES, 
         CaseInsensitive, Comments, Multiline, DotAll, CultureInvariant

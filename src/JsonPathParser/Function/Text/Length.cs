@@ -26,7 +26,7 @@ public class Length : IPathFunction
     ///     <returns></returns>
     /// </param>
     public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
-        SerializingList<Parameter>? parameters)
+        IList<Parameter>? parameters)
     {
         if (null != parameters && parameters.Count() > 0)
         {

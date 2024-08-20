@@ -54,5 +54,5 @@ public interface IEvaluationContext
     ///     Convenience method to get list of hits as string path representations
     /// </summary>
     /// <returns> list of path representations</returns>
-    SerializingList<string> GetPathList();
+    IList<string> GetPathList();
 }

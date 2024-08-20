@@ -18,7 +18,7 @@ public class EvaluationContextImpl : IEvaluationContext
     private readonly IPath _path;
     private readonly object? _pathResult;
     private readonly bool _suppressExceptions;
-    private readonly SerializingList<PathRef> _updateOperations;
+    private readonly IList<PathRef> _updateOperations;
     private readonly object? _valueResult;
     private int _resultIndex;
 
@@ -30,7 +30,7 @@ public class EvaluationContextImpl : IEvaluationContext
         Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         _valueResult = Configuration.JsonProvider.CreateArray();
         _pathResult = Configuration.JsonProvider.CreateArray();
-        _updateOperations = new SerializingList<PathRef>();
+        _updateOperations = new List<PathRef>();
         _suppressExceptions = Configuration.ContainsOption(ConfigurationOptionEnum.SuppressExceptions);
     }
 
@@ -86,9 +86,9 @@ public class EvaluationContextImpl : IEvaluationContext
     }
 
 
-    public SerializingList<string> GetPathList()
+    public IList<string> GetPathList()
     {
-        var res = new SerializingList<string>();
+        var res = new List<string>();
         if (_resultIndex > 0)
         {
             var objects = Configuration.JsonProvider.AsEnumerable(_pathResult);

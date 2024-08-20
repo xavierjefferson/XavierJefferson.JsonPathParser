@@ -87,7 +87,7 @@ public class CompiledPath : IPath
                 var parameter = new Parameter();
                 parameter.Path = new CompiledPath(path, true);
                 parameter.ParameterType = ParameterTypeEnum.Path;
-                functionPathToken.Parameters = new SerializingList<Parameter> { parameter };
+                functionPathToken.Parameters = new List<Parameter> { parameter };
                 var functionRoot = new RootPathToken('$');
                 functionRoot.SetTail(token);
                 functionRoot.SetNext(token);

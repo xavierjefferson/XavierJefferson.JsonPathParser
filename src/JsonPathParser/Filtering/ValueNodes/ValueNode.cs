@@ -189,7 +189,7 @@ public abstract class ValueNode
             case ValueNode valueNodeInstance:
                 return valueNodeInstance;
             case ICollection<object?> objectCollectionInstance:
-                return new ValueListNode(objectCollectionInstance, jsonProvider);
+                return new ValueListNode(jsonProvider, objectCollectionInstance);
             case Type typeInstance:
                 return CreateClassNode(typeInstance);
         }

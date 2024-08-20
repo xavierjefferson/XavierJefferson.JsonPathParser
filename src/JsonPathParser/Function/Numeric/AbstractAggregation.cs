@@ -16,7 +16,7 @@ public abstract class AbstractAggregation : IPathFunction
 
 
     public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
-        SerializingList<Parameter>? parameters)
+        IList<Parameter>? parameters)
     {
         var count = 0;
         if (context.Configuration.JsonProvider.IsArray(model))

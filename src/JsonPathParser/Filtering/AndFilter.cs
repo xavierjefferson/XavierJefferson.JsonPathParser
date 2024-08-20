@@ -17,7 +17,7 @@ public class AndFilter : Filter
 
     public override Filter And(IPredicate other)
     {
-        ICollection<IPredicate> newPredicates = new SerializingList<IPredicate>(_predicates);
+        ICollection<IPredicate> newPredicates = new List<IPredicate>(_predicates);
         newPredicates.Add(other);
         return new AndFilter(newPredicates);
     }
@@ -26,10 +26,6 @@ public class AndFilter : Filter
     public override bool Apply(IPredicateContext context)
     {
         return _predicates.All(i => i.Apply(context));
-        //foreach (var predicate in _predicates)
-        //    if (!predicate.Apply(context))
-        //        return false;
-        //return true;
     }
 
     public override string ToUnenclosedString()

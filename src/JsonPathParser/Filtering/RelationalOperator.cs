@@ -37,7 +37,7 @@ public class RelationalOperator
     public static RelationalOperator AnyOf = new("ANYOF");
     public static RelationalOperator NoneOf = new("NONEOF");
 
-    private static readonly SerializingList<RelationalOperator> Values = new()
+    private static readonly List<RelationalOperator> Values = new()
     {
         Gte, Lte, Eq, Tseq, Ne, Tsne, Lt, Gt, Regex, Nin, In, Contains, All, Size, Exists, Type, Matches, Empty,
         SubsetOf, AnyOf, NoneOf

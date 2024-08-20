@@ -11,7 +11,7 @@ namespace XavierJefferson.JsonPathParser.Function.Text;
 public class Concatenate : IPathFunction
 {
     public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
-        SerializingList<Parameter>? parameters)
+        IList<Parameter>? parameters)
     {
         var result = new StringBuilder();
         if (context.Configuration.JsonProvider.IsArray(model))

@@ -32,7 +32,7 @@ public class PathTokenTest : TestUtils
 
     private PathToken MakePpt(params string[] properties)
     {
-        return new PropertyPathToken(new SerializingList<string>(properties), '\'');
+        return new PropertyPathToken(new List<string?>(properties), '\'');
     }
 
     private PathToken? MakePathReturningTail(params PathToken[] tokens)

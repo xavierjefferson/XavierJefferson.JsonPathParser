@@ -5,7 +5,7 @@ namespace XavierJefferson.JsonPathParser.Filtering;
 
 public class LogicalExpressionNode : ExpressionNode
 {
-    protected SerializingList<ExpressionNode?> Chain = new();
+    protected List<ExpressionNode?> Chain = new();
 
     private LogicalExpressionNode(ExpressionNode left, LogicalOperator @operator, ExpressionNode? right)
     {

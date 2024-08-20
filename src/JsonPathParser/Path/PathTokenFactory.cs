@@ -12,10 +12,10 @@ public class PathTokenFactory
 
     public static PathToken CreateSinglePropertyPathToken(string property, char stringDelimiter)
     {
-        return new PropertyPathToken(new SerializingList<string> { property }, stringDelimiter);
+        return new PropertyPathToken(new  List<string?> { property }, stringDelimiter);
     }
 
-    public static PathToken CreatePropertyPathToken(SerializingList<string> properties, char stringDelimiter)
+    public static PathToken CreatePropertyPathToken(IList<string?> properties, char stringDelimiter)
     {
         return new PropertyPathToken(properties, stringDelimiter);
     }
@@ -50,7 +50,7 @@ public class PathTokenFactory
         return new PredicatePathToken(predicate);
     }
 
-    public static PathToken CreateFunctionPathToken(string function, SerializingList<Parameter>? parameters)
+    public static PathToken CreateFunctionPathToken(string function, IList<Parameter>? parameters)
     {
         return new FunctionPathToken(function, parameters);
     }

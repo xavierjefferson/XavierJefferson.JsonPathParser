@@ -12,11 +12,11 @@ public class FunctionPathToken : PathToken
 {
     private readonly string? _pathFragment;
 
-    public SerializingList<Parameter>? Parameters { get; set; }
+    public IList<Parameter>? Parameters { get; set; }
 
     public string? FunctionName { get; }
 
-    public FunctionPathToken(string pathFragment, SerializingList<Parameter>? parameters)
+    public FunctionPathToken(string pathFragment, IList<Parameter>? parameters)
     {
         _pathFragment = $"{pathFragment}{(parameters != null && parameters.Count() > 0 ? "(...)" : "()")}";
         if (null != pathFragment)

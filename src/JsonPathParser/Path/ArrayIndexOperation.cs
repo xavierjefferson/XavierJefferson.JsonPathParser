@@ -12,7 +12,7 @@ public class ArrayIndexOperation
 
     private readonly ReadOnlyCollection<int> _indexes;
 
-    private ArrayIndexOperation(SerializingList<int> indexes)
+    private ArrayIndexOperation(IList<int> indexes)
     {
         _indexes = new ReadOnlyCollection<int>(indexes);
     }
@@ -51,8 +51,7 @@ public class ArrayIndexOperation
 
         var tokens = Comma.Split(operation);
 
-        var tempIndexes = new SerializingList<int>(tokens.Length);
-        foreach (var token in tokens) tempIndexes.Add(ParseInteger(token));
+        var tempIndexes = tokens.Select(ParseInteger).ToList();
 
         return new ArrayIndexOperation(tempIndexes);
     }

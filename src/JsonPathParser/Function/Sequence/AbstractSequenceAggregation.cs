@@ -12,7 +12,7 @@ namespace XavierJefferson.JsonPathParser.Function.Sequence;
 public abstract class AbstractSequenceAggregation : IPathFunction, IInvocable
 {
     public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
-        SerializingList<Parameter>? parameters)
+        IList<Parameter>? parameters)
     {
         if (context.Configuration.JsonProvider.IsArray(model))
         {
@@ -31,9 +31,9 @@ public abstract class AbstractSequenceAggregation : IPathFunction, IInvocable
         throw new JsonPathException(AbstractAggregation.EmptyArrayMessage);
     }
 
-    protected abstract int TargetIndex(IEvaluationContext context, SerializingList<Parameter>? parameters);
+    protected abstract int TargetIndex(IEvaluationContext context, IList<Parameter>? parameters);
 
-    protected int GetIndexFromParameters(IEvaluationContext context, SerializingList<Parameter>? parameters)
+    protected int GetIndexFromParameters(IEvaluationContext context, IList<Parameter>? parameters)
     {
         var numbers = Parameter.ToList<double>(context, parameters);
         return Convert.ToInt32(numbers[0]);

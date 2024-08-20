@@ -133,7 +133,7 @@ public class FilterCompiler
     /// </summary>
     private ExpressionNode ReadLogicalOr()
     {
-        var ops = new SerializingList<ExpressionNode>();
+        var ops = new List<ExpressionNode>();
         ops.Add(ReadLogicalAnd());
 
         while (true)
@@ -156,7 +156,7 @@ public class FilterCompiler
     private ExpressionNode ReadLogicalAnd()
     {
         /// @fixme copy-pasted
-        var ops = new SerializingList<ExpressionNode>();
+        var ops = new List<ExpressionNode>();
         ops.Add(ReadLogicalAndOperand());
 
         while (true)

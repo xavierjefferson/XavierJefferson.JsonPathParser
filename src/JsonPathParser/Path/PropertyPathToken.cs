@@ -11,17 +11,17 @@ namespace XavierJefferson.JsonPathParser.Path;
 ///     */
 public class PropertyPathToken : PathToken
 {
-    private readonly SerializingList<string> _properties;
+    private readonly IList<string?> _properties;
     private readonly string _stringDelimiter;
 
-    public PropertyPathToken(SerializingList<string> properties, char stringDelimiter)
+    public PropertyPathToken(IList<string?> properties, char stringDelimiter)
     {
         if (!properties.Any()) throw new InvalidPathException("Empty properties");
         _properties = properties;
         _stringDelimiter = stringDelimiter.ToString();
     }
 
-    public SerializingList<string> GetProperties()
+    public IList<string> GetProperties()
     {
         return _properties;
     }
@@ -68,7 +68,7 @@ public class PropertyPathToken : PathToken
         }
 
         Debug.Assert(MultiPropertyIterationCase());
-        var currentlyHandledProperty = new SerializingList<string>(1);
+        var currentlyHandledProperty = new List<string?>(1);
         currentlyHandledProperty.Add(null);
         foreach (var property in _properties)
         {

@@ -8,13 +8,12 @@ namespace XavierJefferson.JsonPathParser.Filtering;
 
 public class Criteria : IPredicate
 {
-    private readonly SerializingList<Criteria> _criteriaChain;
+    private readonly IList<Criteria> _criteriaChain;
     private RelationalOperator? _criteriaType;
-    public IJsonProvider JsonProvider { get; }
     private ValueNode? _left;
     private ValueNode? _right;
 
-    private Criteria(IJsonProvider jsonProvider, SerializingList<Criteria> criteriaChain, ValueNode left)
+    private Criteria(IJsonProvider jsonProvider, IList<Criteria> criteriaChain, ValueNode left)
     {
         JsonProvider = jsonProvider;
         _left = left;
@@ -22,9 +21,12 @@ public class Criteria : IPredicate
         _criteriaChain.Add(this);
     }
 
-    private Criteria(IJsonProvider jsonProvider, ValueNode left) : this(jsonProvider, new SerializingList<Criteria>(), left)
+    private Criteria(IJsonProvider jsonProvider, ValueNode left) : this(jsonProvider, new List<Criteria>(),
+        left)
     {
     }
+
+    public IJsonProvider JsonProvider { get; }
 
 
     public bool Apply(IPredicateContext context)
@@ -48,7 +50,7 @@ public class Criteria : IPredicate
 
     private ICollection<RelationalExpressionNode> ToRelationalExpressionNodes()
     {
-        var nodes = new SerializingList<RelationalExpressionNode>(_criteriaChain.Count());
+        var nodes = new List<RelationalExpressionNode>(_criteriaChain.Count());
         foreach (var criteria in _criteriaChain)
             nodes.Add(new RelationalExpressionNode(criteria._left, criteria._criteriaType, criteria._right));
         return nodes;
@@ -219,10 +221,9 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria In(ICollection<object?> collection)
     {
-
         ArgumentNullException.ThrowIfNull(collection);
         _criteriaType = RelationalOperator.In;
-        _right = new ValueListNode(collection, JsonProvider);
+        _right = new ValueListNode(JsonProvider, collection);
         return this;
     }
 
@@ -260,7 +261,7 @@ public class Criteria : IPredicate
     {
         ArgumentNullException.ThrowIfNull(collection);
         _criteriaType = RelationalOperator.Nin;
-        _right = new ValueListNode(collection, JsonProvider);
+        _right = new ValueListNode(JsonProvider, collection);
         return this;
     }
 
@@ -287,7 +288,7 @@ public class Criteria : IPredicate
     {
         ArgumentNullException.ThrowIfNull(c);
         _criteriaType = RelationalOperator.SubsetOf;
-        _right = new ValueListNode(c ?? new List<object?>(), JsonProvider);
+        _right = new ValueListNode(JsonProvider, c ?? new List<object?>());
         return this;
     }
 
@@ -312,7 +313,7 @@ public class Criteria : IPredicate
     {
         ArgumentNullException.ThrowIfNull(c);
         _criteriaType = RelationalOperator.AnyOf;
-        _right = new ValueListNode(c.Cast<object?>().ToSerializingList(), JsonProvider);
+        _right = new ValueListNode(JsonProvider, c.Cast<object?>().ToSerializingList());
         return this;
     }
 
@@ -337,7 +338,7 @@ public class Criteria : IPredicate
     {
         ArgumentNullException.ThrowIfNull(c);
         _criteriaType = RelationalOperator.NoneOf;
-        _right = new ValueListNode(c ?? new List<object?>(), JsonProvider);
+        _right = new ValueListNode(JsonProvider, c ?? new List<object?>());
         return this;
     }
 
@@ -364,7 +365,7 @@ public class Criteria : IPredicate
     {
         ArgumentNullException.ThrowIfNull(collection);
         _criteriaType = RelationalOperator.All;
-        _right = new ValueListNode(collection, JsonProvider);
+        _right = new ValueListNode(JsonProvider, collection);
         return this;
     }
 

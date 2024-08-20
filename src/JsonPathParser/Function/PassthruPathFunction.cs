@@ -9,7 +9,7 @@ namespace XavierJefferson.JsonPathParser.Function;
 public class PassthruPathFunction : IPathFunction
 {
     public object? Invoke(string currentPath, PathRef parent, object? model, IEvaluationContext context,
-        SerializingList<Parameter>? parameters)
+        IList<Parameter>? parameters)
     {
         return model;
     }
