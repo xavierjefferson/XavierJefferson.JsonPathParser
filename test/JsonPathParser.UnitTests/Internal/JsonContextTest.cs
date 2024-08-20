@@ -10,8 +10,8 @@ public class JsonContextTest : TestUtils
     public void cached_path_with_predicates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
-        var feq = Filter.Create(Criteria.Where(jsonProvider, "category").Eq(jsonProvider, "reference"));
-        var fne = Filter.Create(Criteria.Where(jsonProvider, "category").Ne(jsonProvider, "reference"));
+        var feq = Filter.Create(Criteria.Where(jsonProvider, "category").Eq("reference"));
+        var fne = Filter.Create(Criteria.Where(jsonProvider, "category").Ne("reference"));
 
         var jsonDoc = JsonPath.Parse(JsonTestData.JsonDocument);
 

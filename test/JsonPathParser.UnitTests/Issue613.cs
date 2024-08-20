@@ -20,10 +20,10 @@ public class Issue613 : TestUtils
     public void issue_613_eq_ne_test(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "time").Eq(jsonProvider, OfdtMiddle))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "time").Eq(OfdtMiddle))
             .Apply(CreatePredicateContext(MapMiddle, testCase)));
         Assert.True(
-            Filter.Create(Criteria.Where(jsonProvider, "time").Ne(jsonProvider, OfdtBig)).Apply(CreatePredicateContext(MapMiddle, testCase)));
+            Filter.Create(Criteria.Where(jsonProvider, "time").Ne(OfdtBig)).Apply(CreatePredicateContext(MapMiddle, testCase)));
     }
 
     [Theory]
@@ -32,8 +32,8 @@ public class Issue613 : TestUtils
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(
-            Filter.Create(Criteria.Where(jsonProvider, "time").Lt(jsonProvider, OfdtBig)).Apply(CreatePredicateContext(MapMiddle, testCase)));
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "time").Lte(jsonProvider, OfdtSmall))
+            Filter.Create(Criteria.Where(jsonProvider, "time").Lt(OfdtBig)).Apply(CreatePredicateContext(MapMiddle, testCase)));
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "time").Lte(OfdtSmall))
             .Apply(CreatePredicateContext(MapMiddle, testCase)));
     }
 
@@ -42,9 +42,9 @@ public class Issue613 : TestUtils
     public void issue_613_gt_gte_test(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
-        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "time").Gt(jsonProvider, OfdtBig))
+        Assert.False(Filter.Create(Criteria.Where(jsonProvider, "time").Gt(OfdtBig))
             .Apply(CreatePredicateContext(MapMiddle, testCase)));
-        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "time").Gte(jsonProvider, OfdtSmall))
+        Assert.True(Filter.Create(Criteria.Where(jsonProvider, "time").Gte(OfdtSmall))
             .Apply(CreatePredicateContext(MapMiddle, testCase)));
     }
 }

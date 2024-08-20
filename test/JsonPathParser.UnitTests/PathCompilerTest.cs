@@ -1,6 +1,5 @@
-using Moq;
 using XavierJefferson.JsonPathParser.Exceptions;
-using XavierJefferson.JsonPathParser.Interfaces;
+using XavierJefferson.JsonPathParser.Filtering;
 using XavierJefferson.JsonPathParser.Path;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
 
@@ -137,11 +136,10 @@ public class PathCompilerTest : TestUtils
     [Fact]
     public void a_placeholder_criteria_can_be_parsed()
     {
-        var p = new Mock<IPredicate>();
-        p.Setup(i => i.Apply(It.IsAny<IPredicateContext>())).Returns((IPredicateContext context) => { return false; });
-        Assert.Equal("$[?]", PathCompiler.Compile("$[?]", p.Object).ToString());
-        Assert.Equal("$[?,?]", PathCompiler.Compile("$[?,?]", p.Object, p.Object).ToString());
-        Assert.Equal("$[?,?,?]", PathCompiler.Compile("$[?,?,?]", p.Object, p.Object, p.Object).ToString());
+        var p = SimplePredicate.Create(_ => { return false; });
+        Assert.Equal("$[?]", PathCompiler.Compile("$[?]", p).ToString());
+        Assert.Equal("$[?,?]", PathCompiler.Compile("$[?,?]", p, p).ToString());
+        Assert.Equal("$[?,?,?]", PathCompiler.Compile("$[?,?,?]", p, p, p).ToString());
     }
 
     [Fact]

@@ -294,7 +294,7 @@ Third option is to implement your own predicates.  You can either use the IPredi
 or use the SimplePredicate class.
  
 ```C# 
-IPredicate booksWithISBN = new SimplePredicate(ctx=> ctx.Item<IDictionary<string, object??>>().ContainsKey("isbn"));
+IPredicate booksWithISBN = new SimplePredicate(ctx=> ctx.GetItem<IDictionary<string, object??>>().ContainsKey("isbn"));
 
 List<Dictionary<string, object?>> books = 
    reader.Read<List<Dictionary<string, object?>>>("$.store.book[?].isbn", booksWithISBN);
