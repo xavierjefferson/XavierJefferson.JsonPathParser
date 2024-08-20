@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;
 
@@ -9,7 +10,7 @@ public class Issue612
     [ClassData(typeof(ProviderTypeTestCases))]
     public void Test(IProviderTypeTestCase testCase)
     {
-        var config = testCase.Configuration.SetOptions(Option.SuppressExceptions);
+        var config = testCase.Configuration.SetOptions(ConfigurationOptionEnum.SuppressExceptions);
         var json = "{\"1\":{\"2\":null}}";
         var documentContext = JsonPath.Using(config).Parse(json);
         var query = JsonPath.Compile("$.1.2.a.b.c");

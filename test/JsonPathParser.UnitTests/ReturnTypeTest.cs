@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;
@@ -67,7 +68,7 @@ public class ReturnTypeTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void a_path_evaluation_can_be_returned_as_PATH_LIST(IProviderTypeTestCase testCase)
     {
-        var conf = testCase.Configuration.SetOptions(Option.AsPathList);
+        var conf = testCase.Configuration.SetOptions(ConfigurationOptionEnum.AsPathList);
 
         var pathList = JsonPath.Using(conf).Parse(JsonTestData.JsonDocument).Read("$..author").AsList();
 

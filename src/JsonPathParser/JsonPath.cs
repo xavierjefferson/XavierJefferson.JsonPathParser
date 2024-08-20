@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Text;
 using System.Text.Json;
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.Interfaces;
@@ -141,16 +142,16 @@ public class JsonPath
     /// <returns> object(s) matched by the given path</returns>
     public object? Read(object? jsonObject, Configuration configuration)
     {
-        var optAsPathList = configuration.ContainsOption(Option.AsPathList);
-        var optAlwaysReturnList = configuration.ContainsOption(Option.AlwaysReturnList);
-        var optSuppressExceptions = configuration.ContainsOption(Option.SuppressExceptions);
+        var optAsPathList = configuration.ContainsOption(ConfigurationOptionEnum.AsPathList);
+        var optAlwaysReturnList = configuration.ContainsOption(ConfigurationOptionEnum.AlwaysReturnList);
+        var optSuppressExceptions = configuration.ContainsOption(ConfigurationOptionEnum.SuppressExceptions);
 
         if (_path.IsFunctionPath())
         {
             if (optAsPathList || optAlwaysReturnList)
             {
                 if (optSuppressExceptions) return _path.IsDefinite() ? null : configuration.JsonProvider.CreateArray();
-                throw new JsonPathException("Options " + Option.AsPathList + " and " + Option.AlwaysReturnList +
+                throw new JsonPathException("Options " + ConfigurationOptionEnum.AsPathList + " and " + ConfigurationOptionEnum.AlwaysReturnList +
                                             " are not allowed when using path functions!");
             }
 
@@ -203,7 +204,7 @@ public class JsonPath
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         if (!evaluationContext.GetPathList().Any())
         {
-            var optSuppressExceptions = configuration.ContainsOption(Option.SuppressExceptions);
+            var optSuppressExceptions = configuration.ContainsOption(ConfigurationOptionEnum.SuppressExceptions);
             if (optSuppressExceptions)
                 return HandleMissingPathInContext(configuration);
             throw new PathNotFoundException();
@@ -230,7 +231,7 @@ public class JsonPath
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         if (!evaluationContext.GetPathList().Any())
         {
-            var optSuppressExceptions = configuration.ContainsOption(Option.SuppressExceptions);
+            var optSuppressExceptions = configuration.ContainsOption(ConfigurationOptionEnum.SuppressExceptions);
             if (optSuppressExceptions)
                 return HandleMissingPathInContext(configuration);
             throw new PathNotFoundException();
@@ -254,7 +255,7 @@ public class JsonPath
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         if (!evaluationContext.GetPathList().Any())
         {
-            var optSuppressExceptions = configuration.ContainsOption(Option.SuppressExceptions);
+            var optSuppressExceptions = configuration.ContainsOption(ConfigurationOptionEnum.SuppressExceptions);
             if (optSuppressExceptions)
                 return HandleMissingPathInContext(configuration);
             throw new PathNotFoundException();
@@ -279,7 +280,7 @@ public class JsonPath
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         if (!evaluationContext.GetPathList().Any())
         {
-            var optSuppressExceptions = configuration.ContainsOption(Option.SuppressExceptions);
+            var optSuppressExceptions = configuration.ContainsOption(ConfigurationOptionEnum.SuppressExceptions);
             if (optSuppressExceptions)
                 return HandleMissingPathInContext(configuration);
             throw new PathNotFoundException();
@@ -305,7 +306,7 @@ public class JsonPath
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         if (!evaluationContext.GetPathList().Any())
         {
-            var optSuppressExceptions = configuration.ContainsOption(Option.SuppressExceptions);
+            var optSuppressExceptions = configuration.ContainsOption(ConfigurationOptionEnum.SuppressExceptions);
             if (optSuppressExceptions)
                 return HandleMissingPathInContext(configuration);
             throw new PathNotFoundException();
@@ -322,7 +323,7 @@ public class JsonPath
         Assertions.NotEmpty(newKeyName, "newKeyName can not be null or empty");
         ArgumentNullException.ThrowIfNull(configuration);
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
-        var optSuppressExceptions = configuration.ContainsOption(Option.SuppressExceptions);
+        var optSuppressExceptions = configuration.ContainsOption(ConfigurationOptionEnum.SuppressExceptions);
         foreach (var updateOperation in evaluationContext.UpdateOperations)
         {
             try
@@ -704,15 +705,15 @@ public class JsonPath
     private object? ResultByConfiguration(object? jsonObject, Configuration configuration,
         IEvaluationContext evaluationContext)
     {
-        if (configuration.ContainsOption(Option.AsPathList))
+        if (configuration.ContainsOption(ConfigurationOptionEnum.AsPathList))
             return evaluationContext.GetPathList();
         return jsonObject;
     }
 
     private object? HandleMissingPathInContext(Configuration configuration)
     {
-        var optAsPathList = configuration.ContainsOption(Option.AsPathList);
-        var optAlwaysReturnList = configuration.ContainsOption(Option.AlwaysReturnList);
+        var optAsPathList = configuration.ContainsOption(ConfigurationOptionEnum.AsPathList);
+        var optAlwaysReturnList = configuration.ContainsOption(ConfigurationOptionEnum.AlwaysReturnList);
         if (optAsPathList) return configuration.JsonProvider.CreateArray();
 
         if (optAlwaysReturnList)
@@ -738,7 +739,7 @@ public class JsonPath
         var evaluationContext = _path.Evaluate(jsonObject, jsonObject, configuration, true);
         if (!evaluationContext.GetPathList().Any())
         {
-            var optSuppressExceptions = configuration.ContainsOption(Option.SuppressExceptions);
+            var optSuppressExceptions = configuration.ContainsOption(ConfigurationOptionEnum.SuppressExceptions);
             if (optSuppressExceptions)
                 return (T)HandleMissingPathInContext(configuration);
             throw new PathNotFoundException();

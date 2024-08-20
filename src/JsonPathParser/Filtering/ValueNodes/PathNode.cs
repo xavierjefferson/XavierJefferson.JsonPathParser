@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.Logging;
@@ -77,7 +78,7 @@ public class PathNode : TypedValueNode<IPath>
             try
             {
                 var c = Configuration.CreateBuilder().WithJsonProvider(context.Configuration.JsonProvider)
-                    .WithOptions(Option.RequireProperties).Build();
+                    .WithOptions(ConfigurationOptionEnum.RequireProperties).Build();
                 var result = _path.Evaluate(context.Item, context.Root, c).GetValue(false);
                 return result == IJsonProvider.Undefined ? ValueNodeConstants.False : ValueNodeConstants.True;
             }

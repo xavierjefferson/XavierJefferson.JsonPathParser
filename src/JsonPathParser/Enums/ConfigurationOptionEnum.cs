@@ -1,6 +1,6 @@
-namespace XavierJefferson.JsonPathParser;
+namespace XavierJefferson.JsonPathParser.Enums;
 
-public enum Option
+public enum ConfigurationOptionEnum
 {
     /// <summary>
     ///     returns <code>null</code> for missing leaf.

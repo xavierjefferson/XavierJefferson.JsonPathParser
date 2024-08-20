@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;
@@ -39,7 +40,7 @@ public class NullHandlingTest
     [ClassData(typeof(ProviderTypeTestCases))]
     public void last_token_defaults_to_null(IProviderTypeTestCase testCase)
     {
-        var configuration = testCase.Configuration.SetOptions(Option.DefaultPathLeafToNull);
+        var configuration = testCase.Configuration.SetOptions(ConfigurationOptionEnum.DefaultPathLeafToNull);
 
         Assert.Null(JsonPath.Parse(Document, configuration).Read("$.children[2].age"));
     }
@@ -56,7 +57,7 @@ public class NullHandlingTest
     [ClassData(typeof(ProviderTypeTestCases))]
     public void the_age_of_all_with_age_defined(IProviderTypeTestCase testCase)
     {
-        var result = JsonPath.Using(testCase.Configuration.SetOptions(Option.SuppressExceptions))
+        var result = JsonPath.Using(testCase.Configuration.SetOptions(ConfigurationOptionEnum.SuppressExceptions))
             .Parse(Document).Read("$.children[*].age").AsList();
 
         MyAssert.ContainsExactly(result, 0d, null);
@@ -76,7 +77,7 @@ public class NullHandlingTest
     {
         var json = "{\"a\":[{\"b\":1,\"c\":2},{\"b\":5,\"c\":2}]}";
 
-        var result = JsonPath.Using(testCase.Configuration.SetOptions(Option.DefaultPathLeafToNull))
+        var result = JsonPath.Using(testCase.Configuration.SetOptions(ConfigurationOptionEnum.DefaultPathLeafToNull))
             .Parse(json).Read("a[?(@.b==5)].d").AsList();
 
         Assert.Single(result);

@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Path;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
@@ -69,7 +70,7 @@ public class JsonPathTest : TestUtils
     public void missing_prop(IProviderTypeTestCase testCase)
     {
         Assert.Throws<PathNotFoundException>(() =>
-            JsonPath.Using(testCase.Configuration.AddOptions(Option.RequireProperties)).Parse(Document)
+            JsonPath.Using(testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties)).Parse(Document)
                 .Read("$.store.book[*].fooBar.not"));
     }
 

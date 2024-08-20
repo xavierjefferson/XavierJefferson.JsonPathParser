@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.Mapper;
@@ -15,7 +16,7 @@ public class IssuesTest : TestUtils
     {
         var json = "{ \"foo\": { \"bar\" : \"val\" }, \"moo\": { \"cow\" : \"val\" } }";
 
-        var configuration = testCase.Configuration.SetOptions(Option.AsPathList);
+        var configuration = testCase.Configuration.SetOptions(ConfigurationOptionEnum.AsPathList);
 
         var pathList = JsonPath.Using(configuration).Parse(json).Read(JsonPath.Compile("$.*.bar")).AsList();
 
@@ -304,7 +305,7 @@ public class IssuesTest : TestUtils
     public void issue_22c(IProviderTypeTestCase testCase)
     {
         //Configuration configuration = Configuration.CreateBuilder().Build();
-        var configuration = testCase.Configuration.SetOptions(Option.SuppressExceptions);
+        var configuration = testCase.Configuration.SetOptions(ConfigurationOptionEnum.SuppressExceptions);
 
         var json = "{\"a\":{\"b\":1,\"c\":2}}";
         Assert.Null(JsonPath.Parse(json, configuration).Read("a.d"));
@@ -316,7 +317,7 @@ public class IssuesTest : TestUtils
     public void issue_22b(IProviderTypeTestCase testCase)
     {
         var json = "{\"a\":[{\"b\":1,\"c\":2},{\"b\":5,\"c\":2}]}";
-        var res = JsonPath.Using(testCase.Configuration.SetOptions(Option.DefaultPathLeafToNull))
+        var res = JsonPath.Using(testCase.Configuration.SetOptions(ConfigurationOptionEnum.DefaultPathLeafToNull))
             .Parse(json).Read("a[?(@.b==5)].d").AsList();
         MyAssert.ContainsExactly(res, new object[] { null });
     }
@@ -460,7 +461,7 @@ public class IssuesTest : TestUtils
 
         Assert.Null(JsonPath.Read(json, "test"));
 
-        Assert.Null(JsonPath.Using(testCase.Configuration.SetOptions(Option.SuppressExceptions))
+        Assert.Null(JsonPath.Using(testCase.Configuration.SetOptions(ConfigurationOptionEnum.SuppressExceptions))
             .Parse(json).Read("nonExistingProperty"));
 
         Assert.Throws<PathNotFoundException>(() => { JsonPath.Read(json, "nonExistingProperty"); });
@@ -483,7 +484,7 @@ public class IssuesTest : TestUtils
     {
         var json = "{\"a\": {}}";
 
-        var configuration = testCase.Configuration.SetOptions(Option.SuppressExceptions);
+        var configuration = testCase.Configuration.SetOptions(ConfigurationOptionEnum.SuppressExceptions);
         Assert.Null(JsonPath.Using(configuration).Parse(json).Read("a.x"));
 
         var e = Assert.Throws<PathNotFoundException>(() => { JsonPath.Read(json, "a.x"); });
@@ -706,7 +707,7 @@ public class IssuesTest : TestUtils
                    "    ]\n" +
                    "}";
 
-        var configuration = testCase.Configuration.AddOptions(Option.DefaultPathLeafToNull);
+        var configuration = testCase.Configuration.AddOptions(ConfigurationOptionEnum.DefaultPathLeafToNull);
 
         var keys = JsonPath.Using(configuration).Parse(json).Read("$.array1[*].array2[0].key").AsList();
     }

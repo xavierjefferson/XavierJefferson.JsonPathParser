@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser;
@@ -7,7 +8,7 @@ namespace XavierJefferson.JsonPathParser;
 /// </summary>
 public class ConfigurationBuilder
 {
-    private ReadOnlySet<Option> _options = new ReadOnlySet<Option>(new HashSet<Option>());
+    private ReadOnlySet<ConfigurationOptionEnum> _options = new ReadOnlySet<ConfigurationOptionEnum>(new HashSet<ConfigurationOptionEnum>());
     private List<EvaluationCallback> _evaluationCallbacks = new();
     public IMappingProvider? MappingProvider { get; private set; }
 
@@ -25,15 +26,15 @@ public class ConfigurationBuilder
         return this;
     }
 
-    public ConfigurationBuilder WithOptions(params Option[] flags)
+    public ConfigurationBuilder WithOptions(params ConfigurationOptionEnum[] flags)
     {
-        this._options = new ReadOnlySet<Option>(flags);
+        this._options = new ReadOnlySet<ConfigurationOptionEnum>(flags);
         return this;
     }
 
-    public ConfigurationBuilder WithOptions(IEnumerable<Option> options)
+    public ConfigurationBuilder WithOptions(IEnumerable<ConfigurationOptionEnum> options)
     {
-        this._options = new ReadOnlySet<Option>(options);
+        this._options = new ReadOnlySet<ConfigurationOptionEnum>(options);
         return this;
     }
 

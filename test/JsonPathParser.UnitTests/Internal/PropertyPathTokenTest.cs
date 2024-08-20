@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.Logging;
@@ -38,7 +39,7 @@ public class PropertyPathTokenTest
 
         //Assert.Null(result);
 
-        var configuration = testCase.Configuration.SetOptions(Option.SuppressExceptions);
+        var configuration = testCase.Configuration.SetOptions(ConfigurationOptionEnum.SuppressExceptions);
 
         var json = "{\"a\":{\"b\":1,\"c\":2}";
         Assert.Null(JsonPath.Parse(_simpleMap, configuration).Read("$.not-found"));

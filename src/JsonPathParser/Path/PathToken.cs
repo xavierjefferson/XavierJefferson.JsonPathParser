@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Function;
 using XavierJefferson.JsonPathParser.Helpers;
@@ -47,14 +48,14 @@ public abstract class PathToken
 
                 if (IsLeaf())
                 {
-                    if (context.Options.Contains(Option.DefaultPathLeafToNull))
+                    if (context.Options.Contains(ConfigurationOptionEnum.DefaultPathLeafToNull))
                     {
                         propertyVal = null;
                     }
                     else
                     {
-                        if (context.Options.Contains(Option.SuppressExceptions) ||
-                            !context.Options.Contains(Option.RequireProperties))
+                        if (context.Options.Contains(ConfigurationOptionEnum.SuppressExceptions) ||
+                            !context.Options.Contains(ConfigurationOptionEnum.RequireProperties))
                             return;
                         throw new PathNotFoundException($"No results for path: {evalPath}");
                     }
@@ -62,8 +63,8 @@ public abstract class PathToken
                 else
                 {
                     if ((!(IsUpstreamDefinite() && IsTokenDefinite()) &&
-                         !context.Options.Contains(Option.RequireProperties)) ||
-                        context.Options.Contains(Option.SuppressExceptions))
+                         !context.Options.Contains(ConfigurationOptionEnum.RequireProperties)) ||
+                        context.Options.Contains(ConfigurationOptionEnum.SuppressExceptions))
                         // If there is some indefiniteness in the path and properties are not required - we'll ignore
                         // absent property. And also in case of exception suppression - so that other path evaluation
                         // branches could be examined.
@@ -99,7 +100,7 @@ public abstract class PathToken
                     propertyVal = ReadObjectProperty(property, model, context);
                     if (propertyVal == IJsonProvider.Undefined)
                     {
-                        if (context.Options.Contains(Option.DefaultPathLeafToNull))
+                        if (context.Options.Contains(ConfigurationOptionEnum.DefaultPathLeafToNull))
                             propertyVal = null;
                         else
                             continue;
@@ -107,9 +108,9 @@ public abstract class PathToken
                 }
                 else
                 {
-                    if (context.Options.Contains(Option.DefaultPathLeafToNull))
+                    if (context.Options.Contains(ConfigurationOptionEnum.DefaultPathLeafToNull))
                         propertyVal = null;
-                    else if (context.Options.Contains(Option.RequireProperties))
+                    else if (context.Options.Contains(ConfigurationOptionEnum.RequireProperties))
                         throw new PathNotFoundException($"Missing property in path {evalPath}");
                     else
                         continue;

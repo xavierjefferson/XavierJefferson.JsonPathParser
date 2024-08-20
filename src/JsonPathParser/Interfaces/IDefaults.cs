@@ -1,3 +1,5 @@
+using XavierJefferson.JsonPathParser.Enums;
+
 namespace XavierJefferson.JsonPathParser.Interfaces;
 
 public interface IDefaults
@@ -10,7 +12,7 @@ public interface IDefaults
     /// <summary>
     ///     Returns default setOptions
     ///     <returns> setOptions</returns>
-    HashSet<Option> Options { get; }
+    HashSet<ConfigurationOptionEnum> Options { get; }
 
     /// <summary>
     ///     Returns the default <see cref="MappingProvider"/>

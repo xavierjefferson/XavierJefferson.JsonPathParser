@@ -31,13 +31,13 @@ public class EvaluationContextImpl : IEvaluationContext
         _valueResult = Configuration.JsonProvider.CreateArray();
         _pathResult = Configuration.JsonProvider.CreateArray();
         _updateOperations = new SerializingList<PathRef>();
-        _suppressExceptions = Configuration.ContainsOption(Option.SuppressExceptions);
+        _suppressExceptions = Configuration.ContainsOption(ConfigurationOptionEnum.SuppressExceptions);
     }
 
     public IJsonProvider JsonProvider => Configuration.JsonProvider;
 
 
-    public IReadOnlySet<Option> Options => Configuration.Options;
+    public IReadOnlySet<ConfigurationOptionEnum> Options => Configuration.Options;
 
 
     public Configuration Configuration { get; }

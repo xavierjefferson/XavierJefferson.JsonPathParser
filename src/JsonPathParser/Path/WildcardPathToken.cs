@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.PathRefs;
 
@@ -20,7 +21,7 @@ public class WildcardPathToken : PathToken
                 }
                 catch (PathNotFoundException p)
                 {
-                    if (context.Options.Contains(Option.RequireProperties)) throw p;
+                    if (context.Options.Contains(ConfigurationOptionEnum.RequireProperties)) throw p;
                 }
     }
 

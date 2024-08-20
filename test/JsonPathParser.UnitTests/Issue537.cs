@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Extensions;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
 using XavierJefferson.JsonPathParser.UnitTests.Internal;
@@ -9,7 +10,7 @@ public class Issue537 : TestBase
 {
     private static Configuration GetConfiguration(IProviderTypeTestCase testCase)
     {
-        return testCase.Configuration.AddOptions(Option.SuppressExceptions);
+        return testCase.Configuration.AddOptions(ConfigurationOptionEnum.SuppressExceptions);
     }
 
     [Theory]

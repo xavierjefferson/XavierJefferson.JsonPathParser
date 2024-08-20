@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Extensions;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.PathRefs;
@@ -189,7 +190,7 @@ public class ScanPathToken : PathToken
                 // so we'll allow it to do its job.
                 return true;
 
-            if (_propertyPathToken.IsLeaf() && _context.Options.Contains(Option.DefaultPathLeafToNull))
+            if (_propertyPathToken.IsLeaf() && _context.Options.Contains(ConfigurationOptionEnum.DefaultPathLeafToNull))
                 // In case of DEFAULT_PATH_LEAF_TO_NULL missing properties is not a problem.
                 return true;
 

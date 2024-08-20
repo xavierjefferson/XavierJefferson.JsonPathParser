@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Text;
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.PathRefs;
@@ -51,7 +52,7 @@ public class PropertyPathToken : PathToken
         if (!context.JsonProvider.IsMap(model))
         {
             if (!IsUpstreamDefinite()
-                || context.Options.Contains(Option.SuppressExceptions))
+                || context.Options.Contains(ConfigurationOptionEnum.SuppressExceptions))
                 return;
 
             var m = model == null ? "null" : model.GetType().FullName;

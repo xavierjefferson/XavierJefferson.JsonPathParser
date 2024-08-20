@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;
@@ -81,7 +82,7 @@ public class DeepScanTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void when_deep_scanning_require_properties_is_ignored_on_scan_target(IProviderTypeTestCase testCase)
     {
-        var conf = testCase.Configuration.AddOptions(Option.RequireProperties);
+        var conf = testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties);
 
         var result = JsonPath.Parse("[{\"x\": {\"foo\": {\"x\": 4}, \"x\": null}, \"y\": {\"x\": 1}}, {\"x\": []}]")
             .Read<List<object?>>(
@@ -100,7 +101,7 @@ public class DeepScanTest : TestUtils
     public void when_deep_scanning_require_properties_is_ignored_on_scan_target_but_not_on_children(
         IProviderTypeTestCase testCase)
     {
-        var conf = testCase.Configuration.AddOptions(Option.RequireProperties);
+        var conf = testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties);
 
         MyAssert.EvaluationThrows<PathNotFoundException>("{\"foo\": {\"baz\": 4}}", "$..foo.bar", conf);
     }
@@ -124,7 +125,7 @@ public class DeepScanTest : TestUtils
         //Assert.True((JpDictionary)result).hasSize(2).ContainsEntry("a", "a-val").ContainsEntry("c", "c-val");
 
         // But this semantics changes when DEFAULT_PATH_LEAF_TO_NULL comes into play.
-        var conf = testCase.Configuration.AddOptions(Option.DefaultPathLeafToNull);
+        var conf = testCase.Configuration.AddOptions(ConfigurationOptionEnum.DefaultPathLeafToNull);
         var result2 = JsonPath.Using(conf)
             .Parse("[{\"a\": \"a-val\", \"b\": \"b-val\", \"c\": \"c-val\"}, [1, 5], {\"a\": \"a-val\"}]")
             .Read<List<object?>>(
@@ -150,7 +151,7 @@ public class DeepScanTest : TestUtils
             GetSingletonMap("a", "a1")
         };
 
-        var configuration = testCase.Configuration.AddOptions(Option.RequireProperties);
+        var configuration = testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties);
 
         var result = JsonPath.Using(configuration).Parse(json).Read("$..a");
 
@@ -167,7 +168,7 @@ public class DeepScanTest : TestUtils
             GetSingletonMap("b", "b2")
         };
 
-        var configuration = testCase.Configuration.AddOptions(Option.RequireProperties);
+        var configuration = testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties);
 
         var result = JsonPath.Using(configuration).Parse(json).Read("$..a");
 
@@ -190,7 +191,7 @@ public class DeepScanTest : TestUtils
             ab
         };
 
-        var configuration = testCase.Configuration.AddOptions(Option.RequireProperties);
+        var configuration = testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties);
 
         var result = JsonPath.Using(configuration).Parse(json).Read("$..['a', 'b']").AsListOfMap();
 
@@ -219,7 +220,7 @@ public class DeepScanTest : TestUtils
             ad
         };
 
-        var configuration = testCase.Configuration.AddOptions(Option.RequireProperties);
+        var configuration = testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties);
 
         var result = JsonPath.Using(configuration).Parse(json).Read("$..['a', 'b']").AsListOfMap();
 
@@ -312,7 +313,7 @@ public class DeepScanTest : TestUtils
             y,
             z
         };
-        Assert.True(JsonPath.Using(testCase.Configuration.AddOptions(Option.RequireProperties))
+        Assert.True(JsonPath.Using(testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties))
             .Parse(json)
             .Read<List<object?>>("$..['a'].x").ContainsExactly("xx", "xx"));
     }
@@ -346,7 +347,7 @@ public class DeepScanTest : TestUtils
             frog
         };
         var jpObjectList = JsonPath
-            .Using(testCase.Configuration.AddOptions(Option.RequireProperties)).Parse(animals)
+            .Using(testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties)).Parse(animals)
             .Read<List<object?>>("$..[?(@.mammal == true)].color");
         MyAssert.ContainsExactly(jpObjectList, brown, white);
     }
@@ -369,10 +370,10 @@ public class DeepScanTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void DeepScanPathRequireProperties(IProviderTypeTestCase testCase)
     {
-        ExecuteScanPath(testCase, Option.RequireProperties);
+        ExecuteScanPath(testCase, ConfigurationOptionEnum.RequireProperties);
     }
 
-    private void ExecuteScanPath(IProviderTypeTestCase testCase, params Option[] options)
+    private void ExecuteScanPath(IProviderTypeTestCase testCase, params ConfigurationOptionEnum[] options)
     {
         var json = "{'index': 'index', 'data': {'array': [{ 'object1': { 'name': 'robert'} }]}}";
         var expected = new Dictionary<string, object?>

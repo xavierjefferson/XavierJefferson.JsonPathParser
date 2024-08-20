@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Interfaces;
 
 namespace XavierJefferson.JsonPathParser;
@@ -10,7 +11,7 @@ public class Configuration
 {
     private static IDefaults? _defaults;
 
-    internal Configuration(IJsonProvider jsonProvider, IMappingProvider mappingProvider, ReadOnlySet<Option> options,
+    internal Configuration(IJsonProvider jsonProvider, IMappingProvider mappingProvider, ReadOnlySet<ConfigurationOptionEnum> options,
         IEnumerable<EvaluationCallback> evaluationCallbacks)
     {
         ArgumentNullException.ThrowIfNull(evaluationCallbacks);
@@ -43,7 +44,7 @@ public class Configuration
     ///     Returns the options used by this configuration
     /// </summary>
     /// <returns> the new configuration instance</returns>
-    public ReadOnlySet<Option> Options { get; }
+    public ReadOnlySet<ConfigurationOptionEnum> Options { get; }
 
     /// <summary>
     ///     HashSet Default configuration
@@ -122,7 +123,7 @@ public class Configuration
     /// </summary>
     ///     <param name="options">options to.Add</param>
     ///     <returns> a new configuration</returns>
-    public Configuration AddOptions(params Option[] options)
+    public Configuration AddOptions(params ConfigurationOptionEnum[] options)
     {
         var opts = Options.Union(options);
         return CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(MappingProvider).WithOptions(opts)
@@ -134,7 +135,7 @@ public class Configuration
     /// </summary>
     ///     <param name="options">></param>
     //////<returns> the new configuration instance</returns>
-    public Configuration SetOptions(params Option[] options)
+    public Configuration SetOptions(params ConfigurationOptionEnum[] options)
     {
         var a = CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(MappingProvider);
         return a.WithOptions(options).WithEvaluationCallbacks(EvaluationCallbacks).Build();
@@ -144,11 +145,11 @@ public class Configuration
     /// <summary>
     ///     Check if this configuration contains the given option
     /// </summary>
-    ///     <param name="option">option to check</param>
+    ///     <param name="configurationOption">option to check</param>
     ///     <returns> true if configurations contains option</returns>
-    public bool ContainsOption(Option option)
+    public bool ContainsOption(ConfigurationOptionEnum configurationOption)
     {
-        return Options.Contains(option);
+        return Options.Contains(configurationOption);
     }
 
     /// <summary>

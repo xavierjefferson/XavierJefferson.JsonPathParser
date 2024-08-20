@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 
 namespace XavierJefferson.JsonPathParser.Path;
@@ -17,7 +18,7 @@ public abstract class ArrayPathToken : PathToken
         if (model == null)
         {
             if (!IsUpstreamDefinite()
-                || context.Options.Contains(Option.SuppressExceptions))
+                || context.Options.Contains(ConfigurationOptionEnum.SuppressExceptions))
                 return false;
             throw new PathNotFoundException($"The path {currentPath} is null");
         }
@@ -25,7 +26,7 @@ public abstract class ArrayPathToken : PathToken
         if (!context.JsonProvider.IsArray(model))
         {
             if (!IsUpstreamDefinite()
-                || context.Options.Contains(Option.SuppressExceptions))
+                || context.Options.Contains(ConfigurationOptionEnum.SuppressExceptions))
                 return false;
             throw new PathNotFoundException(
                 $"Filter: {ToString()} can only be applied to arrays. Current context is: {model}");

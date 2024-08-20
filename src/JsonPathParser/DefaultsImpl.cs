@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.Mapper;
 using XavierJefferson.JsonPathParser.Provider;
@@ -16,7 +17,7 @@ public class DefaultsImpl : IDefaults
     public IJsonProvider JsonProvider => new SystemTextJsonProvider();
 
 
-    public HashSet<Option> Options => new();
+    public HashSet<ConfigurationOptionEnum> Options => new();
 
 
     public IMappingProvider MappingProvider { get; } = new SystemTextJsonMappingProvider();

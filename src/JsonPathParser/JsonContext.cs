@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.Logging;
@@ -92,7 +93,7 @@ public class JsonContext : IDocumentContext
 
     public IDocumentContext Set(JsonPath path, object? newValue)
     {
-        var modified = path.Set(Json, newValue, Configuration.AddOptions(Option.AsPathList)) as ICollection<string>;
+        var modified = path.Set(Json, newValue, Configuration.AddOptions(ConfigurationOptionEnum.AsPathList)) as ICollection<string>;
         if (Logger.IsDebugEnabled())
             foreach (var p in modified)
                 Logger.Debug($"HashSet path {p} new value {newValue}");
@@ -122,7 +123,7 @@ public class JsonContext : IDocumentContext
 
     public IDocumentContext Delete(JsonPath path)
     {
-        var modified = path.Delete(Json, Configuration.AddOptions(Option.AsPathList)) as ICollection<string>;
+        var modified = path.Delete(Json, Configuration.AddOptions(ConfigurationOptionEnum.AsPathList)) as ICollection<string>;
         if (Logger.IsDebugEnabled())
             foreach (var p in modified)
                 Logger.Debug($"Delete path {p}");
@@ -138,7 +139,7 @@ public class JsonContext : IDocumentContext
 
     public IDocumentContext Add(JsonPath path, object? value)
     {
-        var modified = path.Add(Json, value, Configuration.AddOptions(Option.AsPathList)) as ICollection<string>;
+        var modified = path.Add(Json, value, Configuration.AddOptions(ConfigurationOptionEnum.AsPathList)) as ICollection<string>;
         if (Logger.IsDebugEnabled() && modified != null)
             foreach (var p in modified)
                 Logger.Debug($"Add path {p} new value {value}");
@@ -164,7 +165,7 @@ public class JsonContext : IDocumentContext
 
     public IDocumentContext Put(JsonPath path, string key, object value)
     {
-        var modified = path.Put<IList<string>>(Json, key, value, Configuration.AddOptions(Option.AsPathList));
+        var modified = path.Put<IList<string>>(Json, key, value, Configuration.AddOptions(ConfigurationOptionEnum.AsPathList));
         if (Logger.IsDebugEnabled())
             foreach (var p in modified)
                 Logger.DebugFormat($"Put path {p} key {key} value {value}");
@@ -174,7 +175,7 @@ public class JsonContext : IDocumentContext
     public IDocumentContext RenameKey(JsonPath path, string oldKeyName, string newKeyName)
     {
         var modified =
-            path.RenameKey(Json, oldKeyName, newKeyName, Configuration.AddOptions(Option.AsPathList)) as
+            path.RenameKey(Json, oldKeyName, newKeyName, Configuration.AddOptions(ConfigurationOptionEnum.AsPathList)) as
                 ICollection<string>;
         if (Logger.IsDebugEnabled() && modified != null)
             foreach (var p in modified)
@@ -186,7 +187,7 @@ public class JsonContext : IDocumentContext
     public IDocumentContext Add(JsonPath path, string key, object? value)
     {
         var modified =
-            path.Add(Json, key, value, Configuration.AddOptions(Option.AsPathList)) as ICollection<string>;
+            path.Add(Json, key, value, Configuration.AddOptions(ConfigurationOptionEnum.AsPathList)) as ICollection<string>;
         if (Logger.IsDebugEnabled() && modified != null)
             foreach (var p in modified)
                 Logger.Debug($"Put path {p} key {key} value {value}");

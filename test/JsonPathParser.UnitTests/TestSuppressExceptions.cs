@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Mapper;
 using XavierJefferson.JsonPathParser.Provider;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
@@ -11,7 +12,7 @@ public class TestSuppressExceptions
     [ClassData(typeof(ProviderTypeTestCases))]
     public void TestSuppressExceptionsIsRespected(IProviderTypeTestCase testCase)
     {
-        var parseContext = JsonPath.Using(testCase.Configuration.SetOptions(Option.SuppressExceptions));
+        var parseContext = JsonPath.Using(testCase.Configuration.SetOptions(ConfigurationOptionEnum.SuppressExceptions));
         var json = "{}";
         Assert.Null(parseContext.Parse(json).Read(JsonPath.Compile("$.missing")));
     }
@@ -21,7 +22,7 @@ public class TestSuppressExceptions
     public void TestSuppressExceptionsIsRespectedPath(IProviderTypeTestCase testCase)
     {
         var parseContext = JsonPath.Using(testCase.Configuration
-            .SetOptions(Option.SuppressExceptions, Option.AsPathList));
+            .SetOptions(ConfigurationOptionEnum.SuppressExceptions, ConfigurationOptionEnum.AsPathList));
         var json = "{}";
 
         var result = parseContext.Parse(json).Read(JsonPath.Compile("$.missing")).AsList();

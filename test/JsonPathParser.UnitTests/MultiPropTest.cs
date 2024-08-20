@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;
@@ -40,7 +41,7 @@ public class MultiPropTest : TestUtils
             { "c", "c-val" }
         };
 
-        var conf = testCase.Configuration.AddOptions(Option.DefaultPathLeafToNull);
+        var conf = testCase.Configuration.AddOptions(ConfigurationOptionEnum.DefaultPathLeafToNull);
 
         var n = JsonPath.Using(conf).Parse(model).Read<IDictionary<string, object?>>("$['a', 'd']");
         MyAssert.ContainsEntry(n, "a", "a-val");
@@ -58,7 +59,7 @@ public class MultiPropTest : TestUtils
             { "c", "c-val" }
         };
 
-        var conf = testCase.Configuration.AddOptions(Option.RequireProperties);
+        var conf = testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties);
 
         Assert.Throws<PathNotFoundException>(() =>
             JsonPath.Using(conf).Parse(model).Read("$['a', 'x']", TypeConstants.DictionaryType));
@@ -117,7 +118,7 @@ public class MultiPropTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void non_leaf_multi_props_can_be_required(IProviderTypeTestCase testCase)
     {
-        var conf = testCase.Configuration.AddOptions(Option.RequireProperties);
+        var conf = testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties);
         var json = "{\"a\": {\"v\": 5}, \"b\": {\"v\": 4}, \"c\": {\"v\": 1}}";
 
         MyAssert.ContainsOnly(JsonPath.Using(conf).Parse(json).Read<List<object?>>("$['a', 'c'].v"), 5d, 1d);

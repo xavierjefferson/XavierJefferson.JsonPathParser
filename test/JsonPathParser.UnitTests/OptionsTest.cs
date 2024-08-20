@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;
@@ -19,7 +20,7 @@ public class OptionsTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void a_leafs_can_be_defaulted_to_null(IProviderTypeTestCase testCase)
     {
-        var conf = testCase.Configuration.SetOptions(Option.DefaultPathLeafToNull);
+        var conf = testCase.Configuration.SetOptions(ConfigurationOptionEnum.DefaultPathLeafToNull);
 
         Assert.Null(JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read<object?>("$.baz"));
     }
@@ -37,7 +38,7 @@ public class OptionsTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void a_definite_path_can_be_returned_as_list(IProviderTypeTestCase testCase)
     {
-        var conf = testCase.Configuration.SetOptions(Option.AlwaysReturnList);
+        var conf = testCase.Configuration.SetOptions(ConfigurationOptionEnum.AlwaysReturnList);
         Assert.IsType<List<object?>>(JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read("$.foo"));
 
         Assert.IsType<List<object?>>(JsonPath.Using(conf).Parse("{\"foo\": null}").Read("$.foo"));
@@ -49,7 +50,7 @@ public class OptionsTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void an_indefinite_path_can_be_returned_as_list(IProviderTypeTestCase testCase)
     {
-        var conf = testCase.Configuration.SetOptions(Option.AlwaysReturnList);
+        var conf = testCase.Configuration.SetOptions(ConfigurationOptionEnum.AlwaysReturnList);
         var result = JsonPath.Using(conf).Parse("{\"bar\": {\"foo\": null}}").Read("$..foo").AsList();
         Assert.Single(result);
         Assert.Null(result[0]);
@@ -72,7 +73,7 @@ public class OptionsTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void a_path_evaluation_can_be_returned_as_PATH_LIST(IProviderTypeTestCase testCase)
     {
-        var conf = testCase.Configuration.SetOptions(Option.AsPathList);
+        var conf = testCase.Configuration.SetOptions(ConfigurationOptionEnum.AsPathList);
 
         var pathList = JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read("$.foo").AsList();
 
@@ -113,7 +114,7 @@ public class OptionsTest : TestUtils
         MyAssert.ContainsExactly(JsonPath.Using(conf).Parse(model).Read<List<object?>>("$[*].a"), "a-val");
 
 
-        conf = conf.AddOptions(Option.RequireProperties);
+        conf = conf.AddOptions(ConfigurationOptionEnum.RequireProperties);
 
         Assert.Throws<PathNotFoundException>(() =>
         {
@@ -137,7 +138,7 @@ public class OptionsTest : TestUtils
         MyAssert.ContainsExactly(JsonPath.Using(conf).Parse(model).Read<List<object?>>("$.*.a-key"), "a-val");
 
 
-        conf = conf.AddOptions(Option.RequireProperties);
+        conf = conf.AddOptions(ConfigurationOptionEnum.RequireProperties);
         Assert.Throws<PathNotFoundException>(() =>
         {
             JsonPath.Using(conf).Parse(model).Read("$.*.a-key", TypeConstants.ListType);
@@ -149,7 +150,7 @@ public class OptionsTest : TestUtils
     [ClassData(typeof(ProviderTypeTestCases))]
     public void issue_suppress_exceptions_does_not_break_indefinite_evaluation(IProviderTypeTestCase testCase)
     {
-        var conf = testCase.Configuration.SetOptions(Option.SuppressExceptions);
+        var conf = testCase.Configuration.SetOptions(ConfigurationOptionEnum.SuppressExceptions);
 
         MyAssert.ContainsOnly(JsonPath.Using(conf).Parse("{\"foo2\": [5]}").Read("$..foo2[0]").AsList(), 5d);
         Assert.True(JsonPath.Using(conf).Parse("{\"foo\" : {\"foo2\": [5]}}").Read("$..foo2[0]").AsList()
@@ -174,7 +175,7 @@ public class OptionsTest : TestUtils
         MyAssert.ContainsExactly(result1, "0-553-21311-3", "0-395-19395-8");
 
         var result2 = JsonPath
-            .Using(testCase.Configuration.AddOptions(Option.DefaultPathLeafToNull))
+            .Using(testCase.Configuration.AddOptions(ConfigurationOptionEnum.DefaultPathLeafToNull))
             .Parse(JsonTestData.JsonDocument).Read<List<object?>>("$.store.book.*.isbn");
 
         MyAssert.ContainsExactly(result2, null, null, "0-553-21311-3", "0-395-19395-8");
