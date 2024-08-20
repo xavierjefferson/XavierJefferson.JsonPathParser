@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using XavierJefferson.JsonPathParser.Exceptions;
+using XavierJefferson.JsonPathParser.Filtering;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;
 
 namespace XavierJefferson.JsonPathParser.UnitTests;

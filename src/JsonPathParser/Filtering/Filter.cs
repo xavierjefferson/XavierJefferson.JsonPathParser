@@ -1,7 +1,6 @@
-using XavierJefferson.JsonPathParser.Filtering;
 using XavierJefferson.JsonPathParser.Interfaces;
 
-namespace XavierJefferson.JsonPathParser;
+namespace XavierJefferson.JsonPathParser.Filtering;
 
 /// <summary>
 ///     */

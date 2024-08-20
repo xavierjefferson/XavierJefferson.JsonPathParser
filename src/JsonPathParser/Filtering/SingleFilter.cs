@@ -1,6 +1,6 @@
 using XavierJefferson.JsonPathParser.Interfaces;
 
-namespace XavierJefferson.JsonPathParser;
+namespace XavierJefferson.JsonPathParser.Filtering;
 
 public class SingleFilter : Filter
 {

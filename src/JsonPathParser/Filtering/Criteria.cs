@@ -1,27 +1,28 @@
 using System.Text.RegularExpressions;
 using XavierJefferson.JsonPathParser.Exceptions;
 using XavierJefferson.JsonPathParser.Extensions;
-using XavierJefferson.JsonPathParser.Filtering;
 using XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 using XavierJefferson.JsonPathParser.Interfaces;
 
-namespace XavierJefferson.JsonPathParser;
+namespace XavierJefferson.JsonPathParser.Filtering;
 
 public class Criteria : IPredicate
 {
     private readonly SerializingList<Criteria> _criteriaChain;
     private RelationalOperator? _criteriaType;
+    public IJsonProvider JsonProvider { get; }
     private ValueNode? _left;
     private ValueNode? _right;
 
-    private Criteria(SerializingList<Criteria> criteriaChain, ValueNode left)
+    private Criteria(IJsonProvider jsonProvider, SerializingList<Criteria> criteriaChain, ValueNode left)
     {
+        JsonProvider = jsonProvider;
         _left = left;
         _criteriaChain = criteriaChain;
         _criteriaChain.Add(this);
     }
 
-    private Criteria(ValueNode left) : this(new SerializingList<Criteria>(), left)
+    private Criteria(IJsonProvider jsonProvider, ValueNode left) : this(jsonProvider, new SerializingList<Criteria>(), left)
     {
     }
 
@@ -56,13 +57,14 @@ public class Criteria : IPredicate
     /// <summary>
     ///     Static factory method to create a Criteria using the provided key
     /// </summary>
+    /// <param name="jsonProvider"></param>
     /// <param name="key">filed name</param>
     /// <returns> the new criteria</returns>
     [Obsolete]
     //This should be private.It exposes public classes
-    public static Criteria Where(IPath key)
+    public static Criteria Where(IJsonProvider jsonProvider, IPath key)
     {
-        return new Criteria(ValueNode.CreatePathNode(key));
+        return new Criteria(jsonProvider, ValueNode.CreatePathNode(key));
     }
 
 
@@ -74,7 +76,7 @@ public class Criteria : IPredicate
     /// <returns> the new criteria</returns>
     public static Criteria Where(IJsonProvider jsonProvider, string key)
     {
-        return new Criteria(ValueNode.ToValueNode(jsonProvider, PrefixPath(key)));
+        return new Criteria(jsonProvider, ValueNode.ToValueNode(jsonProvider, PrefixPath(key)));
     }
 
     /// <summary>
@@ -86,7 +88,7 @@ public class Criteria : IPredicate
     public Criteria And(IJsonProvider jsonProvider, string key)
     {
         CheckComplete();
-        return new Criteria(_criteriaChain, ValueNode.ToValueNode(jsonProvider, PrefixPath(key)));
+        return new Criteria(jsonProvider, _criteriaChain, ValueNode.ToValueNode(jsonProvider, PrefixPath(key)));
     }
 
     /// <summary>
@@ -100,7 +102,7 @@ public class Criteria : IPredicate
     public Criteria Is(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Eq;
-        _right = ValueNode.ToValueNode(jsonProvider, o);
+        _right = ValueNode.ToValueNode(JsonProvider, o);
         return this;
     }
 
@@ -128,7 +130,7 @@ public class Criteria : IPredicate
     public Criteria Ne(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Ne;
-        _right = ValueNode.ToValueNode(jsonProvider, o);
+        _right = ValueNode.ToValueNode(JsonProvider, o);
         return this;
     }
 
@@ -143,7 +145,7 @@ public class Criteria : IPredicate
     public Criteria Lt(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Lt;
-        _right = ValueNode.ToValueNode(jsonProvider, o);
+        _right = ValueNode.ToValueNode(JsonProvider, o);
         return this;
     }
 
@@ -157,7 +159,7 @@ public class Criteria : IPredicate
     public Criteria Lte(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Lte;
-        _right = ValueNode.ToValueNode(jsonProvider, o);
+        _right = ValueNode.ToValueNode(JsonProvider, o);
         return this;
     }
 
@@ -172,7 +174,7 @@ public class Criteria : IPredicate
     public Criteria Gt(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Gt;
-        _right = ValueNode.ToValueNode(jsonProvider, o);
+        _right = ValueNode.ToValueNode(JsonProvider, o);
         return this;
     }
 
@@ -187,7 +189,7 @@ public class Criteria : IPredicate
     public Criteria Gte(IJsonProvider jsonProvider, object? o)
     {
         _criteriaType = RelationalOperator.Gte;
-        _right = ValueNode.ToValueNode(jsonProvider, o);
+        _right = ValueNode.ToValueNode(JsonProvider, o);
         return this;
     }
 
@@ -203,7 +205,7 @@ public class Criteria : IPredicate
     {
         ArgumentNullException.ThrowIfNull(pattern);
         _criteriaType = RelationalOperator.Regex;
-        _right = ValueNode.ToValueNode(jsonProvider, pattern);
+        _right = ValueNode.ToValueNode(JsonProvider, pattern);
         return this;
     }
 
@@ -216,7 +218,7 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria In(IJsonProvider jsonProvider, params object?[] o)
     {
-        return In(o.ToSerializingList(), jsonProvider);
+        return In(o.ToSerializingList(), JsonProvider);
     }
 
     /// <summary>
@@ -231,7 +233,7 @@ public class Criteria : IPredicate
 
         ArgumentNullException.ThrowIfNull(collection);
         _criteriaType = RelationalOperator.In;
-        _right = new ValueListNode(collection, jsonProvider);
+        _right = new ValueListNode(collection, JsonProvider);
         return this;
     }
 
@@ -272,7 +274,7 @@ public class Criteria : IPredicate
     {
         ArgumentNullException.ThrowIfNull(collection);
         _criteriaType = RelationalOperator.Nin;
-        _right = new ValueListNode(collection, jsonProvider);
+        _right = new ValueListNode(collection, JsonProvider);
         return this;
     }
 
@@ -384,7 +386,7 @@ public class Criteria : IPredicate
     {
         ArgumentNullException.ThrowIfNull(collection);
         _criteriaType = RelationalOperator.All;
-        _right = new ValueListNode(collection, jsonProvider);
+        _right = new ValueListNode(collection, JsonProvider);
         return this;
     }
 
@@ -511,7 +513,7 @@ public class Criteria : IPredicate
     [Obsolete]
     public static Criteria Create(IJsonProvider jsonProvider, string left, string @operator, string right)
     {
-        var criteria = new Criteria(ValueNode.ToValueNode(jsonProvider, left));
+        var criteria = new Criteria(jsonProvider, ValueNode.ToValueNode(jsonProvider, left));
         criteria._criteriaType = RelationalOperator.FromName(@operator);
         criteria._right = ValueNode.ToValueNode(jsonProvider, right);
         return criteria;

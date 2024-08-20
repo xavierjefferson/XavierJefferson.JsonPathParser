@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Moq;
+using XavierJefferson.JsonPathParser.Filtering;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.UnitTests.Extensions;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;

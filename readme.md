@@ -2,7 +2,7 @@
 Xavier Jefferson's JsonPathParser
 ===========================
 
-**A .NET DSL for reading JSON documents.**
+**A .NET domain specific language for reading JSON documents.**
 
 [![Build Status](https://travis-ci.org/json-path/JsonPath.svg?branch=master)](https://travis-ci.org/json-path/JsonPath)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jayway.jsonpath/json-path/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jayway.jsonpath/json-path)
@@ -26,8 +26,8 @@ This library is available at the Central Maven Repository. Maven users add this 
 If you need help ask questions at [Stack Overflow](http://stackoverflow.com/questions/tagged/jsonpath). Tag the question 'jsonpath' and 'C#'.
 
 JsonPath expressions always refer to a JSON structure in the same way as XPath expression are used in combination 
-with an XML document. The "root member object" in JsonPath is always referred to as `$` regardless if it is an 
-object or array.
+with an XML document. The "root member object?" in JsonPath is always referred to as `$` regardless if it is an 
+object? or array.
 
 JsonPath expressions can use the dot–notation
 
@@ -164,7 +164,7 @@ Given the json
 
 Reading a Document
 ------------------
-The simplest most straight forward way to use JsonPath is via the static read API.
+The simplest most straight forward way to use JsonPath is via the static read API, using the Read method with generic arguments:
 
 ```C#
 string json = "...";
@@ -193,10 +193,10 @@ ReadContext ctx = JsonPath.Parse(json);
 List<string> authorsOfBooksWithISBN = ctx.Read<List<string>>("$.store.book[?(@.isbn)].author");
 
 
-List<Dictionary<string, object?>> expensiveBooks = JsonPath
+List<Dictionary<string, object??>> expensiveBooks = JsonPath
                             .Using(configuration)
                             .Parse(json)
-                            .Read<List<Dictionary<string, object?>>("$.store.book[?(@.price > 10)]");
+                            .Read<List<Dictionary<string, object??>>("$.store.book[?(@.price > 10)]");
 ```
 
 What is Returned When?
@@ -220,7 +220,7 @@ When evaluating a path you need to understand the concept of when a path is `def
 
 `Indefinite` paths always returns a list (as represented by current JsonProvider). 
 
-By default a simple object mapper is provided by the MappingProvider SPI. This allows you to specify the return type you want and the MappingProvider will
+By default a simple object? mapper is provided by the MappingProvider SPI. This allows you to specify the return type you want and the MappingProvider will
 try to perform the mapping. In the example below mapping between `Long` and `Date` is demonstrated. 
 
 ```C#
@@ -250,8 +250,8 @@ There are three different ways to create filter predicates in JsonPath.
 Inline predicates are the ones defined in the path.
 
 ```C#
-List<Dictionary<string, Object>> books =  JsonPath.Parse(json)
-                                     .Read<List<Dictionary<string, Object>>>("$.store.book[?(@.price < 10)]");
+List<Dictionary<string, object?>> books =  JsonPath.Parse(json)
+                                     .Read<List<Dictionary<string, object?>>>("$.store.book[?(@.price < 10)]");
 ```
 
 You can use `&&` and `||` to combine multiple predicates `[?(@.price < 10 && @.category == 'fiction')]` , 
@@ -264,18 +264,13 @@ You can use `!` to negate a predicate `[?(!(@.price < 10 && @.category == 'ficti
 Predicates can be built using the Filter API as shown below:
 
 ```C#
-import static com.jayway.jsonpath.JsonPath.Parse;
-import static com.jayway.jsonpath.Criteria.where;
-import static com.jayway.jsonpath.Filter.filter;
-...
-...
 
-Filter cheapFictionFilter = filter(
-   where("category").is("fiction").and("price").lte(10D)
+Filter cheapFictionFilter = Filter.Create(
+   Criteria.Where(jsonProvider, "category").Is("fiction").And("price").Lte(10D)
 );
 
-List<Dictionary<string, Object>> books =  
-   parse(json).Read("$.store.book[?]", cheapFictionFilter);
+List<Dictionary<string, object?>> books =  
+   JsonPath.Parse(json).Read<List<Dictionary<string, object?>>>("$.store.book[?]", cheapFictionFilter);
 
 ```
 Notice the placeholder `?` for the filter in the path. When multiple filters are provided they are applied in order where the number of placeholders must match 
@@ -283,29 +278,26 @@ the number of provided filters. You can specify multiple predicate placeholders 
 
 Filters can also be combined with 'OR' and 'AND'
 ```C#
-Filter fooOrBar = filter(
-   where("foo").exists(true)).or(where("bar").exists(true)
+IJsonProvider jsonProvider = ...;
+var fooOrBar = Filter.Create(
+   Criteria.Where(jsonProvider, "foo").Exists(true)).Or(Criteria.Where(jsonProvider, "bar").Exists(true)
 );
    
-Filter fooAndBar = filter(
-   where("foo").exists(true)).and(where("bar").exists(true)
+var fooAndBar = Filter.Create(
+   Criteria.Where(jsonProvider, "foo").Exists(true)).And(Criteria.Where(jsonProvider, "bar").Exists(true)
 );
 ```
 
 ### Roll Your Own
  
-Third option is to implement your own predicates
+Third option is to implement your own predicates.  You can either use the IPredicate interface directory, 
+or use the SimplePredicate class.
  
 ```C# 
-IPredicate booksWithISBN = new Predicate() {
-    @Override
-    public boolean apply(PredicateContext ctx) {
-        return ctx.item(Dictionary.class).containsKey("isbn");
-    }
-};
+IPredicate booksWithISBN = new SimplePredicate(ctx=> ctx.Item<IDictionary<string, object??>>().ContainsKey("isbn"));
 
-List<Dictionary<string, Object>> books = 
-   reader.Read("$.store.book[?].isbn", List.class, booksWithISBN);
+List<Dictionary<string, object?>> books = 
+   reader.Read<List<Dictionary<string, object?>>>("$.store.book[?].isbn", booksWithISBN);
 ```
 
 Path vs Value
@@ -318,11 +310,10 @@ Configuration conf = Configuration.CreateBuilder()
 
 List<string> pathList = JsonPath.Using(conf).Parse(json).Read<List<string>>("$..author");
 
-assertThat(pathList).containsExactly(
-    "$['store']['book'][0]['author']",
-    "$['store']['book'][1]['author']",
-    "$['store']['book'][2]['author']",
-    "$['store']['book'][3]['author']");
+Assert.Contains("$['store']['book'][0]['author']", pathList);
+Assert.Contains("$['store']['book'][1]['author']", pathList);
+Assert.Contains("$['store']['book'][2]['author']", pathList);
+Assert.Contains("$['store']['book'][3]['author']", pathList);
 ```
 
 Set a value 
@@ -380,7 +371,7 @@ This option configures JsonPath to return a list even when the path is `definite
 ```C#
 Configuration conf = Configuration.DefaultConfiguration;
 
-//ClassCastException thrown
+//Exception thrown
 List<string> genders0 = JsonPath.Using(conf).Parse(json).Read<List<string>>("$[0]['gender']");
 
 Configuration conf2 = conf.addOptions(ConfigurationOptionEnum.AlwaysReturnList);
@@ -409,7 +400,7 @@ Configuration conf2 = conf.addOptions(ConfigurationOptionEnum.RequireProperties)
 List<string> genders = JsonPath.Using(conf2).Parse(json).Read<List<string>>("$[*]['gender']");
 ```
 
-### JsonProvider SPI
+### IJsonProvider interface
 
 JsonPath is shipped to internally use two different Json serializers, implemented as interface IJsonProvider:
 
@@ -419,53 +410,19 @@ JsonPath is shipped to internally use two different Json serializers, implemente
 Changing the configuration defaults as demonstrated should only be done when your application is being initialized. Changes during runtime is strongly discouraged, especially in multi threaded applications.
   
 ```C#
-Configuration.SetDefaults(new Configuration.Defaults() {
-
-    private final JsonProvider jsonProvider = new NewtonsoftJsonProvider();
-    private final MappingProvider mappingProvider = new NewtonsoftJsonMappingProvider();
-      
-    @Override
-    public JsonProvider jsonProvider() {
-        return jsonProvider;
-    }
-
-    @Override
-    public MappingProvider mappingProvider() {
-        return mappingProvider;
-    }
-    
-    @Override
-    public Set<Option> options() {
-        return EnumSet.noneOf(Option.class);
-    }
-});
+Configuration.SetDefaults(new DefaultsImpl(new NewtonsoftJsonProvider(), new NewtonsoftJsonMappingProvider(), new HashSet<ConfigurationOptionsEnum>());
 ```
 
 
-### Cache SPI
+### ICache interface
 
-In JsonPath 2.1.0 a new Cache SPI was introduced. This allows API consumers to configure path caching in a way that suits their needs. The cache must be configured before it is accesses for the first time or a JsonPathException is thrown. JsonPath ships with two cache implementations
-
-* `com.jayway.jsonpath.spi.cache.LRUCache` (default, thread safe)
-* `com.jayway.jsonpath.spi.cache.NOOPCache` (no cache)
-
-If you want to implement your own cache the API is simple. 
+The interface ICache allows API consumers to configure path caching in a way that suits their needs. The cache must be configured before it is accesses for the first time or a JsonPathException is thrown. JsonPath ships with a single cache implementation that uses thread-safe [System.Runtime.Caching](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.caching?view=net-8.0),
+but you can replace it with your own:
 
 ```C#
-CacheProvider.setCache(new Cache() {
-    //Not thread safe simple cache
-    private Dictionary<string, JsonPath> map = new Dictionary<string, JsonPath>();
+ICache myCacheProvider = new MyCacheImplementation();
 
-    @Override
-    public JsonPath get(string key) {
-        return map.get(key);
-    }
-
-    @Override
-    public void put(string key, JsonPath jsonPath) {
-        map.put(key, jsonPath);
-    }
-});
+CacheProvider.Cache = myCacheProvider;
 ```
 
 

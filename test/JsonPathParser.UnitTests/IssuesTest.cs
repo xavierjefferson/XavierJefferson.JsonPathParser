@@ -1,5 +1,6 @@
 using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Exceptions;
+using XavierJefferson.JsonPathParser.Filtering;
 using XavierJefferson.JsonPathParser.Interfaces;
 using XavierJefferson.JsonPathParser.Mapper;
 using XavierJefferson.JsonPathParser.Provider;

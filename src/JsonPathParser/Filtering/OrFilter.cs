@@ -1,8 +1,6 @@
-using System.Text;
-using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.Interfaces;
 
-namespace XavierJefferson.JsonPathParser;
+namespace XavierJefferson.JsonPathParser.Filtering;
 
 public class OrFilter : Filter
 {

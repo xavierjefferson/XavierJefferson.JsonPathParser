@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Caching;
 using XavierJefferson.JsonPathParser.Enums;
 using XavierJefferson.JsonPathParser.Helpers;
 using XavierJefferson.JsonPathParser.Interfaces;
@@ -206,7 +207,7 @@ public class JsonContext : IDocumentContext
 
     private JsonPath PathFromCache(string path, IPredicate[]? filters)
     {
-        var cache = CacheManager.Instance;
+        var cache = CacheProvider.Instance.Cache;
         var cacheKey = filters == null || filters.Length == 0
             ? path
             : string.Concat(new[] { path }.Union(filters.Select(i => i.ToString())));

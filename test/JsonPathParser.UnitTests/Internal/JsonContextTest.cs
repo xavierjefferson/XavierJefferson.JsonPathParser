@@ -1,3 +1,4 @@
+using XavierJefferson.JsonPathParser.Filtering;
 using XavierJefferson.JsonPathParser.UnitTests.TestData;
 
 namespace XavierJefferson.JsonPathParser.UnitTests.Internal;
