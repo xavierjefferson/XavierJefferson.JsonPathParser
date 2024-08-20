@@ -210,7 +210,7 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria In(params object?[] o)
     {
-        return In(o.ToSerializingList());
+        return In(o.ToList());
     }
 
     /// <summary>
@@ -248,7 +248,7 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria Nin(params object?[] o)
     {
-        return Nin(o.ToSerializingList());
+        return Nin(o.ToList());
     }
 
     /// <summary>
@@ -274,7 +274,7 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria SubsetOf(params object?[]? o)
     {
-        return SubsetOf(o.ToSerializingList());
+        return SubsetOf(o.ToList());
     }
 
     /// <summary>
@@ -300,7 +300,7 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria AnyOf(params object?[] o)
     {
-        return AnyOf(o.ToSerializingList());
+        return AnyOf(o.ToList());
     }
 
     /// <summary>
@@ -313,7 +313,7 @@ public class Criteria : IPredicate
     {
         ArgumentNullException.ThrowIfNull(c);
         _criteriaType = RelationalOperator.AnyOf;
-        _right = new ValueListNode(JsonProvider, c.Cast<object?>().ToSerializingList());
+        _right = new ValueListNode(JsonProvider, c.Cast<object?>().ToList());
         return this;
     }
 
@@ -325,7 +325,7 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria NoneOf(params object?[] o)
     {
-        return NoneOf(o.ToSerializingList());
+        return NoneOf(o.ToList());
     }
 
     /// <summary>
@@ -350,7 +350,7 @@ public class Criteria : IPredicate
     /// <returns> the criteria</returns>
     public Criteria All(params object?[] o)
     {
-        return All(o.ToSerializingList());
+        return All(o.ToList());
     }
 
     /// <summary>

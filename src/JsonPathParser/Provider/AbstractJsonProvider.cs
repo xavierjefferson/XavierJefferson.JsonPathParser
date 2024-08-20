@@ -129,7 +129,7 @@ public abstract class AbstractJsonProvider : IJsonProvider
     /// <returns> the keys for an object</returns>
     public virtual ICollection<string> GetPropertyKeys(object? obj)
     {
-        if (TryConvertToIDictionary(obj, out var dictionary)) return dictionary.Keys.Cast<string>().ToSerializingList();
+        if (TryConvertToIDictionary(obj, out var dictionary)) return dictionary.Keys.Cast<string>().ToList();
         throw new ArgumentException($"The argument does not implement {nameof(IDictionary)}");
     }
 
