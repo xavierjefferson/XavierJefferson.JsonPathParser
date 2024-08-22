@@ -4,5 +4,5 @@ namespace XavierJefferson.JsonPathParser.Logging;
 
 public class LoggerFactory
 {
-    public static Func<Type, ILog> GetLogger = type => new EmptyLogger();
+    public static Func<Type, ILog> Logger { get; set; } = (type) => new EmptyLogger();
 }

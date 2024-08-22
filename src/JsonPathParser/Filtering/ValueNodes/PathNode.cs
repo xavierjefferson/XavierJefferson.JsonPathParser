@@ -9,7 +9,7 @@ namespace XavierJefferson.JsonPathParser.Filtering.ValueNodes;
 
 public class PathNode : TypedValueNode<IPath>
 {
-    private static readonly ILog Logger = LoggerFactory.GetLogger(typeof(PathNode));
+    private static readonly ILog Logger = LoggerFactory.Logger(typeof(PathNode));
     private readonly bool _existsCheck;
 
     private readonly IPath _path;

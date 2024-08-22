@@ -6,7 +6,7 @@ namespace XavierJefferson.JsonPathParser.UnitTests.Function;
 
 public class NestedFunctionTest : BaseFunctionTest
 {
-    private static readonly ILog Logger = LoggerFactory.GetLogger(typeof(NumericPathFunctionTest));
+    private static readonly ILog Logger = LoggerFactory.Logger(typeof(NumericPathFunctionTest));
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]

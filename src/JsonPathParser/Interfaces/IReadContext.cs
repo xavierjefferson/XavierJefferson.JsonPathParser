@@ -95,5 +95,5 @@ public interface IReadContext : IJsonContainer
     /// </summary>
     /// <param name="listener">listeners to.Add</param>
     /// <returns> the read context</returns>
-    IReadContext WithListeners(params EvaluationCallback[] listener);
+    IReadContext WithListeners(params EvaluationCallbackDelegate[] listener);
 }

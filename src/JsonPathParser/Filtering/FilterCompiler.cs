@@ -40,7 +40,7 @@ public class FilterCompiler
     private const char Not = '!';
     private const char Pattern = '/';
     private const char IgnoreCase = 'i';
-    private static readonly ILog Logger = LoggerFactory.GetLogger(typeof(FilterCompiler));
+    private static readonly ILog Logger = LoggerFactory.Logger(typeof(FilterCompiler));
 
     private static readonly HashSet<char> LogicalOperatorChars = new() { And, Or };
     private static readonly HashSet<char> RelationalOperatorChars = new() { Lt, Gt, Eq, Tilde, Not };

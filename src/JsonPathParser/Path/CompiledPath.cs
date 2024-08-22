@@ -9,7 +9,7 @@ namespace XavierJefferson.JsonPathParser.Path;
 
 public class CompiledPath : IPath
 {
-    private static readonly ILog Logger = LoggerFactory.GetLogger(typeof(CompiledPath));
+    private static readonly ILog Logger = LoggerFactory.Logger(typeof(CompiledPath));
 
     private readonly bool _isRootPath;
 

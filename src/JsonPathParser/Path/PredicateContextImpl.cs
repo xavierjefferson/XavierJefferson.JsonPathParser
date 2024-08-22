@@ -5,7 +5,7 @@ namespace XavierJefferson.JsonPathParser.Path;
 
 public class PredicateContextImpl : IPredicateContext
 {
-    private static readonly ILog Logger = LoggerFactory.GetLogger(typeof(PredicateContextImpl));
+    private static readonly ILog Logger = LoggerFactory.Logger(typeof(PredicateContextImpl));
     private readonly Dictionary<IPath, object?> _documentPathCache;
 
     public PredicateContextImpl(object? contextDocument, object? rootDocument, Configuration configuration,

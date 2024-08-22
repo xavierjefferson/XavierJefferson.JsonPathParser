@@ -1,5 +1,5 @@
 
-Xavier Jefferson's JsonPathParser
+JsonPathParser
 ===========================
 
 **A .NET domain specific language for reading JSON documents.**
@@ -15,19 +15,9 @@ Getting Started
 
 This library is available at the Central Maven Repository. Maven users add this to your POM.
 
-```xml
-<dependency>
-    <groupId>com.jayway.jsonpath</groupId>
-    <artifactId>json-path</artifactId>
-    <version>2.9.0</version>
-</dependency>
-```
-
 If you need help ask questions at [Stack Overflow](http://stackoverflow.com/questions/tagged/jsonpath). Tag the question 'jsonpath' and 'C#'.
 
-JsonPath expressions always refer to a JSON structure in the same way as XPath expression are used in combination 
-with an XML document. The "root member object?" in JsonPath is always referred to as `$` regardless if it is an 
-object? or array.
+JsonPath expressions always refer to a JSON structure in the same way as XPath expression are used in combination with an XML document. The "root member object" in JsonPath is always referred to as `$` regardless if it is an object or array.
 
 JsonPath expressions can use the dot–notation
 
@@ -56,8 +46,7 @@ Operators
 Functions
 ---------
 
-Functions can be invoked at the tail end of a path - the input to a function is the output of the path expression.
-The function output is dictated by the function itself.
+Functions can be invoked at the tail end of a path - the input to a function is the output of the path expression.  The function output is dictated by the function itself.
 
 | Function    | Description                                                                          | Output type          |
 |:------------|:-------------------------------------------------------------------------------------|:---------------------|
@@ -67,9 +56,9 @@ The function output is dictated by the function itself.
 | `stddev()`  | Provides the standard deviation value of an array of numbers                         | Double               | 
 | `length()`  | Provides the length of an array                                                      | Integer              |
 | `sum()`     | Provides the sum value of an array of numbers                                        | Double               |
-| `keys()`    | Provides the property keys (An alternative for terminal tilde `~`)                   | `Set<E>`             |
+| `keys()`    | Provides the property keys (An alternative for terminal tilde `~`)                   | `HashSet<E>`         |
 | `concat(X)` | Provides a concatenated version of the path output with a new item                   | like input           |
-| `append(X)` | add an item to the json path output array                                            | like input           |
+| `append(X)` | add an item to the JSON path output array                                            | like input           |
 | `first()`   | Provides the first item of an array                                                  | Depends on the array |
 | `last()`    | Provides the last item of an array                                                   | Depends on the array |
 | `index(X)`  | Provides the item of an array of index: X, if the X is negative, take from backwards | Depends on the array |
@@ -100,7 +89,7 @@ Filters are logical expressions used to filter arrays. A typical filter would be
 Path Examples
 -------------
 
-Given the json
+Given the JSON
 
 ```javascript
 {
@@ -172,9 +161,7 @@ string json = "...";
 var authors = JsonPath.Read<List<string>>(json, "$.store.book[*].author");
 ```
 
-If you only want to read once this is OK. In case you need to read an other path as well this is not the way 
-to go since the document will be parsed every time you call JsonPath.Read(...). To avoid the problem you can 
-parse the json first.
+If you only want to read once this is OK. In case you need to read an other path as well this is not the way to go since the document will be parsed every time you call JsonPath.Read<T>(...). To avoid the problem you can parse the JSON first.
 
 ```C#
 string json = "...";
@@ -201,15 +188,14 @@ List<Dictionary<string, object??>> expensiveBooks = JsonPath
 
 What is Returned When?
 ----------------------
-When using JsonPath in .NET, it's important to know what type you expect in your result. JsonPath will automatically 
-try to cast the result to the type expected by the invoker.
+When using JsonPath in .NET, it's important to know what type you expect in your result. JsonPath will automatically try to cast the result to the type expected by the invoker.
 
 ```C#
-//Will throw an C#.lang.ClassCastException    
-List<string> list = JsonPath.Parse(json).Read<List<string>>("$.store.book[0].author");
+//Will throw an InvalidCastException    
+var list = JsonPath.Parse(json).Read<List<string>>("$.store.book[0].author");
 
 //Works fine
-string author = JsonPath.Parse(json).Read<string>("$.store.book[0].author");
+var author = JsonPath.Parse(json).Read<string>("$.store.book[0].author");
 ```
 
 When evaluating a path you need to understand the concept of when a path is `definite`. A path is `indefinite` if it contains:
@@ -220,22 +206,12 @@ When evaluating a path you need to understand the concept of when a path is `def
 
 `Indefinite` paths always returns a list (as represented by current JsonProvider). 
 
-By default a simple object? mapper is provided by the MappingProvider SPI. This allows you to specify the return type you want and the MappingProvider will
-try to perform the mapping. In the example below mapping between `Long` and `Date` is demonstrated. 
-
-```C#
-string json = "{\"date_as_long\" : 1411455611975}";
-
-Date date = JsonPath.Parse(json).Read("$['date_as_long']", Date.class);
-```
-
-If you configure JsonPath to use `JacksonMappingProvider`, `GsonMappingProvider`, or `JakartaJsonProvider` you can even map your JsonPath output directly into POJO's.
+You can map your JsonPath output directly into POCO's.
 
 ```C#
 Book book = JsonPath.Parse(json).Read<Book>("$.store.book[0]");
 ```
 
-To obtain full generics type information, use TypeRef.
 
 ```C#
 List<string> titles = JsonPath.Parse(JSON_DOCUMENT).Read<List<string>>("$.store.book[*].title");
@@ -250,8 +226,7 @@ There are three different ways to create filter predicates in JsonPath.
 Inline predicates are the ones defined in the path.
 
 ```C#
-List<Dictionary<string, object?>> books =  JsonPath.Parse(json)
-                                     .Read<List<Dictionary<string, object?>>>("$.store.book[?(@.price < 10)]");
+var books =  JsonPath.Parse(json).Read<List<Dictionary<string, object?>>>("$.store.book[?(@.price < 10)]");
 ```
 
 You can use `&&` and `||` to combine multiple predicates `[?(@.price < 10 && @.category == 'fiction')]` , 
@@ -264,17 +239,16 @@ You can use `!` to negate a predicate `[?(!(@.price < 10 && @.category == 'ficti
 Predicates can be built using the Filter API as shown below:
 
 ```C#
-
-Filter cheapFictionFilter = Filter.Create(
-   Criteria.Where(jsonProvider, "category").Is("fiction").And("price").Lte(10D)
+IJsonProvider jsonProvider = ...;
+var cheapFictionFilter = Filter.Create(
+   Criteria.Where(jsonProvider, "category").Is("fiction").And("price").Lte(10d)
 );
 
 List<Dictionary<string, object?>> books =  
    JsonPath.Parse(json).Read<List<Dictionary<string, object?>>>("$.store.book[?]", cheapFictionFilter);
 
 ```
-Notice the placeholder `?` for the filter in the path. When multiple filters are provided they are applied in order where the number of placeholders must match 
-the number of provided filters. You can specify multiple predicate placeholders in one filter operation `[?, ?]`, both predicates must match. 
+Notice the placeholder `?` for the filter in the path. When multiple filters are provided they are applied in order where the number of placeholders must match the number of provided filters. You can specify multiple predicate placeholders in one filter operation `[?, ?]`, both predicates must match. 
 
 Filters can also be combined with 'OR' and 'AND'
 ```C#
@@ -294,9 +268,9 @@ Third option is to implement your own predicates.  You can either use the IPredi
 or use the SimplePredicate class.
  
 ```C# 
-IPredicate booksWithISBN = new SimplePredicate(ctx=> ctx.GetItem<IDictionary<string, object??>>().ContainsKey("isbn"));
+IPredicate booksWithISBN = new SimplePredicate(ctx=> ctx.GetItem<IDictionary<string, object?>>().ContainsKey("isbn"));
 
-List<Dictionary<string, object?>> books = 
+var books = 
    reader.Read<List<Dictionary<string, object?>>>("$.store.book[?].isbn", booksWithISBN);
 ```
 
@@ -321,7 +295,7 @@ Set a value
 The library offers the possibility to set a value.
 
 ```C#
-string newJson = JsonPath.Parse(json).Set("$['store']['book'][0]['author']", "Paul").JsonString();
+string newJson = JsonPath.Parse(json).Set("$['store']['book'][0]['author']", "Paul").JsonString;
 ```
 
 
@@ -333,8 +307,8 @@ Tweaking Configuration
 When creating your Configuration there are a few option flags that can alter the default behavior.
 
 **ConfigurationOptionEnum.DefaultPathLeafToNull**
-<br/>
-This option makes JsonPath return null for missing leafs. Consider the following json
+
+This option makes JsonPath return null for missing leafs. Consider the following JSON
 
 ```javascript
 [
@@ -352,38 +326,38 @@ This option makes JsonPath return null for missing leafs. Consider the following
 Configuration conf = Configuration.DefaultConfiguration;
 
 //Works fine
-string gender0 = JsonPath.Using(conf).Parse(json).Read<string>("$[0]['gender']");
+var gender0 = JsonPath.Using(conf).Parse(json).Read<string>("$[0]['gender']");
 //PathNotFoundException thrown
-string gender1 = JsonPath.Using(conf).Parse(json).Read<string>("$[1]['gender']");
+var gender1 = JsonPath.Using(conf).Parse(json).Read<string>("$[1]['gender']");
 
-Configuration conf2 = conf.addOptions(ConfigurationOptionEnum.DefaultPathLeafToNull);
+Configuration conf2 = conf.AddOptions(ConfigurationOptionEnum.DefaultPathLeafToNull);
 
 //Works fine
-string gender0 = JsonPath.Using(conf2).Parse(json).Read<string>("$[0]['gender']");
+var gender0 = JsonPath.Using(conf2).Parse(json).Read<string>("$[0]['gender']");
 //Works fine (null is returned)
-string gender1 = JsonPath.Using(conf2).Parse(json).Read<string>("$[1]['gender']");
+var gender1 = JsonPath.Using(conf2).Parse(json).Read<string>("$[1]['gender']");
 ```
  
 **ConfigurationOptionEnum.AlwaysReturnList**
-<br/>
+
 This option configures JsonPath to return a list even when the path is `definite`. 
  
 ```C#
 Configuration conf = Configuration.DefaultConfiguration;
 
 //Exception thrown
-List<string> genders0 = JsonPath.Using(conf).Parse(json).Read<List<string>>("$[0]['gender']");
+var genders0 = JsonPath.Using(conf).Parse(json).Read<List<string>>("$[0]['gender']");
 
-Configuration conf2 = conf.addOptions(ConfigurationOptionEnum.AlwaysReturnList);
+Configuration conf2 = conf.AddOptions(ConfigurationOptionEnum.AlwaysReturnList);
 
 //Works fine
-List<string> genders0 = JsonPath.Using(conf2).Parse(json).Read<List<string>>("$[0]['gender']");
+var genders0 = JsonPath.Using(conf2).Parse(json).Read<List<string>>("$[0]['gender']");
 ``` 
 **ConfigurationOptionEnum.SuppressExceptions**
 This option makes sure no exceptions are propagated from path evaluation. It follows these simple rules:
 
-* If option `AlwaysReturnList` is present an empty list will be returned
-* If option `AlwaysReturnList` is **NOT** present null returned 
+* If option `ConfigurationOptionEnum.AlwaysReturnList` is present an empty list will be returned
+* If option `ConfigurationOptionEnum.AlwaysReturnList` is **NOT** present null returned 
 
 **ConfigurationOptionEnum.RequireProperties**
 This option configures JsonPath to require properties defined in path when an `indefinite` path is evaluated.
@@ -392,20 +366,22 @@ This option configures JsonPath to require properties defined in path when an `i
 Configuration conf = Configuration.DefaultConfiguration;
 
 //Works fine
-List<string> genders = JsonPath.Using(conf).Parse(json).Read<List<string>>("$[*]['gender']");
+var genders = JsonPath.Using(conf).Parse(json).Read<List<string>>("$[*]['gender']");
 
-Configuration conf2 = conf.addOptions(ConfigurationOptionEnum.RequireProperties);
+Configuration conf2 = conf.AddOptions(ConfigurationOptionEnum.RequireProperties);
 
 //PathNotFoundException thrown
-List<string> genders = JsonPath.Using(conf2).Parse(json).Read<List<string>>("$[*]['gender']");
+var genders = JsonPath.Using(conf2).Parse(json).Read<List<string>>("$[*]['gender']");
 ```
 
 ### IJsonProvider interface
 
-JsonPath is shipped to internally use two different Json serializers, implemented as interface IJsonProvider:
+JsonPath is shipped to internally use two different JSON serializers, implemented as interface IJsonProvider:
 
-* [SystemTextJsonProvider](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.serialization?view=net-8.0) (default)
+* [SystemTextJsonProvider](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.serialization?view=net-8.0) (default) 
 * [NewtonsoftJsonProvider](https://www.newtonsoft.com/json) 
+
+The behaviors of these two serializers are slightly different.  SystemTextJsonProvider is configured with `AllowTrailingCommas = true, PropertyNameCaseInsensitive = true`, whereas NewtonsoftJsonProvider is configured with the defaults for Newtonsoft.Json.
 
 Changing the configuration defaults as demonstrated should only be done when your application is being initialized. Changes during runtime is strongly discouraged, especially in multi threaded applications.
   
@@ -416,8 +392,7 @@ Configuration.SetDefaults(new DefaultsImpl(new NewtonsoftJsonProvider(), new New
 
 ### ICache interface
 
-The interface ICache allows API consumers to configure path caching in a way that suits their needs. The cache must be configured before it is accesses for the first time or a JsonPathException is thrown. JsonPath ships with a single cache implementation that uses thread-safe [System.Runtime.Caching](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.caching?view=net-8.0),
-but you can replace it with your own:
+The interface ICache allows API consumers to configure path caching in a way that suits their needs. The cache must be configured before it is accesses for the first time or a JsonPathException is thrown. JsonPath ships with a single cache implementation that uses thread-safe [System.Runtime.Caching](https://learn.microsoft.com/en-us/dotnet/api/system.runtime.caching?view=net-8.0), but you can replace it with your own:
 
 ```C#
 ICache myCacheProvider = new MyCacheImplementation();
@@ -425,5 +400,15 @@ ICache myCacheProvider = new MyCacheImplementation();
 CacheProvider.Cache = myCacheProvider;
 ```
 
+
+### ILog interface
+
+The interface ILog allows API consumers to configure logging in a way that suits their needs.  The default setting returns an instance of a class called EmptyLogger that doesn't do anything, but you can replace it with your own:
+
+```C#
+LoggerFactory.Logger = (type) => {
+    return new MyLogImplementation(type);
+};
+```
 
 

@@ -13,21 +13,21 @@ public class Configuration
 
     internal Configuration(IJsonProvider jsonProvider, IMappingProvider mappingProvider,
         ReadOnlySet<ConfigurationOptionEnum> options,
-        IEnumerable<EvaluationCallback> evaluationCallbacks)
+        IEnumerable<EvaluationCallbackDelegate> evaluationCallbacks)
     {
         ArgumentNullException.ThrowIfNull(evaluationCallbacks);
         JsonProvider = jsonProvider ?? throw new ArgumentNullException(nameof(jsonProvider));
         MappingProvider = mappingProvider ?? throw new ArgumentNullException(nameof(mappingProvider));
         ArgumentNullException.ThrowIfNull(options);
         Options = options;
-        EvaluationCallbacks = new ReadOnlyCollection<EvaluationCallback>(evaluationCallbacks.ToList());
+        EvaluationCallbacks = new ReadOnlyCollection<EvaluationCallbackDelegate>(evaluationCallbacks.ToList());
     }
 
     /// <summary>
     ///     Returns the evaluation callbacks registered in this configuration
     /// </summary>
     /// <returns> the evaluation callbacks</returns>
-    public ReadOnlyCollection<EvaluationCallback>? EvaluationCallbacks { get; }
+    public ReadOnlyCollection<EvaluationCallbackDelegate>? EvaluationCallbacks { get; }
 
     /// <summary>
     ///     Returns <see cref="IJsonProvider" /> used by this configuration
@@ -67,7 +67,7 @@ public class Configuration
     ///     Creates a new Configuration by the provided evaluation listeners to the current listeners
     ///     <param name="evaluationListener">listeners</param>
     ///     <returns> a new configuration</returns>
-    public Configuration AddEvaluationCallbacks(params EvaluationCallback[] evaluationListener)
+    public Configuration AddEvaluationCallbacks(params EvaluationCallbackDelegate[] evaluationListener)
     {
         return CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(MappingProvider).WithOptions(Options)
             .WithEvaluationCallbacks(EvaluationCallbacks.Union(evaluationListener).ToArray()).Build();
@@ -78,7 +78,7 @@ public class Configuration
     /// </summary>
     /// <param name="evaluationListener">listeners</param>
     /// <returns> a new configuration</returns>
-    public Configuration SetEvaluationCallbacks(params EvaluationCallback[] evaluationListener)
+    public Configuration SetEvaluationCallbacks(params EvaluationCallbackDelegate[] evaluationListener)
     {
         return CreateBuilder().WithJsonProvider(JsonProvider).WithMappingProvider(MappingProvider).WithOptions(Options)
             .WithEvaluationCallbacks(evaluationListener).Build();

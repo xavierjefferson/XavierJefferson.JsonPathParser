@@ -9,7 +9,7 @@ namespace XavierJefferson.JsonPathParser.UnitTests.Internal;
 
 public class PropertyPathTokenTest
 {
-    private static readonly ILog Logger = LoggerFactory.GetLogger(typeof(PropertyPathTokenTest));
+    private static readonly ILog Logger = LoggerFactory.Logger(typeof(PropertyPathTokenTest));
 
     private readonly string _simpleArray = "[" +
                                            "{\n" +

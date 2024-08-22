@@ -7,7 +7,7 @@ namespace XavierJefferson.JsonPathParser.Filtering;
 
 public class RelationalExpressionNode : ExpressionNode
 {
-    private static readonly ILog Logger = LoggerFactory.GetLogger(typeof(RelationalExpressionNode));
+    private static readonly ILog Logger = LoggerFactory.Logger(typeof(RelationalExpressionNode));
 
     private readonly ValueNode? _left;
     private readonly RelationalOperator? _relationalOperator;

@@ -7,7 +7,7 @@ namespace XavierJefferson.JsonPathParser.Path;
 
 public class ArraySliceToken : ArrayPathToken
 {
-    private static readonly ILog Logger = LoggerFactory.GetLogger(typeof(ArraySliceToken));
+    private static readonly ILog Logger = LoggerFactory.Logger(typeof(ArraySliceToken));
 
     private readonly ArraySliceOperation _operation;
 

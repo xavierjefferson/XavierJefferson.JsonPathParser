@@ -32,7 +32,7 @@ public class EvaluationListenerTest : TestUtils
     {
         IList<int> idxs = new List<int>();
 
-        EvaluationCallback firstResultListener = found =>
+        EvaluationCallbackDelegate firstResultListener = found =>
         {
             idxs.Add(found.Index);
             return EvaluationContinuationEnum.Continue;

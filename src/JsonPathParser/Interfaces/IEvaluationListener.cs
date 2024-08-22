@@ -6,4 +6,4 @@ namespace XavierJefferson.JsonPathParser.Interfaces;
 ///     A delegate that can be registered on a <see cref="Configuration" /> that is called when a
 ///     result is added to the result of this path evaluation.
 /// </summary>
-public delegate EvaluationContinuationEnum EvaluationCallback(IFoundResult found);
+public delegate EvaluationContinuationEnum EvaluationCallbackDelegate(IFoundResult found);

@@ -8,7 +8,7 @@ namespace XavierJefferson.JsonPathParser;
 /// </summary>
 public class ConfigurationBuilder
 {
-    private List<EvaluationCallback> _evaluationCallbacks = new();
+    private List<EvaluationCallbackDelegate> _evaluationCallbacks = new();
     private ReadOnlySet<ConfigurationOptionEnum> _options = new(new HashSet<ConfigurationOptionEnum>());
     public IMappingProvider? MappingProvider { get; private set; }
 
@@ -38,17 +38,17 @@ public class ConfigurationBuilder
         return this;
     }
 
-    public ConfigurationBuilder WithEvaluationCallbacks(params EvaluationCallback[] callbacks)
+    public ConfigurationBuilder WithEvaluationCallbacks(params EvaluationCallbackDelegate[] callbacks)
     {
         _evaluationCallbacks = callbacks.ToList();
         return this;
     }
 
-    public ConfigurationBuilder WithEvaluationCallbacks(ICollection<EvaluationCallback>? callbacks)
+    public ConfigurationBuilder WithEvaluationCallbacks(ICollection<EvaluationCallbackDelegate>? callbacks)
     {
         _evaluationCallbacks = callbacks == null
-            ? new List<EvaluationCallback>()
-            : new List<EvaluationCallback>(callbacks);
+            ? new List<EvaluationCallbackDelegate>()
+            : new List<EvaluationCallbackDelegate>(callbacks);
         return this;
     }
 

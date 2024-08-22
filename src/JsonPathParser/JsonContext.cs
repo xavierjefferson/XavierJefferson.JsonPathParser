@@ -8,7 +8,7 @@ namespace XavierJefferson.JsonPathParser;
 
 public class JsonContext : IDocumentContext
 {
-    private static readonly ILog Logger = LoggerFactory.GetLogger(typeof(JsonContext));
+    private static readonly ILog Logger = LoggerFactory.Logger(typeof(JsonContext));
 
     public JsonContext(object? json, Configuration configuration)
     {
@@ -80,7 +80,7 @@ public class JsonContext : IDocumentContext
     }
 
 
-    public IReadContext WithListeners(params EvaluationCallback[] listener)
+    public IReadContext WithListeners(params EvaluationCallbackDelegate[] listener)
     {
         return new JsonContext(Json, Configuration.SetEvaluationCallbacks(listener));
     }
