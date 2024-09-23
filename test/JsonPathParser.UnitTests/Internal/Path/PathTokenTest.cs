@@ -7,30 +7,30 @@ public class PathTokenTest : TestUtils
     [Fact]
     public void is_upstream_definite_in_simple_case()
     {
-        Assert.True(MakePathReturningTail(MakePpt("foo")).IsUpstreamDefinite());
+        Assert.True(MakePathReturningTail(MakePropertyPathToken("foo")).IsUpstreamDefinite());
 
-        Assert.True(MakePathReturningTail(MakePpt("foo"), MakePpt("bar")).IsUpstreamDefinite());
+        Assert.True(MakePathReturningTail(MakePropertyPathToken("foo"), MakePropertyPathToken("bar")).IsUpstreamDefinite());
 
-        Assert.False(MakePathReturningTail(MakePpt("foo", "foo2"), MakePpt("bar")).IsUpstreamDefinite());
+        Assert.False(MakePathReturningTail(MakePropertyPathToken("foo", "foo2"), MakePropertyPathToken("bar")).IsUpstreamDefinite());
 
-        Assert.False(MakePathReturningTail(new WildcardPathToken(), MakePpt("bar")).IsUpstreamDefinite());
+        Assert.False(MakePathReturningTail(new WildcardPathToken(), MakePropertyPathToken("bar")).IsUpstreamDefinite());
 
-        Assert.False(MakePathReturningTail(new ScanPathToken(), MakePpt("bar")).IsUpstreamDefinite());
+        Assert.False(MakePathReturningTail(new ScanPathToken(), MakePropertyPathToken("bar")).IsUpstreamDefinite());
     }
 
     [Fact]
     public void is_upstream_definite_in_complex_case()
     {
-        Assert.True(MakePathReturningTail(MakePpt("foo"), MakePpt("bar"), MakePpt("baz")).IsUpstreamDefinite());
+        Assert.True(MakePathReturningTail(MakePropertyPathToken("foo"), MakePropertyPathToken("bar"), MakePropertyPathToken("baz")).IsUpstreamDefinite());
 
-        Assert.True(MakePathReturningTail(MakePpt("foo"), new WildcardPathToken()).IsUpstreamDefinite());
+        Assert.True(MakePathReturningTail(MakePropertyPathToken("foo"), new WildcardPathToken()).IsUpstreamDefinite());
 
         Assert.False(
-            MakePathReturningTail(new WildcardPathToken(), MakePpt("bar"), MakePpt("baz")).IsUpstreamDefinite());
+            MakePathReturningTail(new WildcardPathToken(), MakePropertyPathToken("bar"), MakePropertyPathToken("baz")).IsUpstreamDefinite());
     }
 
 
-    private PathToken MakePpt(params string[] properties)
+    private PathToken MakePropertyPathToken(params string[] properties)
     {
         return new PropertyPathToken(new List<string?>(properties), '\'');
     }

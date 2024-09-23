@@ -22,7 +22,7 @@ public class Issue721 : TestBase
             .Parse("{\"top\": {\"middle\": null}}")
             .Delete(JsonPath.Compile("$.top.middle.bottom"));
         var ans = dc.Read<IDictionary<string, object?>>("$");
-        Assert.True(ans.DeepEquals(GetSingletonMap("top", GetSingletonMap("middle", null))));
+        Assert.Equal(DeepCompareResultEnum.Equal, ans.DeepCompare(GetSingletonMap("top", GetSingletonMap("middle", null))));
         //System.out.println(ans);
         //Assert.Equal("{top={middle=null}", ans.ToString());
     }
@@ -43,11 +43,11 @@ public class Issue721 : TestBase
         var ans = dc.Read("$").AsListOfMap();
         //System.out.println(ans);
         Assert.Equal(3, ans.Count());
-        Assert.True(ans[0].DeepEquals(GetSingletonMap("top", GetSingletonMap("middle", null))));
-        Assert.True(ans[1]
-            .DeepEquals(GetSingletonMap("top", GetSingletonMap("middle", new Dictionary<string, object?>()))));
-        Assert.True(ans[2]
-            .DeepEquals(GetSingletonMap("top", GetSingletonMap("middle", new Dictionary<string, object?>()))));
+        Assert.Equal(DeepCompareResultEnum.Equal, ans[0].DeepCompare(GetSingletonMap("top", GetSingletonMap("middle", null))));
+        Assert.Equal(DeepCompareResultEnum.Equal, ans[1]
+            .DeepCompare(GetSingletonMap("top", GetSingletonMap("middle", new Dictionary<string, object?>()))));
+        Assert.Equal(DeepCompareResultEnum.Equal, ans[2]
+            .DeepCompare(GetSingletonMap("top", GetSingletonMap("middle", new Dictionary<string, object?>()))));
         //Assert.Equal("[{\"top\":{\"middle\":null},{\"top\":{\"middle\":{}},{\"top\":{\"middle\":{}}]", ans.ToString());
     }
 }

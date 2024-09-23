@@ -28,15 +28,26 @@ public static class MyAsserts
 
     public static bool ContainsExactly<T>(this IEnumerable<T> toTest, IList<T> toFind)
     {
-        var m = toTest.ToList();
-        if (toFind.Count != m.Count) return false;
+        var testAsList = toTest.ToList();
+        if (Enumerable.SequenceEqual(toFind, testAsList))
+        {
+            return true;
+        }
+        if (toFind.Count != testAsList.Count) return false;
         for (var i = 0; i < toFind.Count; i++)
         {
-            if (m[i] == null && toFind[i] == null) continue;
-            if (m[i] == null || toFind[i] == null) return false;
-            if (m[i] is IDictionary<string, object?> a && toFind[i] is IDictionary<string, object?> b)
-                return a.DeepEquals(b);
-            if (!m[i].Equals(toFind[i])) return false;
+            T? left = testAsList[i];
+            T? right = toFind[i];
+            if (left == null && right == null) continue;
+            if (left == null || right == null) return false;
+            switch (left.DeepCompare(right))
+            {
+                case DeepCompareResultEnum.NotEqual:
+                    return false;
+                case DeepCompareResultEnum.Equal:
+                    continue;
+            }
+            if (!left.Equals((object?)right)) return false;
         }
 
         return true;
