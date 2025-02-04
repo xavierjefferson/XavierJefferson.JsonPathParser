@@ -17,11 +17,11 @@ If you need help ask questions at [Stack Overflow](http://stackoverflow.com/ques
 
 JsonPath expressions always refer to a JSON structure in the same way as XPath expression are used in combination with an XML document. The "root member object" in JsonPath is always referred to as `$` regardless if it is an object or array.
 
-JsonPath expressions can use the dot–notation
+JsonPath expressions can use the dot-notation
 
 `$.store.book[0].title`
 
-or the bracket–notation
+or the bracket-notation
 
 `$['store']['book'][0]['title']`
 
