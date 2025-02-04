@@ -11,7 +11,7 @@ namespace XavierJefferson.JsonPathParser.UnitTests;
 public class DeepScanTest : TestUtils
 {
     [Fact]
-    public void when_deep_scanning_non_array_subscription_is_ignored()
+    public void WhenDeepScanningNonArraySubscriptionIsIgnored()
     {
         var result = JsonPath.Parse("{\"x\": [0,1,[0,1,2,3,null],null]}").Read("$..[2][3]");
         MyAssert.ContainsOnly(result.AsList(), 3d);
@@ -23,7 +23,7 @@ public class DeepScanTest : TestUtils
     }
 
     [Fact]
-    public void when_deep_scanning_null_subscription_is_ignored()
+    public void WhenDeepScanningNullSubscriptionIsIgnored()
     {
         var result = JsonPath.Parse("{\"x\": [null,null,[0,1,2,3,null],null]}").Read("$..[2][3]");
         MyAssert.ContainsOnly(result.AsList(), 3d);
@@ -32,7 +32,7 @@ public class DeepScanTest : TestUtils
     }
 
     [Fact]
-    public void when_deep_scanning_array_index_oob_is_ignored()
+    public void WhenDeepScanningArrayIndexOobIsIgnored()
     {
         var result = JsonPath.Parse("{\"x\": [0,1,[0,1,2,3,10],null]}").Read("$..[4]");
         MyAssert.ContainsOnly(result.AsList(), 10d);
@@ -47,14 +47,14 @@ public class DeepScanTest : TestUtils
     [InlineData("{\"foo\": {\"bar\": 4}}", "$.foo.bar.[5]")]
     [InlineData("{\"foo\": {\"bar\": 4}}", "$.foo.bar.[5, 10]")]
     [InlineData("{\"foo\": {\"bar\": []}}", "$.foo.bar.[5]")]
-    public void definite_upstream_illegal_array_access_throws(string input, string path)
+    public void DefiniteUpstreamIllegalArrayAccessThrows(string input, string path)
     {
         var testCase = ProviderTypeTestCases.RootData.First().Value;
         MyAssert.EvaluationThrows<PathNotFoundException>(input, path, testCase);
     }
 
     [Fact]
-    public void when_deep_scanning_illegal_property_access_is_ignored()
+    public void WhenDeepScanningIllegalPropertyAccessIsIgnored()
     {
         const string json = "{\"x\": {\"foo\": {\"bar\": 4}}, \"y\": {\"foo\": 1}}";
         var result = JsonPath.Parse(json).Read("$..foo");
@@ -71,7 +71,7 @@ public class DeepScanTest : TestUtils
     [Theory]
     [InlineData("$..foo[?(@.bar)].bar")]
     [InlineData("$..[*]foo[?(@.bar)].bar")]
-    public void when_deep_scanning_illegal_predicate_is_ignored(string path)
+    public void WhenDeepScanningIllegalPredicateIsIgnored(string path)
     {
         const string json = "{\"x\": {\"foo\": {\"bar\": 4}}, \"y\": {\"foo\": 1}}";
         var result = JsonPath.Parse(json).Read<List<object?>>(path);
@@ -80,7 +80,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void when_deep_scanning_require_properties_is_ignored_on_scan_target(IProviderTypeTestCase testCase)
+    public void WhenDeepScanningRequirePropertiesIsIgnoredOnScanTarget(IProviderTypeTestCase testCase)
     {
         var conf = testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties);
 
@@ -98,7 +98,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void when_deep_scanning_require_properties_is_ignored_on_scan_target_but_not_on_children(
+    public void WhenDeepScanningRequirePropertiesIsIgnoredOnScanTargetButNotOnChildren(
         IProviderTypeTestCase testCase)
     {
         var conf = testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties);
@@ -108,7 +108,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void when_deep_scanning_leaf_multi_props_work(IProviderTypeTestCase testCase)
+    public void WhenDeepScanningLeafMultiPropsWork(IProviderTypeTestCase testCase)
     {
         var result1 = JsonPath
             .Parse("[{\"a\": \"a-val\", \"b\": \"b-val\", \"c\": \"c-val\"}, [1, 5], {\"a\": \"a-val\"}]").Read(
@@ -143,7 +143,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void require_single_property_ok(IProviderTypeTestCase testCase)
+    public void RequireSinglePropertyOk(IProviderTypeTestCase testCase)
     {
         var json = new List<IDictionary<string, object?>>
         {
@@ -160,7 +160,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void require_single_property(IProviderTypeTestCase testCase)
+    public void RequireSingleProperty(IProviderTypeTestCase testCase)
     {
         var json = new List<object?>
         {
@@ -177,7 +177,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void require_multi_property_all_match(IProviderTypeTestCase testCase)
+    public void RequireMultiPropertyAllMatch(IProviderTypeTestCase testCase)
     {
         var ab = new Dictionary<string, object?>
         {
@@ -200,7 +200,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void require_multi_property_some_match(IProviderTypeTestCase testCase)
+    public void RequireMultiPropertySomeMatch(IProviderTypeTestCase testCase)
     {
         var ab = new Dictionary<string, object?>
         {
@@ -228,7 +228,7 @@ public class DeepScanTest : TestUtils
     }
 
     [Fact]
-    public void scan_for_single_property()
+    public void ScanForSingleProperty()
     {
         var a = new Dictionary<string, object?>
         {
@@ -258,7 +258,7 @@ public class DeepScanTest : TestUtils
     }
 
     [Fact]
-    public void scan_for_property_path()
+    public void ScanForPropertyPath()
     {
         var a = new Dictionary<string, object?>
         {
@@ -288,7 +288,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void scan_for_property_path_missing_required_property(IProviderTypeTestCase testCase)
+    public void ScanForPropertyPathMissingRequiredProperty(IProviderTypeTestCase testCase)
     {
         var a = new Dictionary<string, object?>
         {
@@ -321,7 +321,7 @@ public class DeepScanTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void scans_can_be_filtered(IProviderTypeTestCase testCase)
+    public void ScansCanBeFiltered(IProviderTypeTestCase testCase)
     {
         var brown = GetSingletonMap("val", "brown");
         var white = GetSingletonMap("val", "white");
@@ -353,7 +353,7 @@ public class DeepScanTest : TestUtils
     }
 
     [Fact]
-    public void scan_with_a_function_filter()
+    public void ScanWithAFunctionFilter()
     {
         var result = JsonPath.Parse(JsonTestData.JsonDocument).Read<List<object?>>("$..*[?(@.length() > 5)]");
         Assert.Single(result);

@@ -1,33 +1,43 @@
-﻿using XavierJefferson.JsonPathParser.UnitTests.Extensions;
+﻿using System.Text.Json;
+using XavierJefferson.JsonPathParser.UnitTests.Extensions;
 using Xunit.Sdk;
 
 namespace XavierJefferson.JsonPathParser.UnitTests;
 
 public class MyAssert : Assert
 {
+    static JsonSerializerOptions Options = new JsonSerializerOptions() { WriteIndented = true };
     public static void ContainsOnly<T>(IEnumerable<T> actual, params T[] toFind)
     {
-        if (!actual.ContainsOnly(toFind)) throw FailException.ForFailure("");
+        var list = actual.ToList();
+        if (!list.ContainsOnly(toFind)) throw FailException.ForFailure(GetCollectionErrorMessage("only", list, toFind));
+    }
+
+    static string GetCollectionErrorMessage<T>(string modifier, List<T> actual, T[] toFind)
+    {
+        return $"Collection does not contain {modifier} elements {JsonSerializer.Serialize(toFind, Options)}.{Environment.NewLine}Current contents:{Environment.NewLine}{Environment.NewLine}{JsonSerializer.Serialize(actual, Options)}";
     }
 
     public static void ContainsAll<T>(IEnumerable<T> actual, params T[] toFind)
     {
-        if (!actual.ContainsAll(toFind)) throw FailException.ForFailure("");
+        var list = actual.ToList();
+        if (!list.ContainsAll(toFind)) throw FailException.ForFailure(GetCollectionErrorMessage("all", list, toFind));
     }
 
     public static void ContainsExactly<T>(IEnumerable<T> actual, params T[] toFind)
     {
-        if (!actual.ContainsExactly(toFind)) throw FailException.ForFailure("");
+        var list = actual.ToList();
+        if (!list.ContainsExactly(toFind)) throw FailException.ForFailure(GetCollectionErrorMessage("exact", list, toFind));
     }
 
     public static void ContainsEntry<T, TU>(IDictionary<T, TU> dictionary, T key, TU value)
     {
-        if (!dictionary.ContainsEntry(key, value)) throw FailException.ForFailure("");
+        if (!dictionary.ContainsEntry(key, value)) throw FailException.ForFailure($"Dictionary does not contain entry {JsonSerializer.Serialize(value, Options)}");
     }
 
     internal static void ContainsKey<T, U>(IDictionary<T, U> result, T key)
     {
-        if (!result.ContainsKey(key)) throw FailException.ForFailure("");
+        if (!result.ContainsKey(key)) throw FailException.ForFailure($"Dictionary does not contain key {JsonSerializer.Serialize(key, Options)}");
     }
 
     /// <summary>Shortcut for counting found nodes.</summary>

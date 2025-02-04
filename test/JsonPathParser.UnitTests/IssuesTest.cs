@@ -11,7 +11,7 @@ public class IssuesTest : TestUtils
 {
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_143(IProviderTypeTestCase testCase)
+    public void Issue143(IProviderTypeTestCase testCase)
     {
         var json = "{ \"foo\": { \"bar\" : \"val\" }, \"moo\": { \"cow\" : \"val\" } }";
 
@@ -25,7 +25,7 @@ public class IssuesTest : TestUtils
 
 
     [Fact]
-    public void issue_114_a()
+    public void Issue114A()
     {
         var json = "{ \"p\":{\n" +
                    "\"s\": { \"u\": \"su\" }, \n" +
@@ -37,7 +37,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_114_b()
+    public void Issue114B()
     {
         var json = "{ \"p\": [\"valp\", \"valq\", \"valr\"] }";
 
@@ -46,7 +46,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_114_c()
+    public void Issue114C()
     {
         var json = "{ \"p\": [\"valp\", \"valq\", \"valr\"] }";
 
@@ -55,7 +55,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_114_d()
+    public void Issue114D()
     {
         Assert.Throws<InvalidPathException>(
             () => JsonPath.Read(JsonTestData.JsonBookDocument, "$..book[(@.length-1)] "));
@@ -63,7 +63,7 @@ public class IssuesTest : TestUtils
 
 
     [Fact]
-    public void issue_151()
+    public void Issue151()
     {
         var json = "{\n" +
                    "\"datas\": {\n" +
@@ -96,7 +96,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void full_ones_can_be_filtered()
+    public void FullOnesCanBeFiltered()
     {
         var json = "[\n" +
                    " {\"kind\" : \"full\"},\n" +
@@ -111,7 +111,7 @@ public class IssuesTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_36(IProviderTypeTestCase testCase)
+    public void Issue36(IProviderTypeTestCase testCase)
     {
         var json = "{\n" +
                    "\n" +
@@ -129,7 +129,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_11()
+    public void Issue11()
     {
         var json = "{ \"foo\" : [] }";
         var result = JsonPath.Read(json, "$.foo[?(@.rel == 'item')][0].uri").AsList();
@@ -137,14 +137,14 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_11b()
+    public void Issue11B()
     {
         var json = "{ \"foo\" : [] }";
         Assert.Throws<PathNotFoundException>(() => JsonPath.Read(json, "$.foo[0].uri"));
     }
 
     [Fact]
-    public void issue_15()
+    public void Issue15()
     {
         var json = "{ \"store\": {\n" +
                    "    \"book\": [ \n" +
@@ -182,7 +182,7 @@ public class IssuesTest : TestUtils
 
 
     [Fact]
-    public void issue_24()
+    public void Issue24()
     {
         using (var stream = GetResourceAsStream("issue_24.json"))
         {
@@ -193,7 +193,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_28_string()
+    public void Issue28String()
     {
         var json = "{\"contents\": [\"one\",\"two\",\"three\"]}";
 
@@ -204,7 +204,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_37()
+    public void Issue37()
     {
         var json = "[\n" +
                    "    {\n" +
@@ -231,7 +231,7 @@ public class IssuesTest : TestUtils
 
 
     [Fact]
-    public void issue_38()
+    public void Issue38()
     {
         var json = "{\n" +
                    "   \"datapoints\":[\n" +
@@ -253,7 +253,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_39()
+    public void Issue39()
     {
         var json = "{\n" +
                    "    \"obj1\": {\n" +
@@ -269,7 +269,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_28_int()
+    public void Issue28Int()
     {
         var json = "{\"contents\": [1,2,3]}";
 
@@ -280,7 +280,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_28_boolean()
+    public void Issue28Boolean()
     {
         var json = "{\"contents\": [true, true, false]}";
 
@@ -291,7 +291,7 @@ public class IssuesTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_22(IProviderTypeTestCase testCase)
+    public void Issue22(IProviderTypeTestCase testCase)
     {
         var configuration = testCase.Configuration;
 
@@ -301,7 +301,7 @@ public class IssuesTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_22c(IProviderTypeTestCase testCase)
+    public void Issue22C(IProviderTypeTestCase testCase)
     {
         //Configuration configuration = Configuration.CreateBuilder().Build();
         var configuration = testCase.Configuration.SetOptions(ConfigurationOptionEnum.SuppressExceptions);
@@ -313,7 +313,7 @@ public class IssuesTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_22b(IProviderTypeTestCase testCase)
+    public void Issue22B(IProviderTypeTestCase testCase)
     {
         var json = "{\"a\":[{\"b\":1,\"c\":2},{\"b\":5,\"c\":2}]}";
         var res = JsonPath.Using(testCase.Configuration.SetOptions(ConfigurationOptionEnum.DefaultPathLeafToNull))
@@ -322,14 +322,14 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_26()
+    public void Issue26()
     {
         var json = "[{\"a\":[{\"b\":1,\"c\":2}]}]";
         Assert.Throws<PathNotFoundException>(() => JsonPath.Read(json, "$.a"));
     }
 
     [Fact]
-    public void issue_29_a()
+    public void Issue29A()
     {
         var json =
             "{\"list\": [ { \"a\":\"atext\", \"b.b-a\":\"batext2\", \"b\":{ \"b-a\":\"batext\", \"b-b\":\"bbtext\" } }, { \"a\":\"atext2\", \"b\":{ \"b-a\":\"batext2\", \"b-b\":\"bbtext2\" } } ] }";
@@ -346,7 +346,7 @@ public class IssuesTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_29_b(IProviderTypeTestCase testCase)
+    public void Issue29B(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var json =
@@ -358,7 +358,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_30()
+    public void Issue30()
     {
         var json = "{\"foo\" : {\"@id\" : \"123\", \"$\" : \"hello\"}}";
 
@@ -367,14 +367,14 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_32()
+    public void Issue32()
     {
         var json = "{\"text\" : \"skill: \\\"Heuristic Evaluation\\\"\", \"country\" : \"\"}";
         Assert.Equal("skill: \"Heuristic Evaluation\"", JsonPath.Read(json, "$.text"));
     }
 
     [Fact]
-    public void issue_33()
+    public void Issue33()
     {
         var json = "{ \"store\": {\n" +
                    "    \"book\": [ \n" +
@@ -407,7 +407,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void array_root()
+    public void ArrayRoot()
     {
         var json = "[\n" +
                    "    {\n" +
@@ -422,7 +422,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void a_test()
+    public void ATest()
     {
         var json = "{\n" +
                    "  \"success\": true,\n" +
@@ -440,7 +440,7 @@ public class IssuesTest : TestUtils
 
 
     [Fact]
-    public void issue_42()
+    public void Issue42()
     {
         var json = "{" +
                    "        \"list\": [{" +
@@ -455,7 +455,7 @@ public class IssuesTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_43(IProviderTypeTestCase testCase)
+    public void Issue43(IProviderTypeTestCase testCase)
     {
         var json = "{\"test\":null}";
 
@@ -471,7 +471,7 @@ public class IssuesTest : TestUtils
 
 
     [Fact]
-    public void issue_45()
+    public void Issue45()
     {
         var json = "{\"rootkey\":{\"sub.key\":\"value\"}}";
 
@@ -480,7 +480,7 @@ public class IssuesTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_46(IProviderTypeTestCase testCase)
+    public void Issue46(IProviderTypeTestCase testCase)
     {
         var json = "{\"a\": {}}";
 
@@ -494,7 +494,7 @@ public class IssuesTest : TestUtils
 
 
     [Fact]
-    public void issue_x()
+    public void IssueX()
     {
         var json = "{\n" +
                    " \"a\" : [\n" +
@@ -509,7 +509,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_60()
+    public void Issue60()
     {
         var json = "[\n" +
                    "{\n" +
@@ -567,7 +567,7 @@ public class IssuesTest : TestUtils
     //http://stackoverflow.com/questions/28596324/jsonpath-filtering-api
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void stack_overflow_question_1(IProviderTypeTestCase testCase)
+    public void StackOverflowQuestion1(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var json = "{\n" +
@@ -610,7 +610,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_71()
+    public void Issue71()
     {
         var json = "{\n"
                    + "    \"logs\": [\n"
@@ -627,7 +627,7 @@ public class IssuesTest : TestUtils
     }
 
     //[Fact]
-    //public void issue_76()
+    //public void Issue76()
     //{
 
     //    string json = "{\n" +
@@ -643,7 +643,7 @@ public class IssuesTest : TestUtils
     //}
 
     [Fact]
-    public void issue_79()
+    public void Issue79()
     {
         var json = "{ \n" +
                    "  \"c\": {\n" +
@@ -663,7 +663,7 @@ public class IssuesTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_97(IProviderTypeTestCase testCase)
+    public void Issue97(IProviderTypeTestCase testCase)
     {
         var json = "{ \"books\": [ " +
                    "{ \"category\": \"fiction\" }, " +
@@ -691,7 +691,7 @@ public class IssuesTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_99(IProviderTypeTestCase testCase)
+    public void Issue99(IProviderTypeTestCase testCase)
     {
         var json = "{\n" +
                    "    \"array1\": [\n" +
@@ -716,7 +716,7 @@ public class IssuesTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_129(IProviderTypeTestCase testCase)
+    public void Issue129(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var match = new Dictionary<string, object?>();
@@ -745,7 +745,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_131()
+    public void Issue131()
     {
         var json = "[\n" +
                    "    {\n" +
@@ -766,7 +766,7 @@ public class IssuesTest : TestUtils
 
 
     [Fact]
-    public void issue_131_2()
+    public void Issue1312()
     {
         var json = "[\n" +
                    "    {\n" +
@@ -792,7 +792,7 @@ public class IssuesTest : TestUtils
 
 
     [Fact]
-    public void issue_131_3()
+    public void Issue1313()
     {
         var json = "[\n" +
                    "    1,\n" +
@@ -814,7 +814,7 @@ public class IssuesTest : TestUtils
 
     //https://groups.google.com/forum/#!topic/jsonpath/Ojv8XF6LgqM
     [Fact]
-    public void using_square_bracket_literal_path()
+    public void UsingSquareBracketLiteralPath()
     {
         var json = "{ \"valid key[@num = 2]\" : \"value\" }";
 
@@ -824,7 +824,7 @@ public class IssuesTest : TestUtils
     }
 
     [Fact]
-    public void issue_90()
+    public void Issue90()
     {
         var json = "{\n" +
                    "    \"store\": {\n" +
@@ -855,7 +855,7 @@ public class IssuesTest : TestUtils
     }
 
     //[Fact]
-    //public void github_89()
+    //public void Github89()
     //{
     //    var json = new Dictionary<string, object?> { { "foo", "bar" } };
 
@@ -869,7 +869,7 @@ public class IssuesTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_170(IProviderTypeTestCase testCase)
+    public void Issue170(IProviderTypeTestCase testCase)
     {
         var json = "{\n" +
                    "  \"array\": [\n" +
@@ -890,7 +890,7 @@ public class IssuesTest : TestUtils
     }
 
     //[Fact]
-    //public void issue_171()
+    //public void Issue171()
     //{
 
     //    string json = "{\n" +
@@ -909,7 +909,7 @@ public class IssuesTest : TestUtils
     //}
 
     [Fact]
-    public void issue_309()
+    public void Issue309()
     {
         var json = "{\n" +
                    "\"jsonArr\": [\n" +
@@ -929,7 +929,7 @@ public class IssuesTest : TestUtils
     }
 
     //[Fact]
-    //public void issue_378()
+    //public void Issue378()
     //{
 
     //    string json = "{\n" +
@@ -957,7 +957,7 @@ public class IssuesTest : TestUtils
 
     //CS304 (manually written) Issue link: https://github.com/json-path/JsonPath/issues/620
     [Fact]
-    public void issue_620_1()
+    public void Issue6201()
     {
         var json = "{\n" +
                    "  \"complexText\": {\n" +
@@ -991,7 +991,7 @@ public class IssuesTest : TestUtils
 
     //CS304 (manually written) Issue link: https://github.com/json-path/JsonPath/issues/620
     [Fact]
-    public void issue_620_2()
+    public void Issue6202()
     {
         var json = "{\n" +
                    "  \"complexText\": {\n" +

@@ -5,7 +5,7 @@ namespace XavierJefferson.JsonPathParser.UnitTests.Internal.Path;
 public class PathTokenTest : TestUtils
 {
     [Fact]
-    public void is_upstream_definite_in_simple_case()
+    public void IsUpstreamDefiniteInSimpleCase()
     {
         Assert.True(MakePathReturningTail(MakePropertyPathToken("foo")).IsUpstreamDefinite());
 
@@ -19,7 +19,7 @@ public class PathTokenTest : TestUtils
     }
 
     [Fact]
-    public void is_upstream_definite_in_complex_case()
+    public void IsUpstreamDefiniteInComplexCase()
     {
         Assert.True(MakePathReturningTail(MakePropertyPathToken("foo"), MakePropertyPathToken("bar"), MakePropertyPathToken("baz")).IsUpstreamDefinite());
 

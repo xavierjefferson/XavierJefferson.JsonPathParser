@@ -25,7 +25,7 @@ public class Issue680
     }
 
     [Fact]
-    public void testIssue680concat_2()
+    public void Testissue680concat2()
     {
         var context = new Dictionary<string, object?>();
         context["key"] = "first";

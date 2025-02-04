@@ -9,7 +9,7 @@ public class MultiPropTest : TestUtils
 {
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void multi_prop_can_be_read_from_root(IProviderTypeTestCase testCase)
+    public void MultiPropCanBeReadFromRoot(IProviderTypeTestCase testCase)
     {
         var model = new Dictionary<string, object?>
         {
@@ -32,7 +32,7 @@ public class MultiPropTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void multi_props_can_be_defaulted_to_null(IProviderTypeTestCase testCase)
+    public void MultiPropsCanBeDefaultedToNull(IProviderTypeTestCase testCase)
     {
         var model = new Dictionary<string, object?>
         {
@@ -50,7 +50,7 @@ public class MultiPropTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void multi_props_can_be_required(IProviderTypeTestCase testCase)
+    public void MultiPropsCanBeRequired(IProviderTypeTestCase testCase)
     {
         var model = new Dictionary<string, object?>
         {
@@ -66,7 +66,7 @@ public class MultiPropTest : TestUtils
     }
 
     [Fact]
-    public void multi_props_can_be_non_leafs()
+    public void MultiPropsCanBeNonLeafs()
     {
         var result = JsonPath.Parse("{\"a\": {\"v\": 5}, \"b\": {\"v\": 4}, \"c\": {\"v\": 1}}").Read(
             "$['a', 'c'].v");
@@ -74,7 +74,7 @@ public class MultiPropTest : TestUtils
     }
 
     [Fact]
-    public void nonexistent_non_leaf_multi_props_ignored()
+    public void NonexistentNonLeafMultiPropsIgnored()
     {
         var result = JsonPath.Parse("{\"a\": {\"v\": 5}, \"b\": {\"v\": 4}, \"c\": {\"v\": 1}}").Read(
             "$['d', 'a', 'c', 'm'].v");
@@ -82,7 +82,7 @@ public class MultiPropTest : TestUtils
     }
 
     [Fact]
-    public void multi_props_with_post_filter()
+    public void MultiPropsWithPostFilter()
     {
         var result = JsonPath.Parse("{\"a\": {\"v\": 5}, \"b\": {\"v\": 4}, \"c\": {\"v\": 1, \"flag\": true}}").Read(
             "$['a', 'c'][?(@.flag)].v");
@@ -90,7 +90,7 @@ public class MultiPropTest : TestUtils
     }
 
     [Fact]
-    public void deep_scan_does_not_affect_non_leaf_multi_props()
+    public void DeepScanDoesNotAffectNonLeafMultiProps()
     {
         // deep scan + multiprop is quite redundant scenario, but it's not forbidden, so we'd better check
         var json = "{\"v\": [[{}, 1, {\"a\": {\"v\": 5}, \"b\": {\"v\": 4}, \"c\": {\"v\": 1, \"flag\": true}}]]}";
@@ -107,7 +107,7 @@ public class MultiPropTest : TestUtils
     [InlineData("$[*][*]['a', 'c'].v")]
     [InlineData("$.x[1]['d', 'a', 'c', 'm'].v")]
     [InlineData("$.x[*]['d', 'a', 'c', 'm'].v")]
-    public void multi_props_can_be_in_the_middle(string path)
+    public void MultiPropsCanBeInTheMiddle(string path)
     {
         const string json = "{\"x\": [null, {\"a\": {\"v\": 5}, \"b\": {\"v\": 4}, \"c\": {\"v\": 1}}]}";
         var result = JsonPath.Parse(json).Read(path);
@@ -116,7 +116,7 @@ public class MultiPropTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void non_leaf_multi_props_can_be_required(IProviderTypeTestCase testCase)
+    public void NonLeafMultiPropsCanBeRequired(IProviderTypeTestCase testCase)
     {
         var conf = testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties);
         var json = "{\"a\": {\"v\": 5}, \"b\": {\"v\": 4}, \"c\": {\"v\": 1}}";

@@ -6,7 +6,7 @@ namespace XavierJefferson.JsonPathParser.UnitTests;
 public class EscapeTest : TestUtils
 {
     [Fact]
-    public void urls_are_not_escaped()
+    public void UrlsAreNotEscaped()
     {
         var json = "[" +
                    "\"https://a/b/1\"," +

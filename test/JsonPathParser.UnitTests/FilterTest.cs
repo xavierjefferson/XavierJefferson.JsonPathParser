@@ -34,7 +34,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void int_eq_evals(IProviderTypeTestCase testCase)
+    public void IntEqEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Eq(1))
@@ -45,7 +45,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void int_eq_string_evals(IProviderTypeTestCase testCase)
+    public void IntEqStringEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Eq("1"))
@@ -65,7 +65,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void long_eq_evals(IProviderTypeTestCase testCase)
+    public void LongEqEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "long-key").Eq(3000000000L))
@@ -76,7 +76,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void double_eq_evals(IProviderTypeTestCase testCase)
+    public void DoubleEqEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "double-key").Eq(10.1D))
@@ -89,7 +89,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void string_eq_evals(IProviderTypeTestCase testCase)
+    public void StringEqEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Eq("string"))
@@ -100,7 +100,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void boolean_eq_evals(IProviderTypeTestCase testCase)
+    public void BooleanEqEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "bool-key").Eq(true))
@@ -111,7 +111,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void null_eq_evals(IProviderTypeTestCase testCase)
+    public void NullEqEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "null-key").Eq(null))
@@ -124,7 +124,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void arr_eq_evals(IProviderTypeTestCase testCase)
+    public void ArrEqEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "arr-empty").Eq("[]"))
@@ -144,7 +144,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void int_ne_evals(IProviderTypeTestCase testCase)
+    public void IntNeEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Ne(1))
@@ -155,7 +155,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void long_ne_evals(IProviderTypeTestCase testCase)
+    public void LongNeEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "long-key").Ne(3000000000L))
@@ -166,7 +166,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void double_ne_evals(IProviderTypeTestCase testCase)
+    public void DoubleNeEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "double-key").Ne(10.1D))
@@ -179,7 +179,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void string_ne_evals(IProviderTypeTestCase testCase)
+    public void StringNeEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").Ne("string"))
@@ -190,7 +190,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void boolean_ne_evals(IProviderTypeTestCase testCase)
+    public void BooleanNeEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "bool-key").Ne(true))
@@ -201,7 +201,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void null_ne_evals(IProviderTypeTestCase testCase)
+    public void NullNeEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "null-key").Ne(null))
@@ -219,7 +219,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void int_lt_evals(IProviderTypeTestCase testCase)
+    public void IntLtEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Lt(10))
@@ -230,7 +230,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void long_lt_evals(IProviderTypeTestCase testCase)
+    public void LongLtEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "long-key").Lt(4000000000L))
@@ -241,7 +241,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void double_lt_evals(IProviderTypeTestCase testCase)
+    public void DoubleLtEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "double-key").Lt(100.1D))
@@ -252,7 +252,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void string_lt_evals(IProviderTypeTestCase testCase)
+    public void StringLtEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "char-key").Lt("x"))
@@ -268,7 +268,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void int_lte_evals(IProviderTypeTestCase testCase)
+    public void IntLteEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-key").Lte(10))
@@ -281,7 +281,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void long_lte_evals(IProviderTypeTestCase testCase)
+    public void LongLteEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "long-key").Lte(4000000000L))
@@ -294,7 +294,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void double_lte_evals(IProviderTypeTestCase testCase)
+    public void DoubleLteEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "double-key").Lte(100.1D))
@@ -312,7 +312,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void int_gt_evals(IProviderTypeTestCase testCase)
+    public void IntGtEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Gt(10))
@@ -323,7 +323,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void long_gt_evals(IProviderTypeTestCase testCase)
+    public void LongGtEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "long-key").Gt(4000000000L))
@@ -334,7 +334,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void double_gt_evals(IProviderTypeTestCase testCase)
+    public void DoubleGtEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "double-key").Gt(100.1D))
@@ -345,7 +345,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void string_gt_evals(IProviderTypeTestCase testCase)
+    public void StringGtEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "char-key").Gt("x"))
@@ -361,7 +361,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void int_gte_evals(IProviderTypeTestCase testCase)
+    public void IntGteEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Gte(10))
@@ -374,7 +374,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void long_gte_evals(IProviderTypeTestCase testCase)
+    public void LongGteEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "long-key").Gte(4000000000L))
@@ -387,7 +387,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void double_gte_evals(IProviderTypeTestCase testCase)
+    public void DoubleGteEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "double-key").Gte(100.1D))
@@ -405,7 +405,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void string_regex_evals(IProviderTypeTestCase testCase)
+    public void StringRegexEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Regex(new Regex("^string$")))
@@ -420,7 +420,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void list_regex_evals(IProviderTypeTestCase testCase)
+    public void ListRegexEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-arr").Regex(new Regex("^d$")))
@@ -431,7 +431,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void obj_regex_doesnt_break(IProviderTypeTestCase testCase)
+    public void ObjRegexDoesntBreak(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "obj").Regex(new Regex("^foo$")))
@@ -445,7 +445,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void json_evals(IProviderTypeTestCase testCase)
+    public void JsonEvals(IProviderTypeTestCase testCase)
     {
         var nest = "{\"a\":true}";
         var arr = "[1,2]";
@@ -468,7 +468,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void string_in_evals(IProviderTypeTestCase testCase)
+    public void StringInEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").In("a", null, "string"))
@@ -490,7 +490,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void string_nin_evals(IProviderTypeTestCase testCase)
+    public void StringNinEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").Nin("a", null, "string"))
@@ -512,7 +512,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void int_all_evals(IProviderTypeTestCase testCase)
+    public void IntAllEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "int-arr").All(new List<object?> { 0, 1 }))
@@ -523,7 +523,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void string_all_evals(IProviderTypeTestCase testCase)
+    public void StringAllEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-arr").All(new List<object?> { "a", "b" }))
@@ -534,7 +534,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void not_array_all_evals(IProviderTypeTestCase testCase)
+    public void NotArrayAllEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "string-key").All(new List<object?> { "a", "b" }))
@@ -548,7 +548,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void array_size_evals(IProviderTypeTestCase testCase)
+    public void ArraySizeEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-arr").Size(5))
@@ -559,7 +559,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void string_size_evals(IProviderTypeTestCase testCase)
+    public void StringSizeEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Size(6))
@@ -570,7 +570,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void other_size_evals(IProviderTypeTestCase testCase)
+    public void OtherSizeEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "int-key").Size(6))
@@ -579,7 +579,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void null_size_evals(IProviderTypeTestCase testCase)
+    public void NullSizeEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, "null-key").Size(6))
@@ -593,7 +593,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void array_subsetof_evals(IProviderTypeTestCase testCase)
+    public void ArraySubsetofEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         // list is a superset
@@ -617,7 +617,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void array_anyof_evals(IProviderTypeTestCase testCase)
+    public void ArrayAnyofEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var list = new ObjectList("a", "z");
@@ -638,7 +638,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void array_noneof_evals(IProviderTypeTestCase testCase)
+    public void ArrayNoneofEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var list = new ObjectList("a", "z");
@@ -659,7 +659,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void exists_evals(IProviderTypeTestCase testCase)
+    public void ExistsEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Exists(true))
@@ -686,7 +686,7 @@ public class FilterTest : TestUtils
     [InlineData(false, "null-key", typeof(string))]
     [InlineData(true, "int-arr", typeof(List<object?>))]
     [Theory]
-    public void type_evals(bool expectedValue, string where, Type type)
+    public void TypeEvals(bool expectedValue, string where, Type type)
     {
         var testCase = ProviderTypeTestCases.Cases.First().Value;
         var jsonProvider = testCase.Configuration.JsonProvider;
@@ -702,7 +702,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void not_empty_evals(IProviderTypeTestCase testCase)
+    public void NotEmptyEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Empty(false))
@@ -726,7 +726,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void empty_evals(IProviderTypeTestCase testCase)
+    public void EmptyEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, "string-key").Empty(false))
@@ -764,7 +764,7 @@ public class FilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void matches_evals(IProviderTypeTestCase testCase)
+    public void MatchesEvals(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var predicate = SimplePredicate.Create(context =>
@@ -786,7 +786,7 @@ public class FilterTest : TestUtils
     //----------------------------------------------------------------------------
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void or_and_filters_evaluates(IProviderTypeTestCase testCase)
+    public void OrAndFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var model = new Dictionary<string, object?> { { "foo", true }, { "bar", false } };
@@ -829,7 +829,7 @@ public class FilterTest : TestUtils
     }
 
     [Fact]
-    public void criteria_can_be_parsed()
+    public void CriteriaCanBeParsed()
     {
         var criteria = Filter.Parse("[?(@.foo == 'baar')]");
         Assert.Equal("[?(@['foo'] == 'baar')]", criteria.ToString());
@@ -840,7 +840,7 @@ public class FilterTest : TestUtils
 
 
     [Fact]
-    public void inline_in_criteria_evaluates()
+    public void InlineInCriteriaEvaluates()
     {
         var list = JsonPath.Read(JsonTestData.JsonDocument, "$.store.book[?(@.category in ['reference', 'fiction'])]")
             .AsList();

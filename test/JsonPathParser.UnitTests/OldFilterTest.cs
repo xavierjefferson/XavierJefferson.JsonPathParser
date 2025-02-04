@@ -44,7 +44,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void is_filters_evaluates(IProviderTypeTestCase testCase)
+    public void IsFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>();
@@ -64,7 +64,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void ne_filters_evaluates(IProviderTypeTestCase testCase)
+    public void NeFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>();
@@ -86,7 +86,7 @@ public class OldFilterTest : TestUtils
     [InlineData(false, "foo", null)]
     [InlineData(false, "foo", 20D)]
     [InlineData(false, "foo_null", 20D)]
-    public void gt_filters_evaluates(bool isTrue, string where, object toCompare)
+    public void GtFiltersEvaluates(bool isTrue, string where, object toCompare)
     {
         var testCase = ProviderTypeTestCases.Cases.First().Value;
         var jsonProvider = testCase.Configuration.JsonProvider;
@@ -100,7 +100,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void gte_filters_evaluates(IProviderTypeTestCase testCase)
+    public void GteFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>();
@@ -121,7 +121,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void lt_filters_evaluates(IProviderTypeTestCase testCase)
+    public void LtFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>();
@@ -137,7 +137,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void lte_filters_evaluates(IProviderTypeTestCase testCase)
+    public void LteFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>();
@@ -156,7 +156,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void in_filters_evaluates(IProviderTypeTestCase testCase)
+    public void InFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>();
@@ -184,7 +184,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void nin_filters_evaluates(IProviderTypeTestCase testCase)
+    public void NinFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>();
@@ -211,7 +211,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void all_filters_evaluates(IProviderTypeTestCase testCase)
+    public void AllFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>();
@@ -225,7 +225,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void size_filters_evaluates(IProviderTypeTestCase testCase)
+    public void SizeFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>();
@@ -242,7 +242,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void exists_filters_evaluates(IProviderTypeTestCase testCase)
+    public void ExistsFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>();
@@ -267,7 +267,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void type_filters_evaluates(IProviderTypeTestCase testCase)
+    public void TypeFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>
@@ -310,7 +310,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void pattern_filters_evaluates(IProviderTypeTestCase testCase)
+    public void PatternFiltersEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>
@@ -333,7 +333,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void combine_filter_deep_criteria(IProviderTypeTestCase testCase)
+    public void CombineFilterDeepCriteria(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var json = "[\n" +
@@ -378,7 +378,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void filters_can_be_combined(IProviderTypeTestCase testCase)
+    public void FiltersCanBeCombined(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var check = new Dictionary<string, object?>
@@ -400,7 +400,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void arrays_of_maps_can_be_filtered(IProviderTypeTestCase testCase)
+    public void ArraysOfMapsCanBeFiltered(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var rootGrandChildA = new Dictionary<string, object?>
@@ -456,7 +456,7 @@ public class OldFilterTest : TestUtils
 
 
     [Fact]
-    public void arrays_of_objects_can_be_filtered()
+    public void ArraysOfObjectsCanBeFiltered()
     {
         var doc = new Dictionary<string, object?>
         {
@@ -473,7 +473,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void filters_can_contain_json_path_expressions(IProviderTypeTestCase testCase)
+    public void FiltersCanContainJsonPathExpressions(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var doc = testCase.Configuration.JsonProvider.Parse(Document);
@@ -485,7 +485,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void not_empty_filter_evaluates(IProviderTypeTestCase testCase)
+    public void NotEmptyFilterEvaluates(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var json = "{\n" +
@@ -525,7 +525,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void contains_filter_evaluates_on_array(IProviderTypeTestCase testCase)
+    public void ContainsFilterEvaluatesOnArray(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var json = "{\n" +
@@ -572,7 +572,7 @@ public class OldFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void contains_filter_evaluates_on_string(IProviderTypeTestCase testCase)
+    public void ContainsFilterEvaluatesOnString(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
 

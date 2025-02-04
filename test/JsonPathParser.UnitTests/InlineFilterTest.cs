@@ -52,7 +52,7 @@ public class InlineFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void root_context_can_be_referred_in_predicate(IProviderTypeTestCase testCase)
+    public void RootContextCanBeReferredInPredicate(IProviderTypeTestCase testCase)
     {
         var prices = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read("store.book[?(@.display-price <= $.max-price)].display-price", TypeConstants.ListType).AsList();
@@ -67,7 +67,7 @@ public class InlineFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void multiple_context_object_can_be_refered(IProviderTypeTestCase testCase)
+    public void MultipleContextObjectCanBeRefered(IProviderTypeTestCase testCase)
     {
         var all = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read("store.book[ ?(@.category == @.category) ]", TypeConstants.ListType).AsList();
@@ -92,7 +92,7 @@ public class InlineFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void simple_inline_or_statement_evaluates(IProviderTypeTestCase testCase)
+    public void SimpleInlineOrStatementEvaluates(IProviderTypeTestCase testCase)
     {
         var a = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read("store.book[ ?(@.author == 'Nigel Rees' || @.author == 'Evelyn Waugh') ].author",
@@ -120,7 +120,7 @@ public class InlineFilterTest : TestUtils
     }
 
 
-    public void no_path_ref_in_filter_hit_all()
+    public void NoPathRefInFilterHitAll()
     {
         var res = JsonPath.Parse(JsonTestData.JsonDocument).Read("$.store.book[?('a' == 'a')].author").AsList();
 
@@ -128,7 +128,7 @@ public class InlineFilterTest : TestUtils
     }
 
     [Fact]
-    public void no_path_ref_in_filter_hit_none()
+    public void NoPathRefInFilterHitNone()
     {
         var res = JsonPath.Parse(JsonTestData.JsonDocument).Read("$.store.book[?('a' == 'b')].author").AsList();
 
@@ -136,7 +136,7 @@ public class InlineFilterTest : TestUtils
     }
 
     [Fact]
-    public void path_can_be_on_either_side_of_operator()
+    public void PathCanBeOnEitherSideOfOperator()
     {
         var resLeft = JsonPath.Parse(JsonTestData.JsonDocument)
             .Read("$.store.book[?(@.category == 'reference')].author").AsList();
@@ -148,7 +148,7 @@ public class InlineFilterTest : TestUtils
     }
 
     [Fact]
-    public void path_can_be_on_both_side_of_operator()
+    public void PathCanBeOnBothSideOfOperator()
     {
         var res = JsonPath.Parse(JsonTestData.JsonDocument).Read("$.store.book[?(@.category == @.category)].author")
             .AsList();
@@ -157,7 +157,7 @@ public class InlineFilterTest : TestUtils
     }
 
     [Fact]
-    public void patterns_can_be_evaluated()
+    public void PatternsCanBeEvaluated()
     {
         var resLeft = JsonPath.Parse(JsonTestData.JsonDocument)
             .Read("$.store.book[?(@.category =~ /reference/)].author").AsList();
@@ -169,7 +169,7 @@ public class InlineFilterTest : TestUtils
     }
 
     [Fact]
-    public void patterns_can_be_evaluated_with_ignore_case()
+    public void PatternsCanBeEvaluatedWithIgnoreCase()
     {
         var resLeft = JsonPath.Parse(JsonTestData.JsonDocument)
             .Read("$.store.book[?(@.category =~ /REFERENCE/)].author").AsList();
@@ -181,7 +181,7 @@ public class InlineFilterTest : TestUtils
     }
 
     [Fact]
-    public void patterns_match_against_lists()
+    public void PatternsMatchAgainstLists()
     {
         var haveRefBooks = JsonPath.Parse(MultiStoreJsonDocument)
             .Read("$.store[?(@.book[*].category =~ /Reference/i)].name").AsList();
@@ -189,7 +189,7 @@ public class InlineFilterTest : TestUtils
     }
 
     [Fact]
-    public void negate_exists_check()
+    public void NegateExistsCheck()
     {
         var hasIsbn = JsonPath.Parse(JsonTestData.JsonDocument).Read("$.store.book[?(@.isbn)].author").AsList();
         MyAssert.ContainsExactly(hasIsbn, "Herman Melville", "J. R. R. Tolkien");
@@ -200,7 +200,7 @@ public class InlineFilterTest : TestUtils
     }
 
     [Fact]
-    public void negate_exists_check_primitive()
+    public void NegateExistsCheckPrimitive()
     {
         var ints = new List<object?>
         {
@@ -224,7 +224,7 @@ public class InlineFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void equality_check_does_not_break_evaluation(IProviderTypeTestCase testCase)
+    public void EqualityCheckDoesNotBreakEvaluation(IProviderTypeTestCase testCase)
     {
         MyAssert.HasOneResult("[{\"value\":\"5\"}]", "$[?(@.value=='5')]", testCase.Configuration);
         MyAssert.HasOneResult("[{\"value\":5}]", "$[?(@.value==5)]", testCase.Configuration);
@@ -242,7 +242,7 @@ public class InlineFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void lt_check_does_not_break_evaluation(IProviderTypeTestCase testCase)
+    public void LtCheckDoesNotBreakEvaluation(IProviderTypeTestCase testCase)
     {
         MyAssert.HasOneResult("[{\"value\":\"5\"}]", "$[?(@.value<'7')]", testCase.Configuration);
 
@@ -260,14 +260,14 @@ public class InlineFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void escaped_literals(IProviderTypeTestCase testCase)
+    public void EscapedLiterals(IProviderTypeTestCase testCase)
     {
         MyAssert.HasOneResult("[\"\\'foo\"]", "$[?(@ == '\\'foo')]", testCase.Configuration);
     }
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void escaped_literals2(IProviderTypeTestCase testCase)
+    public void EscapedLiterals2(IProviderTypeTestCase testCase)
     {
         MyAssert.HasOneResult("[\"\\\\'foo\"]", "$[?(@ == \"\\\\'foo\")]", testCase.Configuration);
     }
@@ -275,28 +275,28 @@ public class InlineFilterTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void escape_pattern(IProviderTypeTestCase testCase)
+    public void EscapePattern(IProviderTypeTestCase testCase)
     {
         MyAssert.HasOneResult("[\"x\"]", "$[?(@ =~ /\\/|x/)]", testCase.Configuration);
     }
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void escape_pattern_after_literal(IProviderTypeTestCase testCase)
+    public void EscapePatternAfterLiteral(IProviderTypeTestCase testCase)
     {
         MyAssert.HasOneResult("[\"x\"]", "$[?(@ == \"abc\" || @ =~ /\\/|x/)]", testCase.Configuration);
     }
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void escape_pattern_before_literal(IProviderTypeTestCase testCase)
+    public void EscapePatternBeforeLiteral(IProviderTypeTestCase testCase)
     {
         MyAssert.HasOneResult("[\"x\"]", "$[?(@ =~ /\\/|x/ || @ == \"abc\")]", testCase.Configuration);
     }
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void filter_evaluation_does_not_break_path_evaluation(IProviderTypeTestCase testCase)
+    public void FilterEvaluationDoesNotBreakPathEvaluation(IProviderTypeTestCase testCase)
     {
         MyAssert.HasOneResult("[{\"s\": \"fo\", \"expected_size\": \"m\"}, {\"s\": \"lo\", \"expected_size\": 2}]",
             "$[?(@.s size @.expected_size)]", testCase.Configuration);

@@ -15,7 +15,7 @@ public class Issue721 : TestBase
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void test_delete_1(IProviderTypeTestCase testCase)
+    public void TestDelete1(IProviderTypeTestCase testCase)
     {
         // originally 
         var dc = JsonPath.Using(JsonConf(testCase))
@@ -29,7 +29,7 @@ public class Issue721 : TestBase
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void test_delete_2(IProviderTypeTestCase testCase)
+    public void TestDelete2(IProviderTypeTestCase testCase)
     {
         // originally passed
         var documentContext = JsonPath.Using(JsonConf(testCase))

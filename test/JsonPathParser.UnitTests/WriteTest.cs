@@ -15,7 +15,7 @@ public class WriteTest : TestUtils
     };
 
     [Fact]
-    public void an_array_child_property_can_be_updated()
+    public void AnArrayChildPropertyCanBeUpdated()
     {
         var o = JsonPath.Parse(JsonTestData.JsonDocument).Set("$.store.book[*].display-price", 1).Json;
 
@@ -26,7 +26,7 @@ public class WriteTest : TestUtils
 
 
     [Fact]
-    public void an_root_property_can_be_updated()
+    public void AnRootPropertyCanBeUpdated()
     {
         var o = JsonPath.Parse(JsonTestData.JsonDocument).Set("$.int-max-property", 1).Json;
 
@@ -36,7 +36,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void an_deep_scan_can_update()
+    public void AnDeepScanCanUpdate()
     {
         var o = JsonPath.Parse(JsonTestData.JsonDocument).Set("$..display-price", 1).Json;
 
@@ -47,7 +47,7 @@ public class WriteTest : TestUtils
 
 
     [Fact]
-    public void an_filter_can_update()
+    public void AnFilterCanUpdate()
     {
         var o = JsonPath.Parse(JsonTestData.JsonDocument).Set("$.store.book[?(@.display-price)].display-price", 1).Json;
 
@@ -57,7 +57,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void a_path_can_be_deleted()
+    public void APathCanBeDeleted()
     {
         var o = JsonPath.Parse(JsonTestData.JsonDocument).Delete("$.store.book[*].display-price").Json;
 
@@ -67,7 +67,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void operations_can_chained()
+    public void OperationsCanChained()
     {
         var o = JsonPath.Parse(JsonTestData.JsonDocument)
             .Delete("$.store.book[*].display-price")
@@ -82,7 +82,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void an_array_can_be_updated()
+    public void AnArrayCanBeUpdated()
     {
         var ints = JsonPath.Parse("[0,1,2,3]").Set("$[?(@ == 1)]", 9).Json.AsList();
 
@@ -90,7 +90,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void an_array_index_can_be_updated()
+    public void AnArrayIndexCanBeUpdated()
     {
         var res = JsonPath.Parse(JsonTestData.JsonDocument).Set("$.store.book[0]", "a").Read("$.store.book[0]");
 
@@ -98,7 +98,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void an_array_slice_can_be_updated()
+    public void AnArraySliceCanBeUpdated()
     {
         var res = JsonPath.Parse(JsonTestData.JsonDocument).Set("$.store.book[0:2]", "a").Read("$.store.book[0:2]")
             .AsList();
@@ -107,7 +107,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void an_array_criteria_can_be_updated()
+    public void AnArrayCriteriaCanBeUpdated()
     {
         var res = JsonPath.Parse(JsonTestData.JsonDocument)
             .Set("$.store.book[?(@.category == 'fiction')]", "a")
@@ -117,7 +117,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void an_array_criteria_can_be_deleted()
+    public void AnArrayCriteriaCanBeDeleted()
     {
         var res = JsonPath.Parse(JsonTestData.JsonDocument)
             .Delete("$.store.book[?(@.category == 'fiction')]")
@@ -127,7 +127,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void an_array_criteria_with_multiple_results_can_be_deleted()
+    public void AnArrayCriteriaWithMultipleResultsCanBeDeleted()
     {
         using (var stream = GetResourceAsStream("json_array_multiple_delete.json"))
         {
@@ -141,7 +141,7 @@ public class WriteTest : TestUtils
 
 
     [Fact]
-    public void multi_prop_delete()
+    public void MultiPropDelete()
     {
         var res = JsonPath.Parse(JsonTestData.JsonDocument).Delete("$.store.book[*]['author', 'category']")
             .Read("$.store.book[*]['author', 'category']").AsListOfMap();
@@ -150,7 +150,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void multi_prop_update()
+    public void MultiPropUpdate()
     {
         var expected = new Dictionary<string, object?>
         {
@@ -166,7 +166,7 @@ public class WriteTest : TestUtils
 
 
     [Fact]
-    public void multi_prop_update_not_all_defined()
+    public void MultiPropUpdateNotAllDefined()
     {
         var expected = new Dictionary<string, object?>
         {
@@ -181,14 +181,14 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void add_to_array()
+    public void AddToArray()
     {
         var res = JsonPath.Parse(JsonTestData.JsonDocument).Add("$.store.book", 1).Read("$.store.book[4]");
         Assert.Equal(1, res);
     }
 
     [Fact]
-    public void add_to_object()
+    public void AddToObject()
     {
         var res = JsonPath.Parse(JsonTestData.JsonDocument).Put("$.store.book[0]", "new-key", "new-value")
             .Read("$.store.book[0].new-key");
@@ -196,7 +196,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void item_can_be_added_to_root_array()
+    public void ItemCanBeAddedToRootArray()
     {
         var model = new List<object?>();
         model.Add(1);
@@ -208,7 +208,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void key_val_can_be_added_to_root_object()
+    public void KeyValCanBeAddedToRootObject()
     {
         var model = new Dictionary<string, object?>();
         model["a"] = "a-val";
@@ -219,14 +219,14 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void add_to_object_on_array()
+    public void AddToObjectOnArray()
     {
         Assert.Throws<InvalidModificationException>(() =>
             JsonPath.Parse(JsonTestData.JsonDocument).Put("$.store.book", "new-key", "new-value"));
     }
 
     [Fact]
-    public void add_to_array_on_object()
+    public void AddToArrayOnObject()
     {
         Assert.Throws<InvalidModificationException>(() =>
             JsonPath.Parse(JsonTestData.JsonDocument).Add("$.store.book[0]", "new-value"));
@@ -234,7 +234,7 @@ public class WriteTest : TestUtils
 
 
     [Fact]
-    public void root_object_can_not_be_updated()
+    public void RootObjectCanNotBeUpdated()
     {
         var model = new Dictionary<string, object?>();
         model["a"] = "a-val";
@@ -243,7 +243,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void a_path_can_be_renamed()
+    public void APathCanBeRenamed()
     {
         var o = JsonPath.Parse(JsonTestData.JsonDocument).RenameKey("$.store", "book", "updated-book").Json;
         var result = JsonPath.Parse(o).Read("$.store.updated-book").AsList();
@@ -252,7 +252,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void keys_in_root_containing_map_can_be_renamed()
+    public void KeysInRootContainingMapCanBeRenamed()
     {
         var o = JsonPath.Parse(JsonTestData.JsonDocument).RenameKey("$", "store", "new-store").Json;
         var result = JsonPath.Parse(o).Read("$.new-store[*]").AsList();
@@ -260,7 +260,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void map_array_items_can_be_renamed()
+    public void MapArrayItemsCanBeRenamed()
     {
         var o = JsonPath.Parse(JsonTestData.JsonDocument).RenameKey("$.store.book[*]", "category", "renamed-category")
             .Json;
@@ -269,7 +269,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void non_map_array_items_cannot_be_renamed()
+    public void NonMapArrayItemsCannotBeRenamed()
     {
         var model = new List<int>();
         model.Add(1);
@@ -278,7 +278,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void multiple_properties_cannot_be_renamed()
+    public void MultiplePropertiesCannotBeRenamed()
     {
         Assert.Throws<InvalidModificationException>(() =>
             JsonPath.Parse(JsonTestData.JsonDocument)
@@ -286,7 +286,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void non_existent_key_rename_not_allowed()
+    public void NonExistentKeyRenameNotAllowed()
     {
         Assert.Throws<PathNotFoundException>(() =>
             JsonPath.Parse(JsonTestData.JsonDocument).RenameKey("$", "fake", "new-fake").Json);
@@ -300,16 +300,16 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void single_match_value_can_be_mapped()
+    public void SingleMatchValueCanBeMapped()
     {
         var stringResult = JsonPath.Parse(JsonTestData.JsonDocument).Map("$.string-property", _toStringMapFunction)
             .Read<string>("$.string-property");
-        Assert.True(stringResult.EndsWith("converted"));
+        Assert.EndsWith("converted", stringResult);
     }
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void object_can_be_mapped(IProviderTypeTestCase testCase)
+    public void ObjectCanBeMapped(IProviderTypeTestCase testCase)
     {
         var documentContext = JsonPath.Using(testCase.Configuration)
             .Parse(JsonTestData.JsonDocument);
@@ -321,7 +321,7 @@ public class WriteTest : TestUtils
     }
 
     [Fact]
-    public void multi_match_path_can_be_mapped()
+    public void MultiMatchPathCanBeMapped()
     {
         var doubleResult = JsonPath.Parse(JsonTestData.JsonDocument).Read("$..display-price").AsList();
         Assert.True(doubleResult.All(i => i is double));

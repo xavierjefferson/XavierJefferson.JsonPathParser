@@ -36,7 +36,7 @@ public class ScientificNotationTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void testScientificNotation_lt_gt(IProviderTypeTestCase testCase)
+    public void TestscientificnotationLtGt(IProviderTypeTestCase testCase)
     {
         var result = JsonPath.Using(testCase.Configuration)
             .Parse(_sciRepArray)

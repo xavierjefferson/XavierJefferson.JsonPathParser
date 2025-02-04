@@ -41,7 +41,7 @@ public class FilterCompilerTest
     [InlineData("[?($[\"firstname\"]['lastname'])]", "[?($[\"firstname\"].lastname)]")]
     [InlineData("[?($[\"firstname\",\"lastname\"])]", "[?($[\"firstname\", \"lastname\"])]")]
     [InlineData("[?(((@['a'] && @['b']) || @['c']) || @['x'])]", "[?(((@.a && @.b || @.c)) || @.x)]")]
-    public void valid_filters_compile(string expected, string expression)
+    public void ValidFiltersCompile(string expected, string expression)
     {
         var fc = FilterCompiler.Compile(expression);
         var z0 = fc.ToString();
@@ -49,14 +49,14 @@ public class FilterCompilerTest
     }
 
     [Fact]
-    public void string_quote_style_is_serialized()
+    public void StringQuoteStyleIsSerialized()
     {
         Assert.Equal("[?('apa' == 'apa')]", FilterCompiler.Compile("[?('apa' == 'apa')]").ToString());
         Assert.Equal("[?('apa' == \"apa\")]", FilterCompiler.Compile("[?('apa' == \"apa\")]").ToString());
     }
 
     [Fact]
-    public void string_can_contain_path_chars()
+    public void StringCanContainPathChars()
     {
         Assert.Equal("[?(@[')]@$)]'] == ')]@$)]')]", FilterCompiler.Compile("[?(@[')]@$)]'] == ')]@$)]')]").ToString());
         Assert.Equal("[?(@[\")]@$)]\"] == \")]@$)]\")]",
@@ -64,13 +64,13 @@ public class FilterCompilerTest
     }
 
     [Fact]
-    public void invalid_path_when_string_literal_is_unquoted()
+    public void InvalidPathWhenStringLiteralIsUnquoted()
     {
         Assert.Throws<InvalidPathException>(() => { FilterCompiler.Compile("[?(@.foo == x)]"); });
     }
 
     [Fact]
-    public void or_has_lower_priority_than_and()
+    public void OrHasLowerPriorityThanAnd()
     {
         Assert.Equal("[?((@['category'] == 'fiction' && @['author'] == 'Evelyn Waugh') || @['price'] > 15)]",
             FilterCompiler.Compile("[?(@.category == 'fiction' && @.author == 'Evelyn Waugh' || @.price > 15)]")
@@ -87,14 +87,14 @@ public class FilterCompilerTest
     [InlineData("[?(@.i == 5 @.i == 8)]")]
     [InlineData("[?(!5)]")]
     [InlineData("[?(!'foo')]")]
-    public void invalid_filters_does_not_compile(string input)
+    public void InvalidFiltersDoesNotCompile(string input)
     {
         AssertInvalidPathException(input);
     }
 
     [Fact]
     // issue #178
-    public void compile_and_serialize_not_exists_filter()
+    public void CompileAndSerializeNotExistsFilter()
     {
         var compiled = FilterCompiler.Compile("[?(!@.foo)]");
         var serialized = compiled.ToString();

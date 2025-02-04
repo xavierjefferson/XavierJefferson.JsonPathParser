@@ -89,7 +89,7 @@ public class ScanPathTokenTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_document_can_be_scanned_for_property(IProviderTypeTestCase testCase)
+    public void ADocumentCanBeScannedForProperty(IProviderTypeTestCase testCase)
     {
         var result = JsonPath.Read(Document(testCase.Configuration), "$..author").AsList();
 
@@ -99,7 +99,7 @@ public class ScanPathTokenTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_document_can_be_scanned_for_property_path(IProviderTypeTestCase testCase)
+    public void ADocumentCanBeScannedForPropertyPath(IProviderTypeTestCase testCase)
     {
         var result = JsonPath.Read(Document(testCase.Configuration), "$..address.street").AsList();
 
@@ -108,7 +108,7 @@ public class ScanPathTokenTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_document_can_be_scanned_for_wildcard(IProviderTypeTestCase testCase)
+    public void ADocumentCanBeScannedForWildcard(IProviderTypeTestCase testCase)
     {
         var result = PathCompiler.Compile("$..[*]").Evaluate(Document(testCase.Configuration),
                 Document(testCase.Configuration), testCase.Configuration)
@@ -163,7 +163,7 @@ public class ScanPathTokenTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_document_can_be_scanned_for_wildcard2(IProviderTypeTestCase testCase)
+    public void ADocumentCanBeScannedForWildcard2(IProviderTypeTestCase testCase)
     {
         var result = PathCompiler.Compile("$.store.book[0]..*")
             .Evaluate(Document(testCase.Configuration), Document(testCase.Configuration), testCase.Configuration)
@@ -182,7 +182,7 @@ public class ScanPathTokenTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_document_can_be_scanned_for_wildcard3(IProviderTypeTestCase testCase)
+    public void ADocumentCanBeScannedForWildcard3(IProviderTypeTestCase testCase)
     {
         var result = PathCompiler.Compile("$.phoneNumbers[0]..*")
             .Evaluate(Document2(testCase.Configuration), Document(testCase.Configuration), testCase.Configuration)
@@ -195,7 +195,7 @@ public class ScanPathTokenTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_document_can_be_scanned_for_predicate_match(IProviderTypeTestCase testCase)
+    public void ADocumentCanBeScannedForPredicateMatch(IProviderTypeTestCase testCase)
     {
         var result = PathCompiler.Compile("$..[?(@.address.city == 'Stockholm')]")
             .Evaluate(Document(testCase.Configuration), Document(testCase.Configuration), testCase.Configuration)
@@ -209,7 +209,7 @@ public class ScanPathTokenTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_document_can_be_scanned_for_existence(IProviderTypeTestCase testCase)
+    public void ADocumentCanBeScannedForExistence(IProviderTypeTestCase testCase)
     {
         var result = PathCompiler.Compile("$..[?(@.isbn)]")
             .Evaluate(Document(testCase.Configuration), Document(testCase.Configuration), testCase.Configuration)

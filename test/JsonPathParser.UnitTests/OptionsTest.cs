@@ -9,7 +9,7 @@ public class OptionsTest : TestUtils
 {
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_leafs_is_not_defaulted_to_null(IProviderTypeTestCase testCase)
+    public void ALeafsIsNotDefaultedToNull(IProviderTypeTestCase testCase)
     {
         var conf = testCase.Configuration;
 
@@ -18,7 +18,7 @@ public class OptionsTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_leafs_can_be_defaulted_to_null(IProviderTypeTestCase testCase)
+    public void ALeafsCanBeDefaultedToNull(IProviderTypeTestCase testCase)
     {
         var conf = testCase.Configuration.SetOptions(ConfigurationOptionEnum.DefaultPathLeafToNull);
 
@@ -27,7 +27,7 @@ public class OptionsTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_definite_path_is_not_returned_as_list_by_default(IProviderTypeTestCase testCase)
+    public void ADefinitePathIsNotReturnedAsListByDefault(IProviderTypeTestCase testCase)
     {
         var conf = testCase.Configuration;
 
@@ -36,7 +36,7 @@ public class OptionsTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_definite_path_can_be_returned_as_list(IProviderTypeTestCase testCase)
+    public void ADefinitePathCanBeReturnedAsList(IProviderTypeTestCase testCase)
     {
         var conf = testCase.Configuration.SetOptions(ConfigurationOptionEnum.AlwaysReturnList);
         Assert.IsType<List<object?>>(JsonPath.Using(conf).Parse("{\"foo\" : \"bar\"}").Read("$.foo"));
@@ -48,7 +48,7 @@ public class OptionsTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void an_indefinite_path_can_be_returned_as_list(IProviderTypeTestCase testCase)
+    public void AnIndefinitePathCanBeReturnedAsList(IProviderTypeTestCase testCase)
     {
         var conf = testCase.Configuration.SetOptions(ConfigurationOptionEnum.AlwaysReturnList);
         var result = JsonPath.Using(conf).Parse("{\"bar\": {\"foo\": null}}").Read("$..foo").AsList();
@@ -62,7 +62,7 @@ public class OptionsTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_path_evaluation_is_returned_as_VALUE_by_default(IProviderTypeTestCase testCase)
+    public void APathEvaluationIsReturnedAsValueByDefault(IProviderTypeTestCase testCase)
     {
         var conf = testCase.Configuration;
 
@@ -71,7 +71,7 @@ public class OptionsTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_path_evaluation_can_be_returned_as_PATH_LIST(IProviderTypeTestCase testCase)
+    public void APathEvaluationCanBeReturnedAsPathList(IProviderTypeTestCase testCase)
     {
         var conf = testCase.Configuration.SetOptions(ConfigurationOptionEnum.AsPathList);
 
@@ -82,7 +82,7 @@ public class OptionsTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void multi_properties_are_merged_by_default(IProviderTypeTestCase testCase)
+    public void MultiPropertiesAreMergedByDefault(IProviderTypeTestCase testCase)
     {
         var model = new Dictionary<string, object?>
         {
@@ -105,7 +105,7 @@ public class OptionsTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void when_property_is_required_exception_is_thrown(IProviderTypeTestCase testCase)
+    public void WhenPropertyIsRequiredExceptionIsThrown(IProviderTypeTestCase testCase)
     {
         var model = new ObjectList(GetSingletonMap("a", "a-val"), GetSingletonMap("b", "b-val"));
 
@@ -124,7 +124,7 @@ public class OptionsTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void when_property_is_required_exception_is_thrown_2(IProviderTypeTestCase testCase)
+    public void WhenPropertyIsRequiredExceptionIsThrown2(IProviderTypeTestCase testCase)
     {
         var model = new Dictionary<string, object?>
         {
@@ -148,7 +148,7 @@ public class OptionsTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_suppress_exceptions_does_not_break_indefinite_evaluation(IProviderTypeTestCase testCase)
+    public void IssueSuppressExceptionsDoesNotBreakIndefiniteEvaluation(IProviderTypeTestCase testCase)
     {
         var conf = testCase.Configuration.SetOptions(ConfigurationOptionEnum.SuppressExceptions);
 
@@ -167,7 +167,7 @@ public class OptionsTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void isbn_is_defaulted_when_option_is_provided(IProviderTypeTestCase testCase)
+    public void IsbnIsDefaultedWhenOptionIsProvided(IProviderTypeTestCase testCase)
     {
         var result1 = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read<List<object?>>("$.store.book.*.isbn");

@@ -8,7 +8,7 @@ namespace XavierJefferson.JsonPathParser.UnitTests;
 public class ComplianceTest : TestUtils
 {
     [Fact]
-    public void test_one()
+    public void TestOne()
     {
         var json = "{ \"a\": \"a\",\n" +
                    "           \"b\": \"b\",\n" +
@@ -24,7 +24,7 @@ public class ComplianceTest : TestUtils
     }
 
     [Fact]
-    public void test_two()
+    public void TestTwo()
     {
         var json = "[ 1, \"2\", 3.14, true, null ]";
 
@@ -38,7 +38,7 @@ public class ComplianceTest : TestUtils
     }
 
     [Fact]
-    public void test_three()
+    public void TestThree()
     {
         var json = "{ \"points\": [\n" +
                    "             { \"id\": \"i1\", \"x\":  4, \"y\": -5 },\n" +
@@ -64,7 +64,7 @@ public class ComplianceTest : TestUtils
     }
 
     [Fact]
-    public void test_four()
+    public void TestFour()
     {
         var json = "{ \"menu\": {\n" +
                    "                 \"header\": \"SVG Viewer\",\n" +

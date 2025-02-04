@@ -6,7 +6,7 @@ public class JsonProviderTest : TestUtils
 {
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void strings_are_unwrapped(IProviderTypeTestCase testCase)
+    public void StringsAreUnwrapped(IProviderTypeTestCase testCase)
     {
         Assert.Equal("string-value",
             JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
@@ -16,7 +16,7 @@ public class JsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void integers_are_unwrapped(IProviderTypeTestCase testCase)
+    public void IntegersAreUnwrapped(IProviderTypeTestCase testCase)
     {
         Assert.Equal(int.MaxValue,
             JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
@@ -26,7 +26,7 @@ public class JsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void ints_are_unwrapped(IProviderTypeTestCase testCase)
+    public void IntsAreUnwrapped(IProviderTypeTestCase testCase)
     {
         Assert.Equal(int.MaxValue,
             JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)

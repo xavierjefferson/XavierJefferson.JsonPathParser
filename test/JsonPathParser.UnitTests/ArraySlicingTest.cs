@@ -26,21 +26,21 @@ public class ArraySlicingTest
     public static string JsonArray = "[1, 3, 5, 7, 8, 13, 20]";
 
     [Fact]
-    public void get_by_position()
+    public void GetByPosition()
     {
         var result = JsonPath.Read(JsonArray, "$[3]");
         Assert.Equal(7d, result);
     }
 
     [Fact]
-    public void get_from_index()
+    public void GetFromIndex()
     {
         var result = JsonPath.Read(JsonArray, "$[:3]").AsList();
         MyAssert.ContainsAll(result, 1d, 3d, 5d);
     }
 
     [Fact]
-    public void get_between_index()
+    public void GetBetweenIndex()
     {
         var result = JsonPath.Read(JsonArray, "$[1:5]").AsList();
         MyAssert.ContainsAll(result, 3d, 5d, 7d, 8d);
@@ -48,42 +48,42 @@ public class ArraySlicingTest
 
 
     [Fact]
-    public void get_between_index_2()
+    public void GetBetweenIndex2()
     {
         var result = JsonPath.Read(JsonArray, "$[0:1]").AsList();
         MyAssert.ContainsAll(result, 1d);
     }
 
     [Fact]
-    public void get_between_index_3()
+    public void GetBetweenIndex3()
     {
         var result = JsonPath.Read(JsonArray, "$[0:2]").AsList();
         MyAssert.ContainsAll(result, 1d, 3d);
     }
 
     [Fact]
-    public void get_between_index_out_of_bounds()
+    public void GetBetweenIndexOutOfBounds()
     {
         var result = JsonPath.Read(JsonArray, "$[1:15]").AsList();
         MyAssert.ContainsAll(result, 3d, 5d, 7d, 8d, 13d, 20d);
     }
 
     [Fact]
-    public void get_from_tail_index()
+    public void GetFromTailIndex()
     {
         var result = JsonPath.Read(JsonArray, "$[-3:]").AsList();
         MyAssert.ContainsAll(result, 8d, 13d, 20d);
     }
 
     [Fact]
-    public void get_from_tail()
+    public void GetFromTail()
     {
         var result = JsonPath.Read(JsonArray, "$[3:]").AsList();
         MyAssert.ContainsAll(result, 7d, 8d, 13d, 20d);
     }
 
     [Fact]
-    public void get_indexes()
+    public void GetIndexes()
     {
         var result = JsonPath.Read(JsonArray, "$[0,1,2]").AsList();
         MyAssert.ContainsAll(result, 1d, 3d, 5d);

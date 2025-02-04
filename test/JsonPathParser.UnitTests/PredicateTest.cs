@@ -8,7 +8,7 @@ public class PredicateTest : TestUtils
 {
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void predicates_filters_can_be_applied(IProviderTypeTestCase testCase)
+    public void PredicatesFiltersCanBeApplied(IProviderTypeTestCase testCase)
     {
         IReadContext reader = JsonPath.Using(testCase.Configuration)
             .Parse(JsonTestData.JsonDocument);

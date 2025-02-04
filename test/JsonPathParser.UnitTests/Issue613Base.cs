@@ -18,7 +18,7 @@ public abstract class Issue613Base<T> : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_613_eq_ne_test(IProviderTypeTestCase testCase)
+    public void Issue613EqNeTest(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(Filter.Create(Criteria.Where(jsonProvider, MiddleValueKey).Eq(MiddleValue))
@@ -30,7 +30,7 @@ public abstract class Issue613Base<T> : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_613_lt_lte_test(IProviderTypeTestCase testCase)
+    public void Issue613LtLteTest(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.True(
@@ -42,7 +42,7 @@ public abstract class Issue613Base<T> : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void issue_613_gt_gte_test(IProviderTypeTestCase testCase)
+    public void Issue613GtGteTest(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.False(Filter.Create(Criteria.Where(jsonProvider, MiddleValueKey).Gt(LargeValue))

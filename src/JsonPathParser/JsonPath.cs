@@ -221,7 +221,7 @@ public class JsonPath
     ///     Replaces the value on the given path with the result of the <see cref="MapDelegate" />.
     /// </summary>
     /// <param name="jsonObject">a json object</param>
-    /// <param name="mapFunction">Converter object to be invoked</param>
+    /// <param name="mapFunction">Converter function to be invoked</param>
     /// <param name="configuration">configuration to use</param>
     /// <returns> the updated jsonObject or the path list to updated objects if option AS_PATH_LIST is set.</returns>
     public object? Map(object? jsonObject, MapDelegate mapFunction, Configuration configuration)

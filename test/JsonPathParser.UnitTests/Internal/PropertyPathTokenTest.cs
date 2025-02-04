@@ -33,34 +33,29 @@ public class PropertyPathTokenTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void property_not_found(IProviderTypeTestCase testCase)
+    public void PropertyNotFound(IProviderTypeTestCase testCase)
     {
-        //String result = JsonPath.Read(SIMPLE_MAP, "$.not-found");
-
-        //Assert.Null(result);
-
         var configuration = testCase.Configuration.SetOptions(ConfigurationOptionEnum.SuppressExceptions);
 
-        var json = "{\"a\":{\"b\":1,\"c\":2}";
         Assert.Null(JsonPath.Parse(_simpleMap, configuration).Read("$.not-found"));
     }
 
     [Fact]
-    public void property_not_found_deep()
+    public void PropertyNotFoundDeep()
     {
         Assert.Throws<PathNotFoundException>(() => JsonPath.Read(_simpleMap, "$.foo.not-found"));
     }
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void property_not_found_option_throw(IProviderTypeTestCase testCase)
+    public void PropertyNotFoundOptionThrow(IProviderTypeTestCase testCase)
     {
         Assert.Throws<PathNotFoundException>(() =>
             JsonPath.Using(testCase.Configuration).Parse(_simpleMap).Read("$.not-found"));
     }
 
     [Fact]
-    public void map_value_can_be_read_from_map()
+    public void MapValueCanBeReadFromMap()
     {
         var result = JsonPath.Read<string>(_simpleMap, "$.foo");
 
@@ -68,7 +63,7 @@ public class PropertyPathTokenTest
     }
 
     [Fact]
-    public void map_value_can_be_read_from_array()
+    public void MapValueCanBeReadFromArray()
     {
         var result = JsonPath.Read(_simpleArray, "$[*].foo").AsList();
 
@@ -76,7 +71,7 @@ public class PropertyPathTokenTest
     }
 
     [Fact]
-    public void map_value_can_be_read_from_child_map()
+    public void MapValueCanBeReadFromChildMap()
     {
         var result = JsonPath.Read<string>(_simpleMap, "$.baz.baz-child");
 

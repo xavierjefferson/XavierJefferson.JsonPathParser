@@ -10,7 +10,7 @@ public class RegexEvaluatorTest : TestUtils
 {
     [Theory]
     [ClassData(typeof(RegexTestCases))]
-    public void should_evaluate_regular_expression(RegexTestCase testCase)
+    public void ShouldEvaluateRegularExpression(RegexTestCase testCase)
     {
         var testCase0 = ProviderTypeTestCases.Cases.First().Value;
         //given

@@ -15,7 +15,7 @@ public class Issue537 : TestBase
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void test_read(IProviderTypeTestCase testCase)
+    public void TestRead(IProviderTypeTestCase testCase)
     {
         // originally passed
         var ans = JsonPath.Using(GetConfiguration(testCase)).Parse("{}").Read("missing");
@@ -24,7 +24,7 @@ public class Issue537 : TestBase
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void test_renameKey(IProviderTypeTestCase testCase)
+    public void TestRenamekey(IProviderTypeTestCase testCase)
     {
         // originally 
         var ans = JsonPath.Using(GetConfiguration(testCase))

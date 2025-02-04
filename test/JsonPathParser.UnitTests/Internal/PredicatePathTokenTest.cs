@@ -86,7 +86,7 @@ public class PredicatePathTokenTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_filter_predicate_can_be_evaluated_on_string_criteria(IProviderTypeTestCase testCase)
+    public void AFilterPredicateCanBeEvaluatedOnStringCriteria(IProviderTypeTestCase testCase)
     {
         var result = JsonPath.Read(Array(testCase.Configuration), "$[?(@.foo == 'foo-val-1')]").AsListOfMap();
 
@@ -95,7 +95,7 @@ public class PredicatePathTokenTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_filter_predicate_can_be_evaluated_on_int_criteria(IProviderTypeTestCase testCase)
+    public void AFilterPredicateCanBeEvaluatedOnIntCriteria(IProviderTypeTestCase testCase)
     {
         var result = JsonPath.Read(GetArray2(testCase.Configuration), "$[?(@.int == 1)]").AsListOfMap();
 
@@ -105,7 +105,7 @@ public class PredicatePathTokenTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_filter_predicate_can_be_evaluated_on_decimal_criteria(IProviderTypeTestCase testCase)
+    public void AFilterPredicateCanBeEvaluatedOnDecimalCriteria(IProviderTypeTestCase testCase)
     {
         var result = JsonPath.Read(GetArray2(testCase.Configuration), "$[?(@.decimal == 0.1)]").AsListOfMap();
 
@@ -115,7 +115,7 @@ public class PredicatePathTokenTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void multiple_criteria_can_be_used(IProviderTypeTestCase testCase)
+    public void MultipleCriteriaCanBeUsed(IProviderTypeTestCase testCase)
     {
         var result = JsonPath.Read(GetArray2(testCase.Configuration), "$[?(@.decimal == 0.1 && @.int == 1)]")
             .AsListOfMap();
@@ -126,7 +126,7 @@ public class PredicatePathTokenTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void field_existence_can_be_checked(IProviderTypeTestCase testCase)
+    public void FieldExistenceCanBeChecked(IProviderTypeTestCase testCase)
     {
         var result = JsonPath.Read(GetArray2(testCase.Configuration), "$[?(@.bool)]").AsListOfMap();
 
@@ -136,7 +136,7 @@ public class PredicatePathTokenTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void boolean_criteria_evaluates(IProviderTypeTestCase testCase)
+    public void BooleanCriteriaEvaluates(IProviderTypeTestCase testCase)
     {
         var result = JsonPath.Read(GetArray2(testCase.Configuration), "$[?(@.bool == true)]").AsListOfMap();
 

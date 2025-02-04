@@ -31,7 +31,7 @@ public class JsonProviderTestObjectMapping : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void list_of_numbers(IProviderTypeTestCase testCase)
+    public void ListOfNumbers(IProviderTypeTestCase testCase)
     {
         MyAssert.ContainsExactly(
             JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
@@ -40,7 +40,7 @@ public class JsonProviderTestObjectMapping : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void test_type_ref(IProviderTypeTestCase testCase)
+    public void TestTypeRef(IProviderTypeTestCase testCase)
     {
         var items = JsonPath.Using(testCase.Configuration).Parse(Json).Read<List<FooBarBaz<Sub>>>("$")
             .Select(i => i.Foo).ToList();

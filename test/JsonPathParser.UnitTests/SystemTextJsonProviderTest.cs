@@ -31,7 +31,7 @@ public class SystemTextJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void json_can_be_parsed(IProviderTypeTestCase testCase)
+    public void JsonCanBeParsed(IProviderTypeTestCase testCase)
     {
         var node = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read<IDictionary<string, object?>>("$");
@@ -40,7 +40,7 @@ public class SystemTextJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void strings_are_unwrapped(IProviderTypeTestCase testCase)
+    public void StringsAreUnwrapped(IProviderTypeTestCase testCase)
     {
         var node = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read("$.string-property");
@@ -53,7 +53,7 @@ public class SystemTextJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void ints_are_unwrapped(IProviderTypeTestCase testCase)
+    public void IntsAreUnwrapped(IProviderTypeTestCase testCase)
     {
         var node = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read("$.int-max-property");
@@ -66,7 +66,7 @@ public class SystemTextJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void longs_are_unwrapped(IProviderTypeTestCase testCase)
+    public void LongsAreUnwrapped(IProviderTypeTestCase testCase)
     {
         var node = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read("$.long-max-property");
@@ -79,7 +79,7 @@ public class SystemTextJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void doubles_are_unwrapped(IProviderTypeTestCase testCase)
+    public void DoublesAreUnwrapped(IProviderTypeTestCase testCase)
     {
         var json = "{'double-property' : 56.78}";
 
@@ -92,7 +92,7 @@ public class SystemTextJsonProviderTest : TestUtils
     }
 
     //[Theory][ClassData(typeof(ProviderTypeTestCases))]
-    //public void bigdecimals_are_unwrapped()
+    //public void BigdecimalsAreUnwrapped()
     //{
     //    decimal bd = BigDecimal.valueOf(long.MaxValue).Add(BigDecimal.valueOf(10.5));
     //    string json = "{bd-property = " + bd.ToString() + "}";
@@ -105,7 +105,7 @@ public class SystemTextJsonProviderTest : TestUtils
     //}
 
     //[Theory][ClassData(typeof(ProviderTypeTestCases))]
-    //public void small_bigdecimals_are_unwrapped()
+    //public void SmallBigdecimalsAreUnwrapped()
     //{
     //    decimal bd = 10.5m;
     //    string json = "{bd-property = " + bd.ToString() + "}";
@@ -118,7 +118,7 @@ public class SystemTextJsonProviderTest : TestUtils
     //}
 
     //[Theory][ClassData(typeof(ProviderTypeTestCases))]
-    //public void bigintegers_are_unwrapped()
+    //public void BigintegersAreUnwrapped()
     //{
     //      BigInteger bi = BigInteger.valueOf(long.MaxValue).Add(BigInteger.TEN);
     //    string json = "{bi-property = " + bi.ToString() + "}";
@@ -132,7 +132,7 @@ public class SystemTextJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void small_bigintegers_are_unwrapped(IProviderTypeTestCase testCase)
+    public void SmallBigintegersAreUnwrapped(IProviderTypeTestCase testCase)
     {
         var json = "{'bi-property' : " + long.MaxValue + "}";
 
@@ -146,7 +146,7 @@ public class SystemTextJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void int_to_long_mapping(IProviderTypeTestCase testCase)
+    public void IntToLongMapping(IProviderTypeTestCase testCase)
     {
         Assert.Equal(1L,
             JsonPath.Using(testCase.Configuration).Parse("{\"val\": 1}")
@@ -155,7 +155,7 @@ public class SystemTextJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void an_Integer_can_be_converted_to_a_Double(IProviderTypeTestCase testCase)
+    public void AnIntegerCanBeConvertedToADouble(IProviderTypeTestCase testCase)
     {
         Assert.Equal(1D,
             JsonPath.Using(testCase.Configuration).Parse("{\"val\": 1}")
@@ -164,7 +164,7 @@ public class SystemTextJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void list_of_numbers(IProviderTypeTestCase testCase)
+    public void ListOfNumbers(IProviderTypeTestCase testCase)
     {
         var objs = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read("$.store.book[*].display-price").AsList();
@@ -174,7 +174,7 @@ public class SystemTextJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void an_object_can_be_mapped_to_pojo(IProviderTypeTestCase testCase)
+    public void AnObjectCanBeMappedToPojo(IProviderTypeTestCase testCase)
     {
         var json = "{\n" +
                    "   \"foo\" : \"foo\",\n" +
@@ -193,7 +193,7 @@ public class SystemTextJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void test_type_ref(IProviderTypeTestCase testCase)
+    public void TestTypeRef(IProviderTypeTestCase testCase)
     {
         var list = JsonPath.Using(testCase.Configuration).Parse(Json)
             .Read<List<FooBarBaz<Gen>>>("$");
@@ -203,7 +203,7 @@ public class SystemTextJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void test_type_ref_fail(IProviderTypeTestCase testCase)
+    public void TestTypeRefFail(IProviderTypeTestCase testCase)
     {
         var typeRef = typeof(IList<FooBarBaz<int>>);
 
@@ -215,7 +215,7 @@ public class SystemTextJsonProviderTest : TestUtils
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
     // https://github.com/json-path/JsonPath/issues/351
-    public void no_error_when_mapping_null(IProviderTypeTestCase testCase)
+    public void NoErrorWhenMappingNull(IProviderTypeTestCase testCase)
     {
         var configuration = testCase.Configuration.SetOptions(ConfigurationOptionEnum.DefaultPathLeafToNull,
             ConfigurationOptionEnum.SuppressExceptions);

@@ -8,7 +8,7 @@ public class TestInternal3 : TestBase
 {
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_root_object_can_be_evaluated(IProviderTypeTestCase testCase)
+    public void ARootObjectCanBeEvaluated(IProviderTypeTestCase testCase)
     {
         var result =
             PathCompiler.Compile("$").Evaluate(Doc(testCase), Doc(testCase), Conf(testCase)).GetValue() as
@@ -20,7 +20,7 @@ public class TestInternal3 : TestBase
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_definite_array_item_property_can_be_evaluated(IProviderTypeTestCase testCase)
+    public void ADefiniteArrayItemPropertyCanBeEvaluated(IProviderTypeTestCase testCase)
     {
         var result = PathCompiler.Compile("$.store.book[0].author")
             .Evaluate(Doc(testCase), Doc(testCase), Conf(testCase)).GetValue();
@@ -30,7 +30,7 @@ public class TestInternal3 : TestBase
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_wildcard_array_item_property_can_be_evaluated(IProviderTypeTestCase testCase)
+    public void AWildcardArrayItemPropertyCanBeEvaluated(IProviderTypeTestCase testCase)
     {
         var result = PathCompiler.Compile("$.store.book[*].author")
             .Evaluate(Doc(testCase), Doc(testCase), Conf(testCase)).GetValue().AsList();

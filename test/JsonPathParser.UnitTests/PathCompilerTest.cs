@@ -8,44 +8,44 @@ namespace XavierJefferson.JsonPathParser.UnitTests;
 public class PathCompilerTest : TestUtils
 {
     [Fact]
-    public void a_root_path_must_be_followed_by_period_or_bracket()
+    public void ARootPathMustBeFollowedByPeriodOrBracket()
     {
         Assert.Throws<InvalidPathException>(() => PathCompiler.Compile("$X"));
     }
 
     [Fact]
-    public void a_root_path_can_be_compiled()
+    public void ARootPathCanBeCompiled()
     {
         Assert.Equal("$", PathCompiler.Compile("$").ToString());
         Assert.Equal("@", PathCompiler.Compile("@").ToString());
     }
 
     [Fact]
-    public void a_path_may_not_end_with_period()
+    public void APathMayNotEndWithPeriod()
     {
         Assert.Throws<InvalidPathException>(() => PathCompiler.Compile("$."));
     }
 
     [Fact]
-    public void a_path_may_not_end_with_period_2()
+    public void APathMayNotEndWithPeriod2()
     {
         Assert.Throws<InvalidPathException>(() => PathCompiler.Compile("$.prop."));
     }
 
     [Fact]
-    public void a_path_may_not_end_with_scan()
+    public void APathMayNotEndWithScan()
     {
         Assert.Throws<InvalidPathException>(() => PathCompiler.Compile("$.."));
     }
 
     [Fact]
-    public void a_path_may_not_end_with_scan_2()
+    public void APathMayNotEndWithScan2()
     {
         Assert.Throws<InvalidPathException>(() => PathCompiler.Compile("$.prop.."));
     }
 
     [Fact]
-    public void a_property_token_can_be_compiled()
+    public void APropertyTokenCanBeCompiled()
     {
         Assert.Equal("$['prop']", PathCompiler.Compile("$.prop").ToString());
         Assert.Equal("$['1prop']", PathCompiler.Compile("$.1prop").ToString());
@@ -53,7 +53,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void a_bracket_notation_property_token_can_be_compiledd()
+    public void ABracketNotationPropertyTokenCanBeCompiledd()
     {
         Assert.Equal("$['prop']", PathCompiler.Compile("$['prop']").ToString());
         Assert.Equal("$['1prop']", PathCompiler.Compile("$['1prop']").ToString());
@@ -63,14 +63,14 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void a_multi_property_token_can_be_compiledd()
+    public void AMultiPropertyTokenCanBeCompiledd()
     {
         Assert.Equal("$['prop0','prop1']", PathCompiler.Compile("$['prop0', 'prop1']").ToString());
         Assert.Equal("$['prop0','prop1']", PathCompiler.Compile("$[  'prop0'  , 'prop1'  ]").ToString());
     }
 
     [Fact]
-    public void a_property_chain_can_be_compiledd()
+    public void APropertyChainCanBeCompiledd()
     {
         Assert.Equal("$['abc']", PathCompiler.Compile("$.abc").ToString());
         Assert.Equal("$['aaa']['bbb']", PathCompiler.Compile("$.aaa.bbb").ToString());
@@ -78,13 +78,13 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void a_property_may_not_contain_blanks()
+    public void APropertyMayNotContainBlanks()
     {
         Assert.Throws<InvalidPathException>(() => PathCompiler.Compile("$.foo bar"));
     }
 
     [Fact]
-    public void a_wildcard_can_be_compiled()
+    public void AWildcardCanBeCompiled()
     {
         Assert.Equal("$[*]", PathCompiler.Compile("$.*").ToString());
         Assert.Equal("$[*]", PathCompiler.Compile("$[*]").ToString());
@@ -92,14 +92,14 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void a_wildcard_can_follow_a_property()
+    public void AWildcardCanFollowAProperty()
     {
         Assert.Equal("$['prop'][*]", PathCompiler.Compile("$.prop[*]").ToString());
         Assert.Equal("$['prop'][*]", PathCompiler.Compile("$['prop'][*]").ToString());
     }
 
     [Fact]
-    public void an_array_index_path_can_be_compiledd()
+    public void AnArrayIndexPathCanBeCompiledd()
     {
         Assert.Equal("$[1]", PathCompiler.Compile("$[1]").ToString());
         Assert.Equal("$[1,2,3]", PathCompiler.Compile("$[1,2,3]").ToString());
@@ -107,7 +107,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void an_array_slice_path_can_be_compiledd()
+    public void AnArraySlicePathCanBeCompiledd()
     {
         Assert.Equal("$[-1:]", PathCompiler.Compile("$[-1:]").ToString());
         Assert.Equal("$[1:2]", PathCompiler.Compile("$[1:2]").ToString());
@@ -115,14 +115,14 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void an_inline_criteria_can_be_parsed()
+    public void AnInlineCriteriaCanBeParsed()
     {
         Assert.Equal("$[?]", PathCompiler.Compile("$[?(@.foo == 'bar')]").ToString());
         Assert.Equal("$[?]", PathCompiler.Compile("$[?(@.foo == \"bar\")]").ToString());
     }
 
     [Fact]
-    public void a_placeholder_criteria_can_be_parsed()
+    public void APlaceholderCriteriaCanBeParsed()
     {
         var predicate = SimplePredicate.Create(_ => false);
         Assert.Equal("$[?]", PathCompiler.Compile("$[?]", predicate).ToString());
@@ -131,13 +131,13 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void a_scan_token_can_be_parsed()
+    public void AScanTokenCanBeParsed()
     {
         Assert.Equal("$..['prop']..[*]", PathCompiler.Compile("$..['prop']..[*]").ToString());
     }
 
     [Fact]
-    public void issue_predicate_can_have_escaped_backslash_in_prop()
+    public void IssuePredicateCanHaveEscapedBackslashInProp()
     {
         var json = "{\n"
                    + "    \"logs\": [\n"
@@ -155,7 +155,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void issue_predicate_can_have_bracket_in_regex()
+    public void IssuePredicateCanHaveBracketInRegex()
     {
         var json = "{\n"
                    + "    \"logs\": [\n"
@@ -172,7 +172,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void issue_predicate_can_have_and_in_regex()
+    public void IssuePredicateCanHaveAndInRegex()
     {
         var json = "{\n"
                    + "    \"logs\": [\n"
@@ -189,7 +189,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void issue_predicate_can_have_and_in_prop()
+    public void IssuePredicateCanHaveAndInProp()
     {
         var json = "{\n"
                    + "    \"logs\": [\n"
@@ -206,7 +206,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void issue_predicate_brackets_must_change_priorities()
+    public void IssuePredicateBracketsMustChangePriorities()
     {
         var json = "{\n"
                    + "    \"logs\": [\n"
@@ -225,7 +225,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void issue_predicate_or_has_lower_priority_than_and()
+    public void IssuePredicateOrHasLowerPriorityThanAnd()
     {
         var json = "{\n"
                    + "    \"logs\": [\n"
@@ -240,7 +240,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void issue_predicate_can_have_double_quotes()
+    public void IssuePredicateCanHaveDoubleQuotes()
     {
         var json = "{\n"
                    + "    \"logs\": [\n"
@@ -254,7 +254,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void issue_predicate_can_have_single_quotes()
+    public void IssuePredicateCanHaveSingleQuotes()
     {
         var json = "{\n"
                    + "    \"logs\": [\n"
@@ -270,7 +270,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void issue_predicate_can_have_single_quotes_escaped()
+    public void IssuePredicateCanHaveSingleQuotesEscaped()
     {
         var json = "{\n"
                    + "    \"logs\": [\n"
@@ -286,7 +286,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void issue_predicate_can_have_square_bracket_in_prop()
+    public void IssuePredicateCanHaveSquareBracketInProp()
     {
         var json = "{\n"
                    + "    \"logs\": [\n"
@@ -303,7 +303,7 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void a_function_can_be_compiledd()
+    public void AFunctionCanBeCompiledd()
     {
         Assert.Equal("$['aaa'].foo()", PathCompiler.Compile("$.aaa.foo()").ToString());
         Assert.Equal("$['aaa'].foo(...)", PathCompiler.Compile("$.aaa.foo(5)").ToString());
@@ -312,25 +312,25 @@ public class PathCompilerTest : TestUtils
     }
 
     [Fact]
-    public void array_indexes_must_be_separated_by_commas()
+    public void ArrayIndexesMustBeSeparatedByCommas()
     {
         Assert.Throws<InvalidPathException>(() => PathCompiler.Compile("$[0, 1, 2 4]"));
     }
 
     [Fact]
-    public void trailing_comma_after_list_is_not_accepted()
+    public void TrailingCommaAfterListIsNotAccepted()
     {
         Assert.Throws<InvalidPathException>(() => PathCompiler.Compile("$['1','2',]"));
     }
 
     [Fact]
-    public void accept_only_a_single_comma_between_indexes()
+    public void AcceptOnlyASingleCommaBetweenIndexes()
     {
         Assert.Throws<InvalidPathException>(() => PathCompiler.Compile("$['1', ,'3']"));
     }
 
     [Fact]
-    public void property_must_be_separated_by_commas()
+    public void PropertyMustBeSeparatedByCommas()
     {
         Assert.Throws<InvalidPathException>(() => PathCompiler.Compile("$['aaa'}'bbb']"));
     }

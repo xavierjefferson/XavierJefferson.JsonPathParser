@@ -30,7 +30,7 @@ public class NullHandlingTest
 
 
     [Fact]
-    public void not_defined_property_throws_PathNotFoundException()
+    public void NotDefinedPropertyThrowsPathnotfoundexception()
     {
         Assert.Throws<PathNotFoundException>(() => JsonPath.Read(Document, "$.children[0].child.age"));
     }
@@ -38,7 +38,7 @@ public class NullHandlingTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void last_token_defaults_to_null(IProviderTypeTestCase testCase)
+    public void LastTokenDefaultsToNull(IProviderTypeTestCase testCase)
     {
         var configuration = testCase.Configuration.SetOptions(ConfigurationOptionEnum.DefaultPathLeafToNull);
 
@@ -47,7 +47,7 @@ public class NullHandlingTest
 
 
     [Fact]
-    public void null_property_returns_null()
+    public void NullPropertyReturnsNull()
     {
         var age = JsonPath.Read<double?>(Document, "$.children[1].age");
         Assert.Null(age);
@@ -55,7 +55,7 @@ public class NullHandlingTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void the_age_of_all_with_age_defined(IProviderTypeTestCase testCase)
+    public void TheAgeOfAllWithAgeDefined(IProviderTypeTestCase testCase)
     {
         var result = JsonPath.Using(testCase.Configuration.SetOptions(ConfigurationOptionEnum.SuppressExceptions))
             .Parse(Document).Read("$.children[*].age").AsList();

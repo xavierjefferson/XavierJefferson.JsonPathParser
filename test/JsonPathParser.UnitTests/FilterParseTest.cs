@@ -9,7 +9,7 @@ public class FilterParseTest
 {
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_filter_can_be_parsed(IProviderTypeTestCase testCase)
+    public void AFilterCanBeParsed(IProviderTypeTestCase testCase)
     {
         Filter.Parse("[?(@.foo)]");
         Filter.Parse("[?(@.foo == 1)]");
@@ -18,7 +18,7 @@ public class FilterParseTest
     }
 
     [Fact]
-    public void an_invalid_filter_can_not_be_parsed()
+    public void AnInvalidFilterCanNotBeParsed()
     {
         Assert.Throws<InvalidPathException>(() => { Filter.Parse("[?(@.foo == 1)"); });
         Assert.Throws<InvalidPathException>(() => { Filter.Parse("[?(@.foo == 1) ||]"); });
@@ -29,7 +29,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_gte_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void AGteFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").Gte(1)).ToString();
@@ -40,7 +40,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_lte_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ALteFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").Lte(1)).ToString();
@@ -51,7 +51,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_eq_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void AEqFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").Eq(1)).ToString();
@@ -62,7 +62,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_ne_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ANeFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").Ne(1)).ToString();
@@ -73,7 +73,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_lt_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ALtFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").Lt(1)).ToString();
@@ -84,7 +84,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_gt_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void AGtFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").Gt(1)).ToString();
@@ -95,7 +95,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_nin_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ANinFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").Nin(1)).ToString();
@@ -106,7 +106,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_in_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void AInFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").In("a")).ToString();
@@ -117,7 +117,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_contains_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void AContainsFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").Contains("a")).ToString();
@@ -128,7 +128,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_all_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void AAllFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").All(new List<object?> { "a", "b" })).ToString();
@@ -139,7 +139,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_size_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ASizeFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").Size(5)).ToString();
@@ -150,7 +150,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_subsetof_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ASubsetofFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").SubsetOf()).ToString();
@@ -161,7 +161,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_anyof_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void AAnyofFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").AnyOf()).ToString();
@@ -172,7 +172,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_noneof_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ANoneofFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").NoneOf()).ToString();
@@ -183,7 +183,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_exists_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void AExistsFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var a = Filter.Create(Criteria.Where(jsonProvider, "a").Exists(true));
@@ -195,7 +195,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_not_exists_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ANotExistsFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").Exists(false)).ToString();
@@ -206,7 +206,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_type_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ATypeFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.Equal($"[?(@['a'] TYPE {typeof(string).FullName})]",
@@ -215,7 +215,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_matches_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void AMatchesFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var a = Filter.Create(Criteria.Where(jsonProvider, "x").Eq(1000));
@@ -226,7 +226,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_not_empty_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ANotEmptyFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").Empty(false)).ToString();
@@ -237,7 +237,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void and_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void AndFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").Eq(1).And("b").Eq(2)).ToString();
@@ -248,7 +248,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void in_string_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void InStringFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a").In("1", "2")).ToString();
@@ -259,7 +259,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_deep_path_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ADeepPathFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var filter = Filter.Create(Criteria.Where(jsonProvider, "a.b.c").In("1", "2")).ToString();
@@ -270,7 +270,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_regex_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ARegexFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         Assert.Equal("[?(@['a'] =~ /.*?/i)]",
@@ -280,7 +280,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_doc_ref_filter_can_be_serialized(IProviderTypeTestCase testCase)
+    public void ADocRefFilterCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var f = Filter.Parse("[?(@.display-price <= $.max-price)]");
         Assert.Equal("[?(@['display-price'] <= $['max-price'])]", f.ToString());
@@ -288,7 +288,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void and_combined_filters_can_be_serialized(IProviderTypeTestCase testCase)
+    public void AndCombinedFiltersCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var a = Filter.Create(Criteria.Where(jsonProvider, "a").Eq(1));
@@ -304,7 +304,7 @@ public class FilterParseTest
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void or_combined_filters_can_be_serialized(IProviderTypeTestCase testCase)
+    public void OrCombinedFiltersCanBeSerialized(IProviderTypeTestCase testCase)
     {
         var jsonProvider = testCase.Configuration.JsonProvider;
         var a = Filter.Create(Criteria.Where(jsonProvider, "a").Eq(1));

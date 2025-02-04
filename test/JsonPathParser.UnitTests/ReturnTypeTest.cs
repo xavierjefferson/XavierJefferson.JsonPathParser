@@ -10,37 +10,37 @@ public class ReturnTypeTest : TestUtils
     private static readonly IReadContext Reader = JsonPath.Parse(JsonTestData.JsonDocument);
 
     [Fact]
-    public void assert_strings_can_be_read()
+    public void AssertStringsCanBeRead()
     {
         Assert.Equal("string-value", (string)Reader.Read("$.string-property"));
     }
 
     [Fact]
-    public void assert_ints_can_be_read()
+    public void AssertIntsCanBeRead()
     {
         Assert.Equal(int.MaxValue, Reader.Read<double>("$.int-max-property"));
     }
 
     [Fact]
-    public void assert_longs_can_be_read()
+    public void AssertLongsCanBeRead()
     {
         Assert.Equal(long.MaxValue, Reader.Read<double>("$.long-max-property"));
     }
 
     [Fact]
-    public void assert_boolean_values_can_be_read()
+    public void AssertBooleanValuesCanBeRead()
     {
         Assert.True(Reader.Read<bool>("$.bool-property"));
     }
 
     [Fact]
-    public void assert_null_values_can_be_read()
+    public void AssertNullValuesCanBeRead()
     {
         Assert.Null((string)Reader.Read("$.null-property"));
     }
 
     [Fact]
-    public void assert_arrays_can_be_read()
+    public void AssertArraysCanBeRead()
     {
         /*
         Object result = reader.read("$.store.book");
@@ -53,7 +53,7 @@ public class ReturnTypeTest : TestUtils
     }
 
     [Fact]
-    public void assert_maps_can_be_read()
+    public void AssertMapsCanBeRead()
     {
         var n = Reader.Read<IDictionary<string, object?>>("$.store.book[0]");
 
@@ -66,7 +66,7 @@ public class ReturnTypeTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_path_evaluation_can_be_returned_as_PATH_LIST(IProviderTypeTestCase testCase)
+    public void APathEvaluationCanBeReturnedAsPathList(IProviderTypeTestCase testCase)
     {
         var conf = testCase.Configuration.SetOptions(ConfigurationOptionEnum.AsPathList);
 
@@ -77,7 +77,7 @@ public class ReturnTypeTest : TestUtils
     }
 
     [Fact]
-    public void class_cast_exception_is_thrown_when_return_type_is_not_expected()
+    public void ClassCastExceptionIsThrownWhenReturnTypeIsNotExpected()
     {
         Assert.Null(Reader.Read("$.store.book[0].author").AsList());
     }

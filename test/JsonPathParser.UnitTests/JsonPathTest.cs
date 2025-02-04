@@ -67,7 +67,7 @@ public class JsonPathTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void missing_prop(IProviderTypeTestCase testCase)
+    public void MissingProp(IProviderTypeTestCase testCase)
     {
         Assert.Throws<PathNotFoundException>(() =>
             JsonPath.Using(testCase.Configuration.AddOptions(ConfigurationOptionEnum.RequireProperties)).Parse(Document)
@@ -75,7 +75,7 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void bracket_notation_with_dots()
+    public void BracketNotationWithDots()
     {
         var json = "{\n" +
                    "    \"store\": {\n" +
@@ -94,7 +94,7 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void null_object_in_path()
+    public void NullObjectInPath()
     {
         var json = "{\n" +
                    "  \"success\": true,\n" +
@@ -117,14 +117,14 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void array_start_expands()
+    public void ArrayStartExpands()
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(ArrayExpand, "$[?(@['parent'] == 'ONE')].child.name"),
             "NAME_ONE");
     }
 
     [Fact]
-    public void bracket_notation_can_be_used_in_path()
+    public void BracketNotationCanBeUsedInPath()
     {
         Assert.Equal("new", JsonPath.Read(Document, "$.['store'].bicycle.['dot.notation']"));
         Assert.Equal("new", JsonPath.Read(Document, "$['store']['bicycle']['dot.notation']"));
@@ -139,7 +139,7 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void filter_an_array()
+    public void FilterAnArray()
     {
         var matches = JsonPath.Read(Array, "$.[?(@.value == 1)]").AsList();
 
@@ -147,7 +147,7 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void filter_an_array_on_index()
+    public void FilterAnArrayOnIndex()
     {
         var matches = JsonPath.Read(Array, "$.[1].value");
 
@@ -155,13 +155,13 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void read_path_with_colon()
+    public void ReadPathWithColon()
     {
         Assert.Equal(JsonPath.Read(Document, "$['store']['bicycle']['foo:bar']"), "fooBar");
     }
 
     [Fact]
-    public void read_document_from_root()
+    public void ReadDocumentFromRoot()
     {
         var result = JsonPath.Read(Document, "$.store") as Dictionary<string, object?>;
 
@@ -169,7 +169,7 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void read_store_book_1()
+    public void ReadStoreBook1()
     {
         var path = JsonPath.Compile("$.store.book[1]");
 
@@ -179,7 +179,7 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void read_store_book_wildcard()
+    public void ReadStoreBookWildcard()
     {
         var path = JsonPath.Compile("$.store.book[*]");
 
@@ -188,7 +188,7 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void read_store_book_author()
+    public void ReadStoreBookAuthor()
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[0,1].author"), "Nigel Rees",
             "Evelyn Waugh");
@@ -203,7 +203,7 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void all_authors()
+    public void AllAuthors()
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$..author"), "Nigel Rees", "Evelyn Waugh",
             "Herman Melville", "J. R. R. Tolkien");
@@ -211,7 +211,7 @@ public class JsonPathTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void all_store_properties(IProviderTypeTestCase testCase)
+    public void AllStoreProperties(IProviderTypeTestCase testCase)
     {
         /*
         var  itemsInStore = JsonPath.Read(DOCUMENT, "$.store.*").asList();
@@ -228,21 +228,21 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void all_prices_in_store()
+    public void AllPricesInStore()
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store..['display-price']"), 8.95D, 12.99D, 8.99D,
             19.95D);
     }
 
     [Fact]
-    public void access_array_by_index_from_tail()
+    public void AccessArrayByIndexFromTail()
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$..book[1:].author"), "Evelyn Waugh",
             "Herman Melville", "J. R. R. Tolkien");
     }
 
     [Fact]
-    public void read_store_book_index_0_and_1()
+    public void ReadStoreBookIndex0And1()
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[0,1].author"), "Nigel Rees",
             "Evelyn Waugh");
@@ -250,7 +250,7 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void read_store_book_pull_first_2()
+    public void ReadStoreBookPullFirst2()
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[:2].author"), "Nigel Rees",
             "Evelyn Waugh");
@@ -259,7 +259,7 @@ public class JsonPathTest : TestUtils
 
 
     [Fact]
-    public void read_store_book_filter_by_isbn()
+    public void ReadStoreBookFilterByIsbn()
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$.store.book[?(@.isbn)].isbn"), "0-553-21311-3",
             "0-395-19395-8");
@@ -268,7 +268,7 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void all_books_cheaper_than_10()
+    public void AllBooksCheaperThan10()
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$..book[?(@['display-price'] < 10)].title"),
             "Sayings of the Century", "Moby Dick");
@@ -277,27 +277,27 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void all_books()
+    public void AllBooks()
     {
         Assert.Equal(1, JsonPath.Read<List<object?>>(Document, "$..book").Count());
     }
 
     [Fact]
-    public void dot_in_predicate_works()
+    public void DotInPredicateWorks()
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(ProductJson, "$.product[?(@.version=='4.0')].codename"),
             "Montreal");
     }
 
     [Fact]
-    public void dots_in_predicate_works()
+    public void DotsInPredicateWorks()
     {
         MyAssert.ContainsAll(
             JsonPath.Read<List<object?>>(ProductJson, "$.product[?(@.['attr.with.dot']=='A')].codename"), "Seattle");
     }
 
     [Fact]
-    public void all_books_with_category_reference()
+    public void AllBooksWithCategoryReference()
     {
         MyAssert.ContainsAll(JsonPath.Read<List<object?>>(Document, "$..book[?(@.category=='reference')].title"),
             "Sayings of the Century");
@@ -306,19 +306,19 @@ public class JsonPathTest : TestUtils
     }
 
     [Fact]
-    public void all_members_of_all_documents()
+    public void AllMembersOfAllDocuments()
     {
         var all = JsonPath.Read(Document, "$..*").AsList();
     }
 
     [Fact]
-    public void access_index_out_of_bounds_does_not_throw_exception()
+    public void AccessIndexOutOfBoundsDoesNotThrowException()
     {
         Assert.Throws<PathNotFoundException>(() => JsonPath.Read(Document, "$.store.book[100].author"));
     }
 
     [Fact]
-    public void exists_filter_with_nested_path()
+    public void ExistsFilterWithNestedPath()
     {
         Assert.Single(JsonPath.Read<List<object?>>(Document, "$..[?(@.bicycle.color)]"));
         Assert.Empty(JsonPath.Read<List<object?>>(Document, "$..[?(@.bicycle.numberOfGears)]"));
@@ -326,7 +326,7 @@ public class JsonPathTest : TestUtils
 
     [Fact]
     // see https://code.google.com/p/json-path/issues/detail?id=58
-    public void invalid_paths_throw_invalid_path_exception()
+    public void InvalidPathsThrowInvalidPathException()
     {
         foreach (var path in new[] { "$.", "$.results[?" })
             Assert.Throws<InvalidPathException>(() => { JsonPath.Compile(path); });
@@ -334,7 +334,7 @@ public class JsonPathTest : TestUtils
 
     [Fact]
     //see https://github.com/json-path/JsonPath/issues/428
-    public void prevent_stack_overflow_error_when_unclosed_property()
+    public void PreventStackOverflowErrorWhenUnclosedProperty()
     {
         Assert.Throws<InvalidPathException>(() => JsonPath.Compile("$['boo','foo][?(@ =~ /bar/)]"));
     }

@@ -8,7 +8,7 @@ namespace XavierJefferson.JsonPathParser.UnitTests;
 public class EvaluationListenerTest : TestUtils
 {
     [Fact]
-    public void an_evaluation_listener_can_abort_after_one_result_using_fluent_api()
+    public void AnEvaluationListenerCanAbortAfterOneResultUsingFluentApi()
     {
         var title = JsonPath.Parse(JsonTestData.JsonDocument).WithListeners(_ => EvaluationContinuationEnum.Abort)
             .Read("$..title", TypeConstants.ListType).AsList();
@@ -17,7 +17,7 @@ public class EvaluationListenerTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void an_evaluation_listener_can_abort_after_one_result_using_configuration(IProviderTypeTestCase testCase)
+    public void AnEvaluationListenerCanAbortAfterOneResultUsingConfiguration(IProviderTypeTestCase testCase)
     {
         var configuration = testCase.Configuration.SetEvaluationCallbacks(_ => EvaluationContinuationEnum.Abort);
 
@@ -28,7 +28,7 @@ public class EvaluationListenerTest : TestUtils
     }
 
     [Fact]
-    public void an_evaluation_lister_can_continue()
+    public void AnEvaluationListerCanContinue()
     {
         IList<int> idxs = new List<int>();
 
@@ -47,7 +47,7 @@ public class EvaluationListenerTest : TestUtils
 
 
     [Fact]
-    public void evaluation_results_can_be_limited()
+    public void EvaluationResultsCanBeLimited()
     {
         var res = JsonPath.Parse(JsonTestData.JsonDocument).Limit(1).Read("$..title", TypeConstants.ListType).AsList();
         MyAssert.ContainsExactly(res, "Sayings of the Century");
@@ -57,7 +57,7 @@ public class EvaluationListenerTest : TestUtils
     }
 
     [Fact]
-    public void multiple_evaluation_listeners_can_be_added()
+    public void MultipleEvaluationListenersCanBeAdded()
     {
         var idxs1 = new List<int>();
         var idxs2 = new List<int>();
@@ -81,7 +81,7 @@ public class EvaluationListenerTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void evaluation_listeners_can_be_cleared(IProviderTypeTestCase testCase)
+    public void EvaluationListenersCanBeCleared(IProviderTypeTestCase testCase)
     {
         var configuration1 = testCase.Configuration.SetEvaluationCallbacks(_ => EvaluationContinuationEnum.Continue);
         var configuration2 = configuration1.SetEvaluationCallbacks();

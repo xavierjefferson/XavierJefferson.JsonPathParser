@@ -11,7 +11,7 @@ public class Issue487
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void test_read_with_comma_1(IProviderTypeTestCase testCase)
+    public void TestReadWithComma1(IProviderTypeTestCase testCase)
     {
         // originally 
         var dc = JsonPath.Using(JsonConf(testCase))
@@ -23,7 +23,7 @@ public class Issue487
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void test_read_with_comma_2(IProviderTypeTestCase testCase)
+    public void TestReadWithComma2(IProviderTypeTestCase testCase)
     {
         // originally passed
         var dc = JsonPath.Using(JsonConf(testCase))

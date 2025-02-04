@@ -9,7 +9,7 @@ public class NewtonsoftJsonProviderTest : TestUtils
 {
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void an_object_can_be_read(IProviderTypeTestCase testCase)
+    public void AnObjectCanBeRead(IProviderTypeTestCase testCase)
     {
         var book = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read<IDictionary<string, object?>>("$.store.book[0]");
@@ -19,7 +19,7 @@ public class NewtonsoftJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_property_can_be_read(IProviderTypeTestCase testCase)
+    public void APropertyCanBeRead(IProviderTypeTestCase testCase)
     {
         var category = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read<string>("$.store.book[0].category");
@@ -29,7 +29,7 @@ public class NewtonsoftJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void a_filter_can_be_applied(IProviderTypeTestCase testCase)
+    public void AFilterCanBeApplied(IProviderTypeTestCase testCase)
     {
         var fictionBooks = JsonPath.Using(testCase.Configuration)
             .Parse(JsonTestData.JsonDocument).Read<List<object?>>("$.store.book[?(@.category == 'fiction')]");
@@ -39,7 +39,7 @@ public class NewtonsoftJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void result_can_be_mapped_to_object(IProviderTypeTestCase testCase)
+    public void ResultCanBeMappedToObject(IProviderTypeTestCase testCase)
     {
         var books = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read<List<object?>>("$.store.book");
@@ -49,7 +49,7 @@ public class NewtonsoftJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void read_books_with_isb(IProviderTypeTestCase testCase)
+    public void ReadBooksWithIsb(IProviderTypeTestCase testCase)
     {
         var books = JsonPath.Using(testCase.Configuration).Parse(JsonTestData.JsonDocument)
             .Read<List<object?>>("$..book[?(@.isbn)]");
@@ -66,7 +66,7 @@ public class NewtonsoftJsonProviderTest : TestUtils
      */
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void read_book_length_using_translated_query(IProviderTypeTestCase testCase)
+    public void ReadBookLengthUsingTranslatedQuery(IProviderTypeTestCase testCase)
     {
         var result = JsonPath.Using(testCase.Configuration)
             .Parse(JsonTestData.JsonBookStoreDocument)
@@ -76,7 +76,7 @@ public class NewtonsoftJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void read_book_length(IProviderTypeTestCase testCase)
+    public void ReadBookLength(IProviderTypeTestCase testCase)
     {
         var result = JsonPath.Using(testCase.Configuration)
             .Parse(JsonTestData.JsonBookStoreDocument)
@@ -86,7 +86,7 @@ public class NewtonsoftJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void test_getPropertyKeys_empty_object(IProviderTypeTestCase testCase)
+    public void TestGetpropertykeysEmptyObject(IProviderTypeTestCase testCase)
     {
         var json = "{\"foo\": \"bar\", \"emptyObject\": {},\"emptyList\":[]}";
         var config = testCase.Configuration
@@ -98,7 +98,7 @@ public class NewtonsoftJsonProviderTest : TestUtils
 
     [Theory]
     [ClassData(typeof(ProviderTypeTestCases))]
-    public void test_getPropertyKeys_empty_nest_object(IProviderTypeTestCase testCase)
+    public void TestGetpropertykeysEmptyNestObject(IProviderTypeTestCase testCase)
     {
         var json = "{\"foo\": \"bar\", \"emptyObject\": {\"emptyList\":[]},\"emptyList\":[]}";
         var config = testCase.Configuration
